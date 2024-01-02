@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
-import googleLogo from '../g-logo.png';
+import googleLogo from '../../g-logo.png';
 
 export default function Login({
   searchParams
