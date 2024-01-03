@@ -1,16 +1,9 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { createClient } from '@/utils/supabase/middleware';
+import { type NextRequest } from 'next/server';
+import { createMiddlewareClient } from '@/utils/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  const { supabase, response } = createClient(request);
-
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-
-  if (session == null)
-    return NextResponse.redirect(new URL('/login', request.nextUrl));
-
+  const { supabase, response } = createMiddlewareClient(request);
+  await supabase.auth.getSession();
   return response;
 }
 
@@ -23,6 +16,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    '/((?!_next/static|_next/image|favicon.ico|login|auth/callback).*)'
+    '/((?!_next/static|_next/image|favicon.ico).*)'
   ]
 };

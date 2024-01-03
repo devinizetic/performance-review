@@ -1,17 +1,19 @@
-import { createClient } from '@/utils/supabase/server';
+import { createServerClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default async function Index() {
+export default async function Home() {
   const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-
+  const supabase = createServerClient(cookieStore);
   const {
-    data: { user }
-  } = await supabase.auth.getUser();
+    data: { session }
+  } = await supabase.auth.getSession();
 
-  return user ? (
+  if (!session) redirect('/login');
+
+  return session.user ? (
     <div className="flex-1 w-full flex flex-col items-center">
-      Hello {user.email}!!!
+      Hello {session.user.email}!!!
     </div>
   ) : (
     <div className="flex-1 w-full flex flex-col items-center">

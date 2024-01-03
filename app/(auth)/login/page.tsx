@@ -1,19 +1,25 @@
 import { cookies } from 'next/headers';
-import { createClient } from '@/utils/supabase/server';
+import { createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import googleLogo from '../../g-logo.png';
 
-export default function Login({
+export default async function Login({
   searchParams
 }: {
   searchParams: { message: string };
 }) {
+  const cookieStore = cookies();
+  const supabase = createServerClient(cookieStore);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
   const signInWithGoogle = async () => {
     'use server';
 
     const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createServerClient(cookieStore);
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
