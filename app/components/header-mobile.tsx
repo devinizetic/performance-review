@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SIDENAV_ITEMS } from '@/constants';
-import LogoutItem from './logout-item';
+import { logout } from '../actions';
 
 const HeaderMobile: React.FC = () => {
   const pathname = usePathname();
@@ -25,7 +25,15 @@ const HeaderMobile: React.FC = () => {
                 <div key={idx}>
                   <MenuItem>
                     {isLogout ? (
-                      <LogoutItem />
+                      <Link
+                        href={item.path}
+                        onClick={() => logout()}
+                        className={`flex w-full text-2xl ${
+                          item.path === pathname ? 'font-bold' : ''
+                        }`}
+                      >
+                        {item.title}
+                      </Link>
                     ) : (
                       <Link
                         href={item.path}
