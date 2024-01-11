@@ -1,0 +1,1 @@
+alter table "public"."user_review" enable row level security;
