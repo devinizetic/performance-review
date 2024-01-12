@@ -1,6 +1,6 @@
 'use client';
 import { SIDENAV_ITEMS } from '@/constants';
-import { SideNavItem } from '@/types';
+import { SideNavItem } from '@/types/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';

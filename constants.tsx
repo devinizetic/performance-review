@@ -1,4 +1,4 @@
-import { SideNavItem } from '@/types';
+import { SideNavItem } from '@/types/types';
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
@@ -8,9 +8,9 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     isLogout: false
   },
   {
-    title: 'Periods',
-    path: '/periods',
-    icon: <div>Icono Periods</div>,
+    title: 'dashboard',
+    path: '/dashboard',
+    icon: <div>Icono Dashboard</div>,
     isLogout: false
   },
   {

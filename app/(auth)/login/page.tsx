@@ -27,7 +27,7 @@ export default async function Login({
         redirectTo: 'http://localhost:3000/auth/callback'
       }
     });
-    console.log(data, error);
+
     if (error) {
       return redirect('/login?message=Could not authenticate user');
     }
