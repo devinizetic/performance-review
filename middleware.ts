@@ -1,8 +1,8 @@
 import { type NextRequest } from 'next/server';
 import { createMiddlewareClient } from '@/utils/supabase/middleware';
 
-export async function middleware(request: NextRequest) {
-  const { supabase, response } = createMiddlewareClient(request);
+export async function middleware(req: NextRequest) {
+  const { supabase, response } = createMiddlewareClient(req);
   await supabase.auth.getSession();
   return response;
 }
