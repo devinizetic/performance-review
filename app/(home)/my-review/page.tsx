@@ -20,7 +20,7 @@ export default async function MyReview() {
       </button>
     </div>
   ) : (
-    <div className="text-xl underline font-bold flex justify-center items-center flex-grow">
+    <div className="text-xl font-bold flex justify-center items-center flex-grow">
       {' '}
       Actualmente no hay evaluaciones en curso{' '}
     </div>
