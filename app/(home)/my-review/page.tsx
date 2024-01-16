@@ -1,25 +1,24 @@
+import { UserReviewRepository } from '@/lib/repository/user-review-repository';
 import { createServerClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default async function MyReview() {
-  const cookieStore = cookies();
-  const supabase = createServerClient(cookieStore);
+  const supabase = createServerClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();
 
   if (!session) redirect('/login');
 
-  const currentReview = undefined;
-
+  const currentReview = await new UserReviewRepository().getCurrentByRevieweeId(
+    '3fc9eb12-c098-4985-a295-89bfbe145813'
+  );
+  // console.log(currentReview?.reviews[0].questions[0]);
   return currentReview ? (
-    <div className="flex justify-center items-center flex-grow">
-      <button type="button" className="rounded border-gray-950">
-        Comenzar
-      </button>
-    </div>
+    <pre>{JSON.stringify(currentReview, undefined, 2)}</pre>
   ) : (
+    // <div className="flex justify-center items-center flex-grow"></div>
     <div className="text-xl font-bold flex justify-center items-center flex-grow">
       {' '}
       Actualmente no hay evaluaciones en curso{' '}

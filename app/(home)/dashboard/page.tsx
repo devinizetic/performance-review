@@ -6,8 +6,7 @@ import ReviewerDashboard from './components/reviewer-dashboard';
 import RevieweeDashboard from './components/reviewee-dashboard';
 
 const Dashboard: React.FC = async () => {
-  const cookieStore = cookies();
-  const supabase = createServerClient(cookieStore);
+  const supabase = createServerClient();
 
   const {
     data: { session }

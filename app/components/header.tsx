@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { useSelectedLayoutSegment } from 'next/navigation';
 
 const Header: React.FC = () => {
   return (
