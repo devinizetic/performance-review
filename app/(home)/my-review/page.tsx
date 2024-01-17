@@ -1,6 +1,5 @@
-import { UserReviewRepository } from '@/lib/repository/user-review-repository';
+import UserReviewRepository from '@/lib/repository/user-review-repository';
 import { createServerClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default async function MyReview() {
@@ -11,16 +10,16 @@ export default async function MyReview() {
 
   if (!session) redirect('/login');
 
-  const currentReview = await new UserReviewRepository().getCurrentByRevieweeId(
-    '3fc9eb12-c098-4985-a295-89bfbe145813'
-  );
-  // console.log(currentReview?.reviews[0].questions[0]);
-  return currentReview ? (
-    <pre>{JSON.stringify(currentReview, undefined, 2)}</pre>
-  ) : (
-    // <div className="flex justify-center items-center flex-grow"></div>
+  const activeReview =
+    await UserReviewRepository.getActiveUserReviewByRevieweeId({
+      revieweeId: session.user.id
+    });
+
+  if (activeReview && activeReview.id)
+    redirect(`/my-review/${activeReview.id}`);
+
+  return (
     <div className="text-xl font-bold flex justify-center items-center flex-grow">
-      {' '}
       Actualmente no hay evaluaciones en curso{' '}
     </div>
   );
