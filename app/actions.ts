@@ -1,12 +1,74 @@
 'use server';
 
 import { createServerClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export const logout = async () => {
-  const cookieStore = cookies();
-  const supabase = createServerClient(cookieStore);
+  const supabase = createServerClient();
   await supabase.auth.signOut();
   return redirect('/login');
+};
+
+export const createAnswer = async (formData: FormData) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  const questionId = formData.get('questionId');
+  const userReviewId = formData.get('userReviewId');
+  const answerText = formData.get('answerText');
+  const answerChoiceId = formData.get('answerChoiceId');
+
+  if (!questionId || !userReviewId || !answerText)
+    throw new Error('Missing Form Data');
+
+  const answer = {
+    question_id: questionId.toString(),
+    user_review_id: userReviewId.toString(),
+    user_id: currentUser.data.user.id,
+    answer_text: answerText.toString(),
+    answer_choice_id: answerChoiceId?.toString()
+  };
+  console.log(answer);
+
+  const { error } = await supabase.from('answers').insert(answer);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
+};
+
+export const updateAnswer = async (formData: FormData) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  const answerId = formData.get('answerId');
+  const answerChoiceId = formData.get('answerChoiceId');
+  const answerText = formData.get('answerText');
+  console.log('choice start');
+  console.log(answerChoiceId);
+  console.log('choice end');
+  if (!answerId || !answerText) throw new Error('Missing Form Data');
+
+  const answerUpdate = {
+    answer_text: answerText.toString(),
+    answer_choice_id: answerChoiceId?.toString()
+  };
+
+  const { error } = await supabase
+    .from('answers')
+    .update(answerUpdate)
+    .eq('id', answerId.toString());
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
 };

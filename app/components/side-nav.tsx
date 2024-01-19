@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { logout } from '../actions';
+import Image from 'next/image';
 
 const SideNav: React.FC = () => {
   return (
@@ -14,8 +15,12 @@ const SideNav: React.FC = () => {
           href="/"
           className="flex flex-row space-x-3 items-center justify-center md:justify-start md:px-6 border-b border-zinc-200 h-12 w-full"
         >
-          <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-          <span className="font-bold text-xl hidden md:flex">Logo</span>
+          <Image
+            src="/images/logodev3.png"
+            alt="Logo"
+            width={300}
+            height={28}
+          />
         </Link>
 
         <div className="flex flex-col space-y-2  md:px-6 ">
