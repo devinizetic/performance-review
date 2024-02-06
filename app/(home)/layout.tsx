@@ -29,14 +29,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.className}>
       <body className="bg-background text-foreground">
-        <div className="flex">
-          <SideNav />
-          <main className="min-h-screen flex-1">
-            <MarginWidthWrapper>
-              <Header />
-              <HeaderMobile />
-              <PageWrapper>{children}</PageWrapper>
-            </MarginWidthWrapper>
+        <div className="h-12">
+          <Header />
+          <HeaderMobile />
+        </div>
+        <div className="flex h-screen-minus-header overflow-hidden">
+          <div className="md:w-60 h-full fixed overflow-auto">
+            <SideNav />
+          </div>
+          <main className="flex-1 md:ml-60 overflow-auto">
+            <div className="flex flex-col h-full">
+              <div className="flex flex-col p-4 bg-zinc-100 flex-grow">
+                {children}
+              </div>
+            </div>
           </main>
         </div>
       </body>

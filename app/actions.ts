@@ -44,18 +44,28 @@ export const createAnswer = async (formData: FormData) => {
 
 export const updateAnswer = async (formData: FormData) => {
   'use server';
+  const answerId = formData.get('answerId');
+  console.log('answerId:', answerId);
+  const answerChoiceId = formData.get('answerChoiceId');
+  console.log('answerChoiceId:', answerChoiceId);
+  const answerText = formData.get('answerText');
+  console.log('answerText:', answerText);
+  const initialAnswerText = formData.get('initialAnswerText');
+  console.log('initialAnswerText:', initialAnswerText);
+  const initialAnswerChoiceId = formData.get('initialAnswerChoiceId');
+  console.log('initialAnswerChoiceId:', initialAnswerChoiceId);
+
+  if (
+    initialAnswerText === answerText &&
+    initialAnswerChoiceId === (answerChoiceId || '')
+  )
+    return;
 
   const supabase = createServerClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
 
-  const answerId = formData.get('answerId');
-  const answerChoiceId = formData.get('answerChoiceId');
-  const answerText = formData.get('answerText');
-  console.log('choice start');
-  console.log(answerChoiceId);
-  console.log('choice end');
   if (!answerId || !answerText) throw new Error('Missing Form Data');
 
   const answerUpdate = {

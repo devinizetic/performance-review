@@ -6,8 +6,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      height: {
+        'screen-minus-header': 'calc(100vh - 3rem)'
+      },
       colors: {
         primary: '#8D408D',
+        secondary: '#5090CC',
+        secondaryAlt: '#3C7CBB',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         btn: {
