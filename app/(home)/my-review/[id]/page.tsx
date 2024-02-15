@@ -3,6 +3,7 @@ import { createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
 import UserReview from './components/UserReview';
+import { ActiveReviewProvider } from './context/ActiveReviewContext';
 
 interface MyReviewProps {
   params: { id: string };

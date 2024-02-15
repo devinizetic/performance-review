@@ -1,3 +1,8 @@
+import {
+  ActiveReview,
+  FullReview,
+  FullUserReview
+} from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
 import { QueryData, SupabaseClient } from '@supabase/supabase-js';
 
@@ -10,10 +15,6 @@ const getActiveUserReviewByRevieweeIdQuery = (revieweeId: string) => {
     .eq('review.is_active', true)
     .maybeSingle();
 };
-
-export type ActiveReview = QueryData<
-  ReturnType<typeof getActiveUserReviewByRevieweeIdQuery>
-> | null;
 
 const getActiveUserReviewByRevieweeId = async ({
   revieweeId
@@ -28,7 +29,7 @@ const getActiveUserReviewByRevieweeId = async ({
     throw new Error(error.message);
   }
 
-  return data;
+  return { id: data?.id };
 };
 
 const fullReviewQuery = (reviewId: string) => {
@@ -38,7 +39,7 @@ const fullReviewQuery = (reviewId: string) => {
     .select(
       `
 *,
-review:reviews!inner(questions!inner(*, choices(*), question_hints(*))),
+review:reviews!inner(questions!inner(*, choices(*), questionHints:question_hints(*))),
 reviewer:reviewer_id(*),
 reviewee:reviewee_id(*),
 answers(*)
@@ -49,15 +50,16 @@ answers(*)
     .maybeSingle();
 };
 
-export type FullReview = QueryData<ReturnType<typeof fullReviewQuery>> | null;
-
-const getById = async ({ id }: { id: string }): Promise<FullReview> => {
+const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   const { data, error } = await fullReviewQuery(id);
 
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+
+  if (!data) throw new Error('Review not found');
+
+  return data as FullUserReview;
 };
 
 const UserReviewRepository = {
