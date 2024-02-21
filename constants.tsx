@@ -20,6 +20,12 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     isLogout: false
   },
   {
+    title: 'Mis Evaluados',
+    path: '/reviewees',
+    icon: <div>Icono reviewees</div>,
+    isLogout: false
+  },
+  {
     title: 'Logout',
     path: '',
     icon: <div>Icono Logout</div>,

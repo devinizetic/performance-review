@@ -1,10 +1,5 @@
-import {
-  ActiveReview,
-  FullReview,
-  FullUserReview
-} from '@/types/supabase.types';
+import { ActiveReview, FullUserReview } from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
-import { QueryData, SupabaseClient } from '@supabase/supabase-js';
 
 const getActiveUserReviewByRevieweeIdQuery = (revieweeId: string) => {
   const supabase = createServerClient();
