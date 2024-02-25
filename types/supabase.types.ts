@@ -65,9 +65,10 @@ export type FullUserReview = {
 } & UserReview;
 
 export type ReviewerRevieweeView = {
-  reviewer_id: '85b744a0-5c5b-49f6-9ef0-135e0edc3b3d';
+  reviewer_id: string;
   reviewee_id: string;
   username: string;
   full_name: string;
   avatar_url: string;
+  user_review_id: string;
 };

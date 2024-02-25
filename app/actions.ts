@@ -33,7 +33,6 @@ export const createAnswer = async (formData: FormData) => {
     answer_text: answerText.toString(),
     answer_choice_id: answerChoiceId?.toString()
   };
-  console.log(answer);
 
   const { error } = await supabase.from('answers').insert(answer);
 

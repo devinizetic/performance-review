@@ -1,5 +1,6 @@
 import AvatarImage from '@/app/components/avatar-image';
 import { ReviewerRevieweeView } from '@/types/supabase.types';
+import Link from 'next/link';
 import React from 'react';
 
 interface RevieweesTableProps {
@@ -8,17 +9,24 @@ interface RevieweesTableProps {
 
 const RevieweesTable: React.FC<RevieweesTableProps> = ({ reviewees }) => {
   return (
-    <table className="bg-white w-1/2 p-3">
-      <thead>
+    <table className="min-w-full text-left text-sm bg-white rounded-md shadow-md">
+      <thead className="border-b font-medium dark:border-neutral-500">
         <tr>
-          <th>Evaluado</th>
-          <th>Estado de evaluacion</th>
+          <th scope="col" className="px-6 py-4">
+            Evaluado
+          </th>
+          <th scope="col" className="px-6 py-4">
+            Estado de evaluacion
+          </th>
         </tr>
       </thead>
       <tbody>
         {reviewees.map((reviewee) => (
-          <tr key={reviewee.reviewee_id}>
-            <td>
+          <tr
+            key={reviewee.reviewee_id}
+            className="border-b last:border-b-0 dark:border-neutral-500"
+          >
+            <td className="whitespace-nowrap px-6 py-4 flex items-center">
               <AvatarImage
                 src={reviewee.avatar_url || ''}
                 userInitials={`${reviewee.full_name?.split(' ')[0]}${
@@ -27,7 +35,18 @@ const RevieweesTable: React.FC<RevieweesTableProps> = ({ reviewees }) => {
               ></AvatarImage>
               {reviewee.full_name}
             </td>
-            <td>Estado de evaluacion</td>
+            <td className="whitespace-nowrap px-6 py-4">
+              {reviewee.user_review_id ? (
+                <Link
+                  className="text-blue-700 underline cursor-pointer"
+                  href={`/my-review/${reviewee.user_review_id}`}
+                >
+                  En curso
+                </Link>
+              ) : (
+                'No existe evaluacion actual'
+              )}
+            </td>
           </tr>
         ))}
       </tbody>
