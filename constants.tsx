@@ -14,7 +14,7 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     isLogout: false
   },
   {
-    title: 'My Review',
+    title: 'Mi Evaluación',
     path: '/my-review',
     icon: <div>Icono review</div>,
     isLogout: false

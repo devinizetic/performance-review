@@ -71,4 +71,7 @@ export type ReviewerRevieweeView = {
   full_name: string;
   avatar_url: string;
   user_review_id: string;
+  reviewee_completed: boolean;
+  reviewer_completed: boolean;
+  is_completed: boolean;
 };

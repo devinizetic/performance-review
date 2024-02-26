@@ -1,7 +1,7 @@
 import AvatarImage from '@/app/components/avatar-image';
 import { ReviewerRevieweeView } from '@/types/supabase.types';
-import Link from 'next/link';
 import React from 'react';
+import ReviewState from './ReviewState';
 
 interface RevieweesTableProps {
   reviewees: ReviewerRevieweeView[];
@@ -36,16 +36,12 @@ const RevieweesTable: React.FC<RevieweesTableProps> = ({ reviewees }) => {
               {reviewee.full_name}
             </td>
             <td className="whitespace-nowrap px-6 py-4">
-              {reviewee.user_review_id ? (
-                <Link
-                  className="text-blue-700 underline cursor-pointer"
-                  href={`/my-review/${reviewee.user_review_id}`}
-                >
-                  En curso
-                </Link>
-              ) : (
-                'No existe evaluacion actual'
-              )}
+              <ReviewState
+                userReviewId={reviewee.user_review_id}
+                isReviewerCompleted={reviewee.reviewer_completed}
+                isRevieweeCompleted={reviewee.reviewee_completed}
+                isCompleted={reviewee.is_completed}
+              ></ReviewState>
             </td>
           </tr>
         ))}
