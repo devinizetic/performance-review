@@ -6,6 +6,8 @@ type ReviewStateProps = {
   isReviewerCompleted: boolean;
   isRevieweeCompleted: boolean;
   isCompleted: boolean;
+  reviewerId: string;
+  revieweeId: string;
 };
 
 const ReviewLabel: React.FC<{ text: string }> = ({ text }) => (
@@ -16,7 +18,9 @@ const ReviewState: React.FC<ReviewStateProps> = ({
   userReviewId,
   isReviewerCompleted,
   isRevieweeCompleted,
-  isCompleted
+  isCompleted,
+  reviewerId,
+  revieweeId
 }) => {
   if (!userReviewId) return <ReviewLabel text="No hay evaluaciones activas" />;
 
@@ -30,7 +34,10 @@ const ReviewState: React.FC<ReviewStateProps> = ({
   const linkLabel = isComplete ? 'Ver Feedback' : 'Realizar Evaluación';
 
   return (
-    <Link className="text-blue-700 underline cursor-pointer" href={linkPath}>
+    <Link
+      className="text-blue-700 underline cursor-pointer"
+      href={{ pathname: linkPath, query: { reviewerId, revieweeId } }}
+    >
       {linkLabel}
     </Link>
   );
