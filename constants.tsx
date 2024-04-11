@@ -7,12 +7,12 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     icon: <div>Icono Home</div>,
     isLogout: false
   },
-  {
+  /* {
     title: 'dashboard',
     path: '/dashboard',
     icon: <div>Icono Dashboard</div>,
     isLogout: false
-  },
+  }, */
   {
     title: 'Mi Evaluación',
     path: '/my-review',

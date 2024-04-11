@@ -8,7 +8,7 @@ interface AnswerTextProps {
 
 const AnswerText: React.FC<AnswerTextProps> = ({ answerText, isReadOnly }) => {
   return (
-    <div>
+    <div className="flex h-full">
       {isReadOnly ? (
         <div className="px-6 pb-6">
           <p>{answerText}</p>

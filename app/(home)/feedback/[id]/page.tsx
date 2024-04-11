@@ -31,7 +31,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
     return <div>El Feedback de esta evaluación todavia no esta listo</div>;
 
   return (
-    <div>
+    <div className="flex flex-col h-full w-full">
       <Feedback questionAnswers={feedbackQuestionAnswers} />
     </div>
   );
