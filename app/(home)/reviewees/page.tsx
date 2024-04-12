@@ -14,7 +14,7 @@ export default async function Home() {
   const revieweesList = await RevieweesRepository.getAllByReviewerId({
     id: session.user.id
   });
-  console.log(revieweesList);
+
   return revieweesList && revieweesList.length ? (
     <div>
       <RevieweesTable reviewees={revieweesList}></RevieweesTable>

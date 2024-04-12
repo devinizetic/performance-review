@@ -7,7 +7,6 @@ interface Props {
 }
 
 const AutoSizeTextarea: React.FC<Props> = ({ value, onChange }) => {
-  console.log(value);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
