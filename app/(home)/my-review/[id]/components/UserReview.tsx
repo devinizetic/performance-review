@@ -7,12 +7,20 @@ import ReviewFooter from './ReviewFooter';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
+  isReviewee: boolean;
 }
 
-function getCurrentQuestionId(activeReview: FullUserReview): string | null {
+function getCurrentQuestionId(
+  activeReview: FullUserReview,
+  isReviewee: boolean
+): string | null {
   for (let question of activeReview.review.questions) {
     let answerForQuestion = activeReview.answers.find(
-      (answer) => answer.question_id === question.id
+      (answer) =>
+        answer.question_id === question.id &&
+        (isReviewee
+          ? answer.reviewee_answer_text !== null
+          : answer.reviewer_answer_text !== null)
     );
     if (!answerForQuestion) {
       return question.id;
@@ -23,10 +31,13 @@ function getCurrentQuestionId(activeReview: FullUserReview): string | null {
     .id; // return last question
 }
 
-const UserReview: React.FC<UserReviewProps> = ({ activeReview }) => {
+const UserReview: React.FC<UserReviewProps> = ({
+  activeReview,
+  isReviewee
+}) => {
   if (!activeReview) return <div>Actualmente no hay evaluaciones activas</div>;
 
-  const currentQuestionId = getCurrentQuestionId(activeReview);
+  const currentQuestionId = getCurrentQuestionId(activeReview, isReviewee);
   const currentQuestionIndex = activeReview.review.questions.findIndex(
     (question) => question.id === currentQuestionId
   );
@@ -45,10 +56,11 @@ const UserReview: React.FC<UserReviewProps> = ({ activeReview }) => {
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
+    debugger;
     const answerId = formData.get('answerId');
 
-    if (answerId) await updateAnswer(formData);
-    else await createAnswer(formData);
+    if (answerId) await updateAnswer(formData, isReviewee);
+    else await createAnswer(formData, isReviewee);
 
     handleNext();
   };
@@ -65,6 +77,7 @@ const UserReview: React.FC<UserReviewProps> = ({ activeReview }) => {
             <QuestionForm
               activeReview={activeReview}
               currentStep={currentStep}
+              isReviewee={isReviewee}
             />
           </form>
         </div>

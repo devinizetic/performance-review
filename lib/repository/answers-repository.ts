@@ -1,16 +1,10 @@
 import { Answer, FeedbackQuestionAnswer } from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
 
-const questionAnswersQuery = (
-  userReviewId: string,
-  reviewerId: string,
-  revieweeId: string
-) => {
+const questionAnswersQuery = (userReviewId: string) => {
   const supabase = createServerClient();
 
   return supabase.rpc('get_feedback_question_answers', {
-    reviewee_id: revieweeId,
-    reviewer_id: reviewerId,
     user_review_id: userReviewId
   });
 };
@@ -22,10 +16,11 @@ const answersByUserReviewIdQuery = (userReviewId: string) => {
     .select(
       `
       id,
-      user_id,
       question_id,
-      answer_choice_id,
-      answer_text,
+      reviewer_answer_choice_id,
+      reviewer_answer_text,
+      reviewee_answer_choice_id,
+      reviewee_answer_text,
       feedback_text,
       feedback_choice_id,
       user_review_id
@@ -51,19 +46,11 @@ const getByUserReviewId = async ({
 };
 
 const getFeedbackQuestionAnswers = async ({
-  userReviewId,
-  reviewerId,
-  revieweeId
+  userReviewId
 }: {
   userReviewId: string;
-  reviewerId: string;
-  revieweeId: string;
 }): Promise<FeedbackQuestionAnswer> => {
-  const { data, error } = await questionAnswersQuery(
-    userReviewId,
-    reviewerId,
-    revieweeId
-  );
+  const { data, error } = await questionAnswersQuery(userReviewId);
 
   if (error) {
     throw new Error(error.message);

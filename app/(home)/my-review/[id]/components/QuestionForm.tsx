@@ -6,11 +6,18 @@ import React, { FC, useEffect, useState } from 'react';
 interface QuestionFormProps {
   currentStep: number;
   activeReview: FullUserReview;
+  isReviewee: boolean;
 }
 
-const QuestionForm: FC<QuestionFormProps> = ({ currentStep, activeReview }) => {
+const QuestionForm: FC<QuestionFormProps> = ({
+  currentStep,
+  activeReview,
+  isReviewee
+}) => {
   if (!activeReview) return null;
   const [formState, setFormState] = useState({
+    initialAnswerText: '',
+    initialAnswerChoiceId: '',
     answerText: '',
     answerChoiceId: ''
   });
@@ -19,13 +26,26 @@ const QuestionForm: FC<QuestionFormProps> = ({ currentStep, activeReview }) => {
     ...activeReview.answers.find((answer) => answer.question_id === question.id)
   };
 
+  const answerText = isReviewee
+    ? answer?.reviewee_answer_text
+    : answer?.reviewer_answer_text;
+  const answerChoiceId = isReviewee
+    ? answer?.reviewee_answer_choice_id
+    : answer?.reviewer_answer_choice_id;
+
   useEffect(() => {
     setFormState({
       ...formState,
-      answerText: answer?.answer_text ?? '',
-      answerChoiceId: answer?.answer_choice_id ?? ''
+      initialAnswerText: answerText ?? '',
+      initialAnswerChoiceId: answerChoiceId ?? '',
+      answerText: answerText ?? '',
+      answerChoiceId: answerChoiceId ?? ''
     });
   }, [currentStep]);
+
+  const handleChoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState({ ...formState, answerChoiceId: e.target.value });
+  };
 
   const hasChoices = question.choices && question.choices.length > 0;
   return (
@@ -64,11 +84,12 @@ const QuestionForm: FC<QuestionFormProps> = ({ currentStep, activeReview }) => {
                 value={choice.id}
                 className="accent-primary cursor-pointer"
                 checked={formState.answerChoiceId === choice.id}
+                onChange={handleChoiceChange}
               />
               <input
                 type="hidden"
                 name="initialAnswerChoiceId"
-                value={answer?.answer_choice_id ?? ''}
+                value={formState.initialAnswerChoiceId}
               />
               <label className="cursor-pointer flex gap-1" htmlFor={choice.id}>
                 <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
@@ -88,7 +109,7 @@ const QuestionForm: FC<QuestionFormProps> = ({ currentStep, activeReview }) => {
       <input
         type="hidden"
         name="initialAnswerText"
-        value={answer?.answer_text || ''}
+        value={formState.initialAnswerText}
       />
       <AutoSizeTextarea
         value={formState.answerText}
