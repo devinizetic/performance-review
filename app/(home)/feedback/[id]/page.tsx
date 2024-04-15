@@ -10,8 +10,7 @@ interface FeedbackPageProps {
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({
-  params: { id },
-  searchParams: { reviewerId, revieweeId }
+  params: { id }
 }) => {
   const supabase = createServerClient();
   const {
@@ -22,9 +21,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
 
   const feedbackQuestionAnswers =
     await AnswersRepository.getFeedbackQuestionAnswers({
-      userReviewId: id,
-      reviewerId: reviewerId,
-      revieweeId: revieweeId
+      userReviewId: id
     });
 
   if (!feedbackQuestionAnswers || !feedbackQuestionAnswers.length)

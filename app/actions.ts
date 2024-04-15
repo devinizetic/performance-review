@@ -10,7 +10,7 @@ export const logout = async () => {
   return redirect('/login');
 };
 
-export const createAnswer = async (formData: FormData) => {
+export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
   'use server';
 
   const supabase = createServerClient();
@@ -29,9 +29,10 @@ export const createAnswer = async (formData: FormData) => {
   const answer = {
     question_id: questionId.toString(),
     user_review_id: userReviewId.toString(),
-    user_id: currentUser.data.user.id,
-    answer_text: answerText.toString(),
-    answer_choice_id: answerChoiceId?.toString()
+    reviewer_answer_text: isReviewee ? null : answerText.toString(),
+    reviewer_answer_choice_id: isReviewee ? null : answerChoiceId?.toString(),
+    reviewee_answer_text: !isReviewee ? null : answerText.toString(),
+    reviewee_answer_choice_id: !isReviewee ? null : answerChoiceId?.toString()
   };
 
   const { error } = await supabase.from('answers').insert(answer);
@@ -41,7 +42,7 @@ export const createAnswer = async (formData: FormData) => {
   revalidatePath('/');
 };
 
-export const updateAnswer = async (formData: FormData) => {
+export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
   'use server';
   const answerId = formData.get('answerId');
   console.log('answerId:', answerId);
@@ -53,7 +54,6 @@ export const updateAnswer = async (formData: FormData) => {
   console.log('initialAnswerText:', initialAnswerText);
   const initialAnswerChoiceId = formData.get('initialAnswerChoiceId');
   console.log('initialAnswerChoiceId:', initialAnswerChoiceId);
-
   if (
     initialAnswerText === answerText &&
     initialAnswerChoiceId === (answerChoiceId || '')
@@ -67,16 +67,21 @@ export const updateAnswer = async (formData: FormData) => {
 
   if (!answerId || !answerText) throw new Error('Missing Form Data');
 
-  const answerUpdate = {
-    answer_text: answerText.toString(),
-    answer_choice_id: answerChoiceId?.toString()
-  };
-
-  const { error } = await supabase
+  const answerUpdate = isReviewee
+    ? {
+        reviewee_answer_text: answerText.toString(),
+        reviewee_answer_choice_id: answerChoiceId?.toString()
+      }
+    : {
+        reviewer_answer_text: answerText.toString(),
+        reviewer_answer_choice_id: answerChoiceId?.toString()
+      };
+  console.log('answerUpdate:', answerUpdate);
+  const { error, data } = await supabase
     .from('answers')
     .update(answerUpdate)
     .eq('id', answerId.toString());
-
+  console.log(error, data);
   if (error) throw new Error(error.message);
 
   revalidatePath('/');

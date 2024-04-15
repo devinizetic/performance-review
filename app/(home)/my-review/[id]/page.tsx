@@ -22,8 +22,8 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
   });
 
   if (!activeReview) redirect('my-review');
-
-  return <UserReview activeReview={activeReview} />;
+  const isReviewee = session.user.id === activeReview.reviewee_id;
+  return <UserReview activeReview={activeReview} isReviewee={isReviewee} />;
 };
 
 export default MyReview;
