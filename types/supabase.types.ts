@@ -62,8 +62,8 @@ export type FullReview = {
 } & Review;
 export type FullUserReview = {
   review: FullReview;
-  reviewer: AppUser[];
-  reviewee: AppUser[];
+  reviewer: AppUser;
+  reviewee: AppUser;
   answers: Answer[];
 } & UserReview;
 
@@ -76,5 +76,4 @@ export type ReviewerRevieweeView = {
   user_review_id: string;
   reviewee_completed: boolean;
   reviewer_completed: boolean;
-  is_completed: boolean;
 };

@@ -77,11 +77,75 @@ export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
         reviewer_answer_choice_id: answerChoiceId?.toString()
       };
   console.log('answerUpdate:', answerUpdate);
-  const { error, data } = await supabase
+  const { error } = await supabase
     .from('answers')
     .update(answerUpdate)
     .eq('id', answerId.toString());
-  console.log(error, data);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
+};
+
+export const setPerformanceReviewStarted = async (
+  userReviewId: string,
+  isReviewee: boolean
+) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!userReviewId) throw new Error('Esta evaluación no existe');
+
+  const timestamp = new Date().toISOString();
+  const reviewUpdate = isReviewee
+    ? {
+        reviewee_started_timestamp: timestamp
+      }
+    : {
+        reviewer_started_timestamp: timestamp
+      };
+
+  const { error } = await supabase
+    .from('user_review')
+    .update(reviewUpdate)
+    .eq('id', userReviewId.toString());
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
+};
+
+export const setPerformanceReviewCompleted = async (
+  userReviewId: string,
+  isReviewee: boolean
+) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!userReviewId) throw new Error('Esta evaluación no existe');
+
+  const timestamp = new Date().toISOString();
+  const reviewUpdate = isReviewee
+    ? {
+        reviewee_completed_timestamp: timestamp
+      }
+    : {
+        reviewer_completed_timestamp: timestamp
+      };
+
+  const { error } = await supabase
+    .from('user_review')
+    .update(reviewUpdate)
+    .eq('id', userReviewId.toString());
+
   if (error) throw new Error(error.message);
 
   revalidatePath('/');

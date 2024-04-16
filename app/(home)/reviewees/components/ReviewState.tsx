@@ -5,7 +5,6 @@ type ReviewStateProps = {
   userReviewId: string;
   isReviewerCompleted: boolean;
   isRevieweeCompleted: boolean;
-  isCompleted: boolean;
   reviewerId: string;
   revieweeId: string;
 };
@@ -18,7 +17,6 @@ const ReviewState: React.FC<ReviewStateProps> = ({
   userReviewId,
   isReviewerCompleted,
   isRevieweeCompleted,
-  isCompleted,
   reviewerId,
   revieweeId
 }) => {
