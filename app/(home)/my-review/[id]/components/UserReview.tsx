@@ -1,9 +1,14 @@
 'use client';
-import { createAnswer, updateAnswer } from '@/app/actions';
+import {
+  createAnswer,
+  setPerformanceReviewStarted,
+  updateAnswer
+} from '@/app/actions';
 import React, { useEffect, useState } from 'react';
 import { FullUserReview } from '@/types/supabase.types';
 import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
+import StartScreen from './StartScreen';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -56,7 +61,6 @@ const UserReview: React.FC<UserReviewProps> = ({
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-    debugger;
     const answerId = formData.get('answerId');
 
     if (answerId) await updateAnswer(formData, isReviewee);
@@ -65,24 +69,53 @@ const UserReview: React.FC<UserReviewProps> = ({
     handleNext();
   };
 
+  const handleStartReview = async () => {
+    const userReviewId = activeReview.id;
+
+    if (!userReviewId) throw new Error('Missing user review id');
+
+    await setPerformanceReviewStarted(userReviewId, isReviewee);
+  };
+
+  const showStartScreen = isReviewee
+    ? !activeReview.reviewee_started_timestamp
+    : !activeReview.reviewer_started_timestamp;
+  const personName = isReviewee
+    ? activeReview.reviewee.full_name
+    : activeReview.reviewer.full_name;
+
   return (
     <div className="flex flex-col justify-center items-center flex-grow">
-      <div className="flex flex-col w-6/12 h-4/5">
-        <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg">
-          <form
-            id="question-form"
-            action={(formData: FormData) => handleSubmitAnswer(formData)}
-          >
-            <input type="hidden" name="userReviewId" value={activeReview.id} />
-            <QuestionForm
-              activeReview={activeReview}
-              currentStep={currentStep}
-              isReviewee={isReviewee}
-            />
-          </form>
+      {showStartScreen ? (
+        <StartScreen
+          onStart={handleStartReview}
+          personName={personName || ''}
+        />
+      ) : (
+        <div className="flex flex-col w-6/12 h-4/5">
+          <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg">
+            <form
+              id="question-form"
+              action={(formData: FormData) => handleSubmitAnswer(formData)}
+            >
+              <input
+                type="hidden"
+                name="userReviewId"
+                value={activeReview.id}
+              />
+              <QuestionForm
+                activeReview={activeReview}
+                currentStep={currentStep}
+                isReviewee={isReviewee}
+              />
+            </form>
+          </div>
+          <ReviewFooter
+            onPrevious={handlePrevious}
+            showBackButton={currentStep !== 0}
+          />
         </div>
-        <ReviewFooter onPrevious={handlePrevious} />
-      </div>
+      )}
     </div>
   );
 };

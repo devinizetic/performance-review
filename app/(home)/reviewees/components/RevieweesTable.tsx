@@ -40,7 +40,6 @@ const RevieweesTable: React.FC<RevieweesTableProps> = ({ reviewees }) => {
                 userReviewId={reviewee.user_review_id}
                 isReviewerCompleted={reviewee.reviewer_completed}
                 isRevieweeCompleted={reviewee.reviewee_completed}
-                isCompleted={reviewee.is_completed}
                 reviewerId={reviewee.reviewer_id}
                 revieweeId={reviewee.reviewee_id}
               ></ReviewState>
