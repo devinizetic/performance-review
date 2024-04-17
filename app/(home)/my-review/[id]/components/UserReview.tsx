@@ -1,6 +1,7 @@
 'use client';
 import {
   createAnswer,
+  setPerformanceReviewCompleted,
   setPerformanceReviewStarted,
   updateAnswer
 } from '@/app/actions';
@@ -8,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { FullUserReview } from '@/types/supabase.types';
 import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
-import StartScreen from './StartScreen';
+import InfoScreen from './InfoScreen';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -48,14 +49,24 @@ const UserReview: React.FC<UserReviewProps> = ({
   );
 
   const [currentStep, setCurrentStep] = useState(currentQuestionIndex || 0);
+  const [showCompleteScreen, setShowCompleteScreen] = useState(false);
+
   function handlePrevious(): void {
     if (currentStep === 0) return;
     const newStep = currentStep - 1;
     setCurrentStep(newStep);
   }
 
+  function handleBackToLastStep(): void {
+    setCurrentStep(activeReview.review.questions.length - 1);
+    setShowCompleteScreen(false);
+  }
+
   const handleNext = async () => {
-    if (currentStep === (activeReview.review.questions.length || 0) - 1) return;
+    if (currentStep === (activeReview.review.questions.length || 0) - 1) {
+      setShowCompleteScreen(true);
+      return;
+    }
     const newStep = currentStep + 1;
     setCurrentStep(newStep);
   };
@@ -77,18 +88,40 @@ const UserReview: React.FC<UserReviewProps> = ({
     await setPerformanceReviewStarted(userReviewId, isReviewee);
   };
 
+  const handleCompleteReview = async () => {
+    const userReviewId = activeReview.id;
+
+    if (!userReviewId) throw new Error('Missing user review id');
+
+    await setPerformanceReviewCompleted(userReviewId, isReviewee);
+  };
+
   const showStartScreen = isReviewee
     ? !activeReview.reviewee_started_timestamp
     : !activeReview.reviewer_started_timestamp;
   const personName = isReviewee
     ? activeReview.reviewee.full_name
     : activeReview.reviewer.full_name;
+  const isReviewCompleted = isReviewee
+    ? activeReview.reviewee_completed_timestamp
+    : activeReview.reviewer_completed_timestamp;
+  if (isReviewCompleted) {
+    return (
+      <div className="flex flex-col justify-center items-center flex-grow">
+        Gracias por haber completado la evaluacion! Por favor, espera a que tu
+        evaluado{isReviewee ? 'r' : ''} complete la suya.
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-center items-center flex-grow">
-      {showStartScreen ? (
-        <StartScreen
+      {showStartScreen || showCompleteScreen ? (
+        <InfoScreen
           onStart={handleStartReview}
+          onComplete={handleCompleteReview}
+          onBackPressed={handleBackToLastStep}
+          isStartScreen={showStartScreen}
           personName={personName || ''}
         />
       ) : (
