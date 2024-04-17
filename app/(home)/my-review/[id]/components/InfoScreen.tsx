@@ -17,7 +17,7 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
   personName
 }) => {
   return (
-    <div className="flex flex-col w-6/12 h-3/6 gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg p-4">
         {isStartScreen ? (
           <div className="flex flex-col flex-1 gap-4">

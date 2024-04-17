@@ -29,8 +29,8 @@ const RevieweesTable: React.FC<RevieweesTableProps> = ({ reviewees }) => {
             <td className="whitespace-nowrap px-6 py-4 flex items-center">
               <AvatarImage
                 src={reviewee.avatar_url || ''}
-                userInitials={`${reviewee.full_name?.split(' ')[0]}${
-                  reviewee.full_name?.split(' ')[1]
+                userInitials={`${reviewee.full_name?.split(' ')[0][0]}${
+                  reviewee.full_name?.split(' ')[1][0]
                 }`}
               ></AvatarImage>
               {reviewee.full_name}

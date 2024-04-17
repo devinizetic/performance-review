@@ -85,6 +85,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
                 className="accent-primary cursor-pointer"
                 checked={formState.answerChoiceId === choice.id}
                 onChange={handleChoiceChange}
+                required
               />
               <input
                 type="hidden"

@@ -1,5 +1,8 @@
 import { SideNavItem } from '@/types/types';
 
+export const REVIEWEE_ROLE_ID = 'f7bd405b-ff62-47a5-812c-c6058781b2e1';
+export const REVIEWER_ROLE_ID = '34a62928-ecab-477d-bb50-210e2e2ff15e';
+
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: 'Home',

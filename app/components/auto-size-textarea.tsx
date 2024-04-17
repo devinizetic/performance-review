@@ -25,6 +25,7 @@ const AutoSizeTextarea: React.FC<Props> = ({ value, onChange }) => {
         onChange={onChange}
         className="w-full border-b border-black bg-transparent outline-none overflow-hidden focus:border-primary focus:border-b-2 resize-none"
         rows={1}
+        required
       />
     </div>
   );

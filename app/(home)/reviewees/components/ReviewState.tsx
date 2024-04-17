@@ -9,9 +9,7 @@ type ReviewStateProps = {
   revieweeId: string;
 };
 
-const ReviewLabel: React.FC<{ text: string }> = ({ text }) => (
-  <div>{'No hay evaluaciones activas'}</div>
-);
+const ReviewLabel: React.FC<{ text: string }> = ({ text }) => <div>{text}</div>;
 
 const ReviewState: React.FC<ReviewStateProps> = ({
   userReviewId,
