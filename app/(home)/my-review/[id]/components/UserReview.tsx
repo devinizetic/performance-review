@@ -115,17 +115,19 @@ const UserReview: React.FC<UserReviewProps> = ({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center flex-grow">
+    <div className="h-full flex flex-col justify-center items-center flex-grow">
       {showStartScreen || showCompleteScreen ? (
-        <InfoScreen
-          onStart={handleStartReview}
-          onComplete={handleCompleteReview}
-          onBackPressed={handleBackToLastStep}
-          isStartScreen={showStartScreen}
-          personName={personName || ''}
-        />
+        <div className="flex flex-col w-full h-full py-24 px-64">
+          <InfoScreen
+            onStart={handleStartReview}
+            onComplete={handleCompleteReview}
+            onBackPressed={handleBackToLastStep}
+            isStartScreen={showStartScreen}
+            personName={personName || ''}
+          />
+        </div>
       ) : (
-        <div className="flex flex-col w-6/12 h-4/5">
+        <div className="flex flex-col w-full h-full py-24 px-64">
           <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg">
             <form
               id="question-form"

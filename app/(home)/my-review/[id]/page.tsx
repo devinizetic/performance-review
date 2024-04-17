@@ -4,10 +4,24 @@ import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
 import UserReview from './components/UserReview';
 import { ActiveReviewProvider } from './context/ActiveReviewContext';
+import { FullUserReview } from '@/types/supabase.types';
+import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
 
 interface MyReviewProps {
   params: { id: string };
 }
+
+const removeRoleQuestions = (
+  activeReview: FullUserReview,
+  isReviewee: boolean
+) => {
+  const currentRole = isReviewee ? REVIEWEE_ROLE_ID : REVIEWER_ROLE_ID;
+  activeReview.review.questions = activeReview.review.questions.filter(
+    (question) =>
+      !question.role_id ||
+      question.role_id.toLowerCase() === currentRole.toLocaleLowerCase()
+  );
+};
 
 const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
   const supabase = createServerClient();
@@ -23,7 +37,12 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
 
   if (!activeReview) redirect('my-review');
   const isReviewee = session.user.id === activeReview.reviewee_id;
-  return <UserReview activeReview={activeReview} isReviewee={isReviewee} />;
+  removeRoleQuestions(activeReview, isReviewee);
+  return (
+    <div className="flex flex-col h-full w-full">
+      <UserReview activeReview={activeReview} isReviewee={isReviewee} />
+    </div>
+  );
 };
 
 export default MyReview;
