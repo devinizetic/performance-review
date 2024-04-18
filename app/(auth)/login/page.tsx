@@ -10,7 +10,7 @@ export default async function Login({
   searchParams: { message: string };
 }) {
   const cookieStore = cookies();
-  const supabase = createServerClient(cookieStore);
+  const supabase = createServerClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();
@@ -18,13 +18,12 @@ export default async function Login({
   const signInWithGoogle = async () => {
     'use server';
 
-    const cookieStore = cookies();
-    const supabase = createServerClient(cookieStore);
+    const supabase = createServerClient();
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback'
+        redirectTo: `https://performance-review-gamma.vercel.app/auth/callback`
       }
     });
 

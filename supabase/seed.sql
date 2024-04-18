@@ -100,6 +100,171 @@ VALUES
   ('3B09B63F-DAD7-4153-A4D2-A129D8586210', 'f559db54-a438-40c7-8fb5-3cfda244a7ec', 5)
   ;
 
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, is_sso_user, raw_user_meta_data, aud, role, confirmation_token, recovery_token, reauthentication_token, email_change_token_new, email_change, email_change_token_current, email_change_confirm_status, phone_change, phone_change_token, instance_id)
+VALUES
+  ('3A95D6F3-D9F8-4B45-8A13-3DC82FABE148', 'cynthia.stefani@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Cynthia Soledad Stefani","email":"cynthia.stefani@devlights.com","full_name":"Cynthia Soledad Stefani","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('16219BD8-D8FA-4923-8B0A-6A69EDF59EEA', 'nicolas.dogi@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolas Dogi","email":"nicolas.dogi@devlights.com","full_name":"Nicolas Dogi","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('90B07DD8-1D90-45FC-826D-82F2C265D5BF', 'luis.rajoy@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Luis Carlos Rajoy","email":"luis.rajoy@devlights.com","full_name":"Luis Carlos Rajoy","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('28A57B15-0F25-478C-899E-9CA11014FA39', 'santiago.acevedo@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Lindor Santiago Acevedo Micciche","email":"santiago.acevedo@devlights.com","full_name":"Lindor Santiago Acevedo Micciche","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('BCB62B75-3E11-4584-A937-A0260A367445', 'juan.rossi@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Juan Pablo Rossi Querin","email":"juan.rossi@devlights.com","full_name":"Juan Pablo Rossi Querin","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('BB84515B-6894-4AD6-99D4-A23B91B0D4DD', 'facundo.mierez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Facundo Mierez","email":"facundo.mierez@devlights.com","full_name":"Facundo Mierez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('6B0C3149-5860-4B67-A7A8-AFFC90B6302B', 'jorge.romero@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Jorge Luis Romero","email":"jorge.romero@devlights.com","full_name":"Jorge Luis Romero","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('1D96C6BF-C866-423C-8228-BB9653881E83', 'marcelo.escobar@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Marcelo Javier Escobar","email":"marcelo.escobar@devlights.com","full_name":"Marcelo Javier Escobar","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('861ECFEF-FDC8-46F4-8555-CE83E0BB8619', 'nahuel.gomez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nahuel Ignacio Gomez Rodriguez","email":"nahuel.gomez@devlights.com","full_name":"Nahuel Ignacio Gomez Rodriguez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('82DC5623-058F-4EF9-9AB5-E527CD442365', 'federico.loebarth@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Federico Loebarth","email":"federico.loebarth@devlights.com","full_name":"Federico Loebarth","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('E0753386-5D5A-4414-83E9-10AAA54A73D2', 'maximiliano.tedesco@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Carlos Maximiliano Tedesco Lopez","email":"maximiliano.tedesco@devlights.com","full_name":"Carlos Maximiliano Tedesco Lopez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('EAF78615-7CAE-48FC-A8A8-4355B965C6B6', 'fernando.lujan@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Fernando Luján","email":"fernando.lujan@devlights.com","full_name":"Fernando Luján","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('413876BD-DC83-4CE3-B55D-50C09FA24C22', 'guzman.aguirre@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Guzmán,Aguirre","email":"guzman.aguirre@devlights.com","full_name":"Guzmán,Aguirre","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('258A9939-7E37-413D-B38D-51D43B9BAB4C', 'joaquin.branca@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Joaquin Branca","email":"joaquin.branca@devlights.com","full_name":"Joaquin Branca","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('049DC895-FAC7-426D-AF63-79E8FF431B2D', 'ivan.nizetic@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ivan Nizetic","email":"ivan.nizetic@devlights.com","full_name":"Ivan Nizetic","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('367E98D2-7C4E-4483-A9A9-BD17DC6C02B6', 'claudio.ramirez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Claudio Marcelo Ramirez","email":"claudio.ramirez@devlights.com","full_name":"Claudio Marcelo Ramirez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('57C8A536-F8A2-4FA5-8C36-C76874B72276', 'ivan.vallejos@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ivan Vallejos","email":"ivan.vallejos@devlights.com","full_name":"Ivan Vallejos","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', 'federico.frank@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Federico Frank","email":"federico.frank@devlights.com","full_name":"Federico Frank","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('F9AC4484-A64F-4821-B9B1-DA7C0C62C0EC', 'nicolas.romero@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolas Eduardo Romero","email":"nicolas.romero@devlights.com","full_name":"Nicolas Eduardo Romero","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', 'diego.komodowski@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Diego Hugo Komodowski","email":"diego.komodowski@devlights.com","full_name":"Diego Hugo Komodowski","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', 'jesus.zini@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Jesus Andres Zini","email":"jesus.zini@devlights.com","full_name":"Jesus Andres Zini","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('567B97BB-E842-4F72-98D7-0A173E326A23', 'jose.alcorta@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Jose Maria Alcorta","email":"jose.alcorta@devlights.com","full_name":"Jose Maria Alcorta","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B9E22996-4FDA-4941-9EB4-23BB9BCD77E2', 'andres.sandoval@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Andrés Rafael Sandoval Vanasco","email":"andres.sandoval@devlights.com","full_name":"Andrés Rafael Sandoval Vanasco","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('42B3208A-4D67-4FB5-9214-452DC9F40B1B', 'agustin.santillan@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Agustín Santillán","email":"agustin.santillan@devlights.com","full_name":"Agustín Santillán","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('8CB15BF9-A076-4337-B908-68EBEC769627', 'ornella.toledo@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ornella María Sol Toledo","email":"ornella.toledo@devlights.com","full_name":"Ornella María Sol Toledo","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('784D4E48-E69B-43B7-8EC8-B8A90448C05F', 'accounting@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ana Vanina Fernández","email":"accounting@devlights.com","full_name":"Ana Vanina Fernández","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('BBC557FD-78DB-4A18-8741-B924DE066A41', 'sebastian.rodriguez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Sebastián Atlántico Rodríguez Capurro","email":"sebastian.rodriguez@devlights.com","full_name":"Sebastián Atlántico Rodríguez Capurro","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('BF5CDFCB-AF9C-4D94-A002-CC555E2DC88A', 'axel.ibarra@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Axel Nahuel Ibarra","email":"axel.ibarra@devlights.com","full_name":"Axel Nahuel Ibarra","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('72335974-6487-4606-9DA9-CF5A17B7A561', 'martin.coutinho@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Martin Coutinho","email":"martin.coutinho@devlights.com","full_name":"Martin Coutinho","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('8EA7CFB8-157A-4A10-AD20-EFB4DAA2D52A', 'lucas.canteros@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Lucas Canteros","email":"lucas.canteros@devlights.com","full_name":"Lucas Canteros","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('3CD0F162-FBC4-43A6-8A74-0BF103A0CFCC', 'gabriel.leguizamon@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Gabriel Leguizamon","email":"gabriel.leguizamon@devlights.com","full_name":"Gabriel Leguizamon","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('20F2514C-E4A3-452D-871B-237F69B5EA8C', 'emilio.furrer@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Emilio Nicolás Furrer Alegre","email":"emilio.furrer@devlights.com","full_name":"Emilio Nicolás Furrer Alegre","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B9A5E907-61EB-4BFB-8998-2F99BAC9A13E', 'tomas.paez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Tomas Paez","email":"tomas.paez@devlights.com","full_name":"Tomas Paez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('E5BAA6DD-74DA-4645-8A6D-3256E364636A', 'nicolas.mino@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolas Miño","email":"nicolas.mino@devlights.com","full_name":"Nicolas Miño","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('7C3CCAEB-2ABC-40C6-B05A-3EE692C37CC1', 'santiago.castillo@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Santiago Américo Castillo","email":"santiago.castillo@devlights.com","full_name":"Santiago Américo Castillo","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('46B7382C-ECD2-46B7-AC04-501233DD0592', 'juan.horne@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Juan Ignacio Horne","email":"juan.horne@devlights.com","full_name":"Juan Ignacio Horne","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('349C6FC7-945E-4EC9-9D51-51ED54607EBE', 'yamil.luna@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Yamil Leonel Luna","email":"yamil.luna@devlights.com","full_name":"Yamil Leonel Luna","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B1847D3C-F330-4424-BFA7-5DBA7D1F5FDF', 'catalina.galindez@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Catalina María Galindez","email":"catalina.galindez@devlights.com","full_name":"Catalina María Galindez","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('D7EB3913-4083-4E75-BAAD-5E11C58DCBB4', 'leonardo.canteros@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Leonardo Sebastián Canteros","email":"leonardo.canteros@devlights.com","full_name":"Leonardo Sebastián Canteros","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('C6EC5CFB-F41D-4C1E-B430-7F6FC2B9AE37', 'dario.ayala@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Darío Raúl Ayala","email":"dario.ayala@devlights.com","full_name":"Darío Raúl Ayala","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('43542004-C314-4D92-88B3-894AEAC26097', 'emiliano.estigarribia@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Emiliano Estigarribia","email":"emiliano.estigarribia@devlights.com","full_name":"Emiliano Estigarribia","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('CFAAC570-14B9-49F8-9FD0-8C5FC3596369', 'gonzalo.azofra@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Gonzalo Azofra","email":"gonzalo.azofra@devlights.com","full_name":"Gonzalo Azofra","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('6AA1AC60-A19E-43A2-8F53-8EE430AEDA5E', 'mauricio.lucero@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Mauricio Lucero","email":"mauricio.lucero@devlights.com","full_name":"Mauricio Lucero","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('74219ECA-1104-4EE9-BA84-A54054596E03', 'diego.muner@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Muner Diego Alberto","email":"diego.muner@devlights.com","full_name":"Muner Diego Alberto","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('0587841B-90EB-48D9-A93C-AF2D3EE18F59', 'martin.alzua@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Martin Alzua","email":"martin.alzua@devlights.com","full_name":"Martin Alzua","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('E6EB7159-16F7-4D09-830E-B66B18F2D695', 'adrian.medina@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Adrian Medina","email":"adrian.medina@devlights.com","full_name":"Adrian Medina","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('C2C1BFBE-09AD-4C9F-8705-C04D06957919', 'adrian.palma@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Adrian Arturo Palma Chacon","email":"adrian.palma@devlights.com","full_name":"Adrian Arturo Palma Chacon","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('C711A0FA-166A-4440-8C72-CEE7BE3FD539', 'manuel.bogino@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Manuel Bogino","email":"manuel.bogino@devlights.com","full_name":"Manuel Bogino","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('F9EBA160-329E-439F-A2CC-FCF3D60098E2', 'lucas.zapata@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Lucas Damian Zapata Caceres","email":"lucas.zapata@devlights.com","full_name":"Lucas Damian Zapata Caceres","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('93B16E5F-1C70-4A33-B1F5-FE52B81707F1', 'gaspar.escobar@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Gaspar Escobar","email":"gaspar.escobar@devlights.com","full_name":"Gaspar Escobar","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('3DBBA7F1-43AB-4777-860B-038E25A7A3E0', 'alejandro.presch@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Alejandro Nicolás Presch","email":"alejandro.presch@devlights.com","full_name":"Alejandro Nicolás Presch","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('A74F0784-AEAC-4E1E-AC0F-07E640A79DBE', 'nicolas.daneri@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolás Pablo Daneri","email":"nicolas.daneri@devlights.com","full_name":"Nicolás Pablo Daneri","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('A5525376-E998-4286-BCBE-0B5C73921F5B', 'danilo.bata@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Danilo Marino Bata","email":"danilo.bata@devlights.com","full_name":"Danilo Marino Bata","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('7A4F04DC-AAD1-4127-BFB3-0FE6A857D9EC', 'lautaro.conde@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Lautaro Conde","email":"lautaro.conde@devlights.com","full_name":"Lautaro Conde","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74', 'paola.cartala@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Paola Cartala","email":"paola.cartala@devlights.com","full_name":"Paola Cartala","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B2B836FB-E27A-4D2B-B42D-17D8328E992D', 'german.sandin@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"German Sandin","email":"german.sandin@devlights.com","full_name":"German Sandin","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B7C84338-994D-491C-BDFC-202F153953B2', 'nicolas.taglienti@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolas Taglienti","email":"nicolas.taglienti@devlights.com","full_name":"Nicolas Taglienti","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('7093B9A4-A6B0-4D1A-BD94-316E05ACBCFE', 'alejo.mansilla@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Alejo Mansilla","email":"alejo.mansilla@devlights.com","full_name":"Alejo Mansilla","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('721B8A04-20A4-4066-A2BF-365FC6323031', 'balthazar.deweert@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Joaquin Balthasar De Weert","email":"balthazar.deweert@devlights.com","full_name":"Joaquin Balthasar De Weert","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('5D801210-AE84-490F-8B04-44B847F70712', 'gonzalo.lorenzon@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Gonzalo Lorenzon","email":"gonzalo.lorenzon@devlights.com","full_name":"Gonzalo Lorenzon","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('FA7460F6-4A0F-467A-9D00-53A4BC1944C9', 'facundo.vega@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Facundo Vega Paladini","email":"facundo.vega@devlights.com","full_name":"Facundo Vega Paladini","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('BCE232C9-E4FB-4666-870A-5F6920344E52', 'brenda.daubrowsky@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Brenda Agustina Daubrowsky","email":"brenda.daubrowsky@devlights.com","full_name":"Brenda Agustina Daubrowsky","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('8C5D7498-C085-4575-BA72-70725613CCCE', 'german.condori@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"German Jose Condori","email":"german.condori@devlights.com","full_name":"German Jose Condori","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('4E280259-FCA0-4C76-92EF-7B3E15BCA882', 'ana.churruarin@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ana Paula Churruarin","email":"ana.churruarin@devlights.com","full_name":"Ana Paula Churruarin","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('66D583F5-3804-47CE-8BBF-813CFB9B7358', 'matias.porra@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Matias Exequiel Porra Bustos","email":"matias.porra@devlights.com","full_name":"Matias Exequiel Porra Bustos","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('B431BA83-61DD-4FFF-8E1E-9079E8D1710B', 'horacio.zini@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Horacio Antonio Zini","email":"horacio.zini@devlights.com","full_name":"Horacio Antonio Zini","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('36DEB400-8268-4758-B3CE-90A228750D86', 'nicolas.garcia@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Nicolás Hernán García","email":"nicolas.garcia@devlights.com","full_name":"Nicolás Hernán García","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('3B873782-910C-4EC6-AA3A-A61738EAA7E2', 'ivo.maugeri@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Ivo Maugeri","email":"ivo.maugeri@devlights.com","full_name":"Ivo Maugeri","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('5D95B199-A0B3-4E00-868A-DEB14C4AC01D', 'gonzalo.avila@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Gonzalo Avila","email":"gonzalo.avila@devlights.com","full_name":"Gonzalo Avila","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000'),
+  ('F4A8DA4A-1841-4FA4-BCF7-F42F72207378', 'mariana.mopty@devlights.com', '', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', '2024-04-17 15:07:55.839513+00', false, '{"name":"Mariana Beatriz Mopty","email":"mariana.mopty@devlights.com","full_name":"Mariana Beatriz Mopty","email_verified":true}', 'authenticated', 'authenticated', '', '', '', '', '', '', 0, '', '', '00000000-0000-0000-0000-000000000000')
+  ;
+
+INSERT INTO public.user_role(user_id, role_id)
+VALUES 
+  ('90B07DD8-1D90-45FC-826D-82F2C265D5BF', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('28A57B15-0F25-478C-899E-9CA11014FA39', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('BCB62B75-3E11-4584-A937-A0260A367445', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('82DC5623-058F-4EF9-9AB5-E527CD442365', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('EAF78615-7CAE-48FC-A8A8-4355B965C6B6', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('413876BD-DC83-4CE3-B55D-50C09FA24C22', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('258A9939-7E37-413D-B38D-51D43B9BAB4C', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('049DC895-FAC7-426D-AF63-79E8FF431B2D', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('F9AC4484-A64F-4821-B9B1-DA7C0C62C0EC', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('567B97BB-E842-4F72-98D7-0A173E326A23', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('42B3208A-4D67-4FB5-9214-452DC9F40B1B', '34a62928-ecab-477d-bb50-210e2e2ff15e'),
+  ('677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74', '34a62928-ecab-477d-bb50-210e2e2ff15e')
+  ;
+
+INSERT INTO public.reviewer_reviewee(reviewer_id, reviewee_id)
+VALUES 
+--luis
+  ('90B07DD8-1D90-45FC-826D-82F2C265D5BF', '6B0C3149-5860-4B67-A7A8-AFFC90B6302B'),
+  ('90B07DD8-1D90-45FC-826D-82F2C265D5BF', 'E5BAA6DD-74DA-4645-8A6D-3256E364636A'),
+--santi
+('28A57B15-0F25-478C-899E-9CA11014FA39', 'E0753386-5D5A-4414-83E9-10AAA54A73D2'),
+('28A57B15-0F25-478C-899E-9CA11014FA39', '413876BD-DC83-4CE3-B55D-50C09FA24C22'),
+('28A57B15-0F25-478C-899E-9CA11014FA39', '784D4E48-E69B-43B7-8EC8-B8A90448C05F'),
+('28A57B15-0F25-478C-899E-9CA11014FA39', '7C3CCAEB-2ABC-40C6-B05A-3EE692C37CC1'),
+('28A57B15-0F25-478C-899E-9CA11014FA39', 'B7C84338-994D-491C-BDFC-202F153953B2'),
+('28A57B15-0F25-478C-899E-9CA11014FA39', '3A95D6F3-D9F8-4B45-8A13-3DC82FABE148'),
+--juan
+('BCB62B75-3E11-4584-A937-A0260A367445', '57C8A536-F8A2-4FA5-8C36-C76874B72276'),
+('BCB62B75-3E11-4584-A937-A0260A367445', '46B7382C-ECD2-46B7-AC04-501233DD0592'),
+('BCB62B75-3E11-4584-A937-A0260A367445', '349C6FC7-945E-4EC9-9D51-51ED54607EBE'),
+('BCB62B75-3E11-4584-A937-A0260A367445', 'B1847D3C-F330-4424-BFA7-5DBA7D1F5FDF'),
+('BCB62B75-3E11-4584-A937-A0260A367445', 'BCE232C9-E4FB-4666-870A-5F6920344E52'),
+('BCB62B75-3E11-4584-A937-A0260A367445', '36DEB400-8268-4758-B3CE-90A228750D86'),
+--fede l
+('82DC5623-058F-4EF9-9AB5-E527CD442365', 'F9AC4484-A64F-4821-B9B1-DA7C0C62C0EC'),
+('82DC5623-058F-4EF9-9AB5-E527CD442365', '42B3208A-4D67-4FB5-9214-452DC9F40B1B'),
+('82DC5623-058F-4EF9-9AB5-E527CD442365', '8EA7CFB8-157A-4A10-AD20-EFB4DAA2D52A'),
+('82DC5623-058F-4EF9-9AB5-E527CD442365', 'A5525376-E998-4286-BCBE-0B5C73921F5B'),
+('82DC5623-058F-4EF9-9AB5-E527CD442365', '8C5D7498-C085-4575-BA72-70725613CCCE'),
+--fer
+('EAF78615-7CAE-48FC-A8A8-4355B965C6B6', 'BF5CDFCB-AF9C-4D94-A002-CC555E2DC88A'),
+--guz
+('413876BD-DC83-4CE3-B55D-50C09FA24C22', '4E280259-FCA0-4C76-92EF-7B3E15BCA882'),
+--joaquin
+('258A9939-7E37-413D-B38D-51D43B9BAB4C', '72335974-6487-4606-9DA9-CF5A17B7A561'),
+('258A9939-7E37-413D-B38D-51D43B9BAB4C', 'F9EBA160-329E-439F-A2CC-FCF3D60098E2'),
+('258A9939-7E37-413D-B38D-51D43B9BAB4C', '7A4F04DC-AAD1-4127-BFB3-0FE6A857D9EC'),
+--ivan
+('049DC895-FAC7-426D-AF63-79E8FF431B2D', 'BB84515B-6894-4AD6-99D4-A23B91B0D4DD'),
+('049DC895-FAC7-426D-AF63-79E8FF431B2D', '861ECFEF-FDC8-46F4-8555-CE83E0BB8619'),
+('049DC895-FAC7-426D-AF63-79E8FF431B2D', 'EAF78615-7CAE-48FC-A8A8-4355B965C6B6'),
+('049DC895-FAC7-426D-AF63-79E8FF431B2D', 'FC18E6E3-FCBE-4B2B-95C7-01AC0425C696'),
+('049DC895-FAC7-426D-AF63-79E8FF431B2D', 'B9E22996-4FDA-4941-9EB4-23BB9BCD77E2'),
+--fede f
+('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', '90B07DD8-1D90-45FC-826D-82F2C265D5BF'),
+('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', '82DC5623-058F-4EF9-9AB5-E527CD442365'),
+('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', '258A9939-7E37-413D-B38D-51D43B9BAB4C'),
+('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', '8CB15BF9-A076-4337-B908-68EBEC769627'),
+('12DFE7E4-7786-4D59-88C6-CF447E89E5AA', 'B9A5E907-61EB-4BFB-8998-2F99BAC9A13E'),
+--nico r
+('F9AC4484-A64F-4821-B9B1-DA7C0C62C0EC', 'D7EB3913-4083-4E75-BAAD-5E11C58DCBB4'),
+--diego
+('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', '1D96C6BF-C866-423C-8228-BB9653881E83'),
+('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', 'A74F0784-AEAC-4E1E-AC0F-07E640A79DBE'),
+('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', '7093B9A4-A6B0-4D1A-BD94-316E05ACBCFE'),
+('9F82F92E-E6D0-46EE-9866-F25A56A44C5B', '677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74'),
+--jesus
+('FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', 'BBC557FD-78DB-4A18-8741-B924DE066A41'),
+('FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', '93B16E5F-1C70-4A33-B1F5-FE52B81707F1'),
+('FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', '3DBBA7F1-43AB-4777-860B-038E25A7A3E0'),
+--jose
+('567B97BB-E842-4F72-98D7-0A173E326A23', 'E6EB7159-16F7-4D09-830E-B66B18F2D695'),
+('567B97BB-E842-4F72-98D7-0A173E326A23', 'C2C1BFBE-09AD-4C9F-8705-C04D06957919'),
+('567B97BB-E842-4F72-98D7-0A173E326A23', 'B2B836FB-E27A-4D2B-B42D-17D8328E992D'),
+('567B97BB-E842-4F72-98D7-0A173E326A23', '3B873782-910C-4EC6-AA3A-A61738EAA7E2'),
+('567B97BB-E842-4F72-98D7-0A173E326A23', '5D95B199-A0B3-4E00-868A-DEB14C4AC01D'),
+--agustin
+('42B3208A-4D67-4FB5-9214-452DC9F40B1B', '20F2514C-E4A3-452D-871B-237F69B5EA8C'),
+('42B3208A-4D67-4FB5-9214-452DC9F40B1B', '721B8A04-20A4-4066-A2BF-365FC6323031'),
+('42B3208A-4D67-4FB5-9214-452DC9F40B1B', '5D801210-AE84-490F-8B04-44B847F70712'),
+('42B3208A-4D67-4FB5-9214-452DC9F40B1B', 'B431BA83-61DD-4FFF-8E1E-9079E8D1710B'),
+--paola
+('677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74', 'FA7460F6-4A0F-467A-9D00-53A4BC1944C9'),
+('677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74', '66D583F5-3804-47CE-8BBF-813CFB9B7358')
+  ;
+
 INSERT INTO public.reviews (id, start_date, end_date, is_active)
 VALUES
   ('F8A54867-D690-451F-989B-6337CEAA651C', '2024-01-01', '2024-01-31', true)
@@ -119,4 +284,20 @@ VALUES
   ('F8A54867-D690-451F-989B-6337CEAA651C', '3B09B63F-DAD7-4153-A4D2-A129D8586210', 10),
   ('F8A54867-D690-451F-989B-6337CEAA651C', '3C70B7B5-EB22-4D6E-870C-CC1F1614AE97', 11),
   ('F8A54867-D690-451F-989B-6337CEAA651C', '873632CB-3FCA-48FB-91A6-FB16417B0224', 12)
+  ;
+
+INSERT INTO public.user_review (id, created_at, review_id, reviewee_id, reviewer_id)
+VALUES
+--ivan
+  ('34F3C046-38DB-4EFA-B013-AE81250B3FBC', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'BB84515B-6894-4AD6-99D4-A23B91B0D4DD', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
+  ('A9F505AE-D623-4D97-A616-004BF24E8236', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', '861ECFEF-FDC8-46F4-8555-CE83E0BB8619', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
+  ('FA1ED752-1FAB-4981-8E5D-166B5496A4C6', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'EAF78615-7CAE-48FC-A8A8-4355B965C6B6', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
+  ('756AB7A1-D74F-40E6-AC3B-744584A98EB8', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'FC18E6E3-FCBE-4B2B-95C7-01AC0425C696', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
+  ('F7344294-F035-4E50-928F-DA6BCB604945', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'B9E22996-4FDA-4941-9EB4-23BB9BCD77E2', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
+  --jesus
+  ('A4A313BA-B008-452A-ABC7-0DAF286DE481', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'BBC557FD-78DB-4A18-8741-B924DE066A41', 'FC18E6E3-FCBE-4B2B-95C7-01AC0425C696'),
+  ('D15B7AE1-0DC6-4AA1-A495-2EAAA70373AB', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', '93B16E5F-1C70-4A33-B1F5-FE52B81707F1', 'FC18E6E3-FCBE-4B2B-95C7-01AC0425C696'),
+  ('BCACF5C2-26B4-4214-9392-F465801D48E6', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', '3DBBA7F1-43AB-4777-860B-038E25A7A3E0', 'FC18E6E3-FCBE-4B2B-95C7-01AC0425C696'),
+  --fer
+  ('767839A6-2517-4510-89BE-0D6CCF9BBBED', '2024-01-17', 'F8A54867-D690-451F-989B-6337CEAA651C', 'BF5CDFCB-AF9C-4D94-A002-CC555E2DC88A', 'EAF78615-7CAE-48FC-A8A8-4355B965C6B6')
   ;
