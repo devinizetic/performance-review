@@ -21,7 +21,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
     answerText: '',
     answerChoiceId: ''
   });
-  const question = activeReview.review.questions[currentStep];
+  const question = activeReview.review.questions[currentStep].question;
   const answer = {
     ...activeReview.answers.find((answer) => answer.question_id === question.id)
   };

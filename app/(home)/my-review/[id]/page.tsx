@@ -11,16 +11,27 @@ interface MyReviewProps {
   params: { id: string };
 }
 
-const removeRoleQuestions = (
+const processQuestions = (
   activeReview: FullUserReview,
   isReviewee: boolean
 ) => {
   const currentRole = isReviewee ? REVIEWEE_ROLE_ID : REVIEWER_ROLE_ID;
   activeReview.review.questions = activeReview.review.questions.filter(
     (question) =>
-      !question.role_id ||
-      question.role_id.toLowerCase() === currentRole.toLocaleLowerCase()
+      !question.question.role_id ||
+      question.question.role_id.toLowerCase() ===
+        currentRole.toLocaleLowerCase()
   );
+  activeReview.review.questions.sort(
+    (a, b) => a.question_sequence - b.question_sequence
+  );
+
+  for (const rQuestion of activeReview.review.questions) {
+    if (rQuestion.question.choices && rQuestion.question.choices.length)
+      rQuestion.question.choices.sort(
+        (a, b) => (a.choice_value || 0) - (b.choice_value || 0)
+      );
+  }
 };
 
 const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
@@ -37,7 +48,7 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
 
   if (!activeReview) redirect('my-review');
   const isReviewee = session.user.id === activeReview.reviewee_id;
-  removeRoleQuestions(activeReview, isReviewee);
+  processQuestions(activeReview, isReviewee);
   return (
     <div className="flex flex-col h-full w-full">
       <UserReview activeReview={activeReview} isReviewee={isReviewee} />

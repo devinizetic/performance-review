@@ -53,12 +53,16 @@ export type FeedbackQuestionAnswer =
 
 //custom
 export type ActiveReview = { id: string | undefined };
+export type FullReviewQuestion = {
+  question: FullQuestion;
+  question_sequence: number;
+} & Question;
 export type FullQuestion = {
   choices: Choice[];
   questionHints: QuestionHint[];
 } & Question;
 export type FullReview = {
-  questions: FullQuestion[];
+  questions: FullReviewQuestion[];
 } & Review;
 export type FullUserReview = {
   review: FullReview;

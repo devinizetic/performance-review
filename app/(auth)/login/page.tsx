@@ -18,12 +18,13 @@ export default async function Login({
   const signInWithGoogle = async () => {
     'use server';
 
+    const cookieStore = cookies();
     const supabase = createServerClient();
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `https://performance-review-gamma.vercel.app/auth/callback`
+        redirectTo: `${process.env.VERCEL_URL}/auth/callback`
       }
     });
 

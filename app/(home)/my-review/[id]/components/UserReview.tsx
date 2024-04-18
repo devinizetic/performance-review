@@ -23,13 +23,13 @@ function getCurrentQuestionId(
   for (let question of activeReview.review.questions) {
     let answerForQuestion = activeReview.answers.find(
       (answer) =>
-        answer.question_id === question.id &&
+        answer.question_id === question.question.id &&
         (isReviewee
           ? answer.reviewee_answer_text !== null
           : answer.reviewer_answer_text !== null)
     );
     if (!answerForQuestion) {
-      return question.id;
+      return question.question.id;
     }
   }
 
@@ -42,10 +42,10 @@ const UserReview: React.FC<UserReviewProps> = ({
   isReviewee
 }) => {
   if (!activeReview) return <div>Actualmente no hay evaluaciones activas</div>;
-
+  console.log(activeReview);
   const currentQuestionId = getCurrentQuestionId(activeReview, isReviewee);
   const currentQuestionIndex = activeReview.review.questions.findIndex(
-    (question) => question.id === currentQuestionId
+    (question) => question.question.id === currentQuestionId
   );
 
   const [currentStep, setCurrentStep] = useState(currentQuestionIndex || 0);
