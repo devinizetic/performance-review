@@ -4,9 +4,14 @@ import React, { useRef, useEffect, useState } from 'react';
 interface Props {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  required?: boolean;
 }
 
-const AutoSizeTextarea: React.FC<Props> = ({ value, onChange }) => {
+const AutoSizeTextarea: React.FC<Props> = ({
+  value,
+  onChange,
+  required = true
+}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -25,7 +30,7 @@ const AutoSizeTextarea: React.FC<Props> = ({ value, onChange }) => {
         onChange={onChange}
         className="w-full border-b border-black bg-transparent outline-none overflow-hidden focus:border-primary focus:border-b-2 resize-none"
         rows={1}
-        required
+        required={required}
       />
     </div>
   );
