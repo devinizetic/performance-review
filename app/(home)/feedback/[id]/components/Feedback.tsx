@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import QuestionCard from './QuestionCard';
 import { CustomButton } from '@/app/components/common';
 import { createAnswer, updateAnswer } from '@/app/actions';
+import { FormType } from '@/types';
 
 interface FeedbackProps {
   questionAnswers: FeedbackQuestionAnswer;
@@ -32,21 +33,12 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-    console.log('handleSubmitAnswer', formData.get('initialanswerChoiceId'));
-    /* const answerId = formData.get('answerId');
+    const answerId = formData.get('answerId');
 
-    if (answerId) await updateAnswer(formData, true);
-    else await createAnswer(formData, true); */
+    if (answerId) await updateAnswer(formData, FormType.FEEDBACK);
 
     handleNext();
   };
-
-  // const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-  //   const answerId = formData.get('answerId');
-  //   if (answerId) await updateAnswer(formData);
-  //   else await createAnswer(formData);
-  //   handleNext();
-  // };
 
   return (
     <div className="flex flex-col h-full items-center">
@@ -61,6 +53,8 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
                   reviewerAnswerText={qAnswer.reviewer_answer_text}
                   revieweeAnswerChoiceId={qAnswer.reviewee_answer_choice_id}
                   revieweeAnswerText={qAnswer.reviewee_answer_text}
+                  feedbackChoiceId={qAnswer.feedback_choice_id}
+                  feedbackText={qAnswer.feedback_text}
                   handleSubmitAnswer={handleSubmitAnswer}
                   feedbackAnswerId={qAnswer.feedback_answer_id}
                 />

@@ -8,6 +8,8 @@ import ChoiceCard from './ChoiceCard';
 interface FeedbackFormProps {
   hasChoices: boolean;
   question: FullQuestion;
+  feedbackText: string;
+  feedbackChoiceId: string;
   handleSubmitAnswer: (formData: FormData) => Promise<void>;
   feedbackAnswerId: string;
 }
@@ -16,13 +18,17 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
   question,
   hasChoices,
   handleSubmitAnswer,
-  feedbackAnswerId
+  feedbackAnswerId,
+  feedbackText,
+  feedbackChoiceId
 }) => {
   if (!question) return <div>La pregunta no existe</div>;
 
   const [formState, setFormState] = useState({
-    answerText: '',
-    answerChoiceId: ''
+    initialAnswerText: '',
+    initialAnswerChoiceId: '',
+    answerText: feedbackText || '',
+    answerChoiceId: feedbackChoiceId || ''
   });
 
   const handleChoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,36 +39,49 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
     setFormState({ ...formState, answerText: e.target.value });
   };
 
-  console.log(formState);
-
   return (
-    <>
-      <CustomText size="medium" bold underline>
+    <div>
+      <CustomText size="medium" bold>
         Feedback:
       </CustomText>
       <form
         id="feedback-form"
         action={(formData: FormData) => {
-          console.log('feedback-form', formData);
           handleSubmitAnswer(formData);
         }}
+        className="pt-6"
       >
         <input type="hidden" name="answerId" value={feedbackAnswerId} />
         {hasChoices && (
-          <ChoiceCard
-            question={question}
-            answerChoiceId={formState.answerChoiceId}
-            onChange={handleChoiceChange}
-            name="feedback-form"
-          />
+          <>
+            <ChoiceCard
+              question={question}
+              answerChoiceId={formState.answerChoiceId}
+              onChange={handleChoiceChange}
+              name="answerChoiceId"
+              required
+            />
+            <input
+              type="hidden"
+              name="initialAnswerChoiceId"
+              value={formState.initialAnswerChoiceId}
+            />
+          </>
         )}
-        <AutoSizeTextarea
-          required={false}
-          value={formState.answerText}
-          onChange={handleTextChange}
-        />
+        <>
+          <AutoSizeTextarea
+            required={false}
+            value={formState.answerText}
+            onChange={handleTextChange}
+          />
+          <input
+            type="hidden"
+            name="initialAnswerText"
+            value={formState.initialAnswerText}
+          />
+        </>
       </form>
-    </>
+    </div>
   );
 };
 

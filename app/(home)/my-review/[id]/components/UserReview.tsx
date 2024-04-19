@@ -10,6 +10,7 @@ import { FullUserReview } from '@/types/supabase.types';
 import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
+import { FormType } from '@/types';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -74,7 +75,7 @@ const UserReview: React.FC<UserReviewProps> = ({
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
     const answerId = formData.get('answerId');
 
-    if (answerId) await updateAnswer(formData, isReviewee);
+    if (answerId) await updateAnswer(formData, FormType.REVIEWEE);
     else await createAnswer(formData, isReviewee);
 
     handleNext();

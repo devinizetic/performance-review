@@ -16,6 +16,8 @@ interface QuestionCardProps {
   reviewerAnswerChoiceId: string;
   revieweeAnswerText: string;
   revieweeAnswerChoiceId: string;
+  feedbackText: string;
+  feedbackChoiceId: string;
   handleSubmitAnswer: (formData: FormData) => Promise<void>;
   feedbackAnswerId: string;
 }
@@ -27,6 +29,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   reviewerAnswerChoiceId,
   revieweeAnswerText,
   revieweeAnswerChoiceId,
+  feedbackText,
+  feedbackChoiceId,
   handleSubmitAnswer,
   feedbackAnswerId
 }) => {
@@ -90,12 +94,16 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             />
           </div>
         </div>
-        <FeedbackForm
-          question={question}
-          hasChoices={hasChoices}
-          handleSubmitAnswer={handleSubmitAnswer}
-          feedbackAnswerId={feedbackAnswerId}
-        />
+        <div className="px-5">
+          <FeedbackForm
+            question={question}
+            hasChoices={hasChoices}
+            feedbackText={feedbackText}
+            feedbackChoiceId={feedbackChoiceId}
+            handleSubmitAnswer={handleSubmitAnswer}
+            feedbackAnswerId={feedbackAnswerId}
+          />
+        </div>
       </div>
     </div>
   );
