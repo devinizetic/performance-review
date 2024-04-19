@@ -1,5 +1,6 @@
 'use server';
 
+import { FormType } from '@/types';
 import { createServerClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -10,6 +11,7 @@ export const logout = async () => {
   return redirect('/login');
 };
 
+// TODO: we can also replace isReviewee here with formType like in updateAnswer
 export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
   'use server';
 
@@ -42,18 +44,14 @@ export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
   revalidatePath('/');
 };
 
-export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
+export const updateAnswer = async (formData: FormData, formType: FormType) => {
   'use server';
-  const answerId = formData.get('answerId');
-  console.log('answerId:', answerId);
-  const answerChoiceId = formData.get('answerChoiceId');
-  console.log('answerChoiceId:', answerChoiceId);
-  const answerText = formData.get('answerText');
-  console.log('answerText:', answerText);
-  const initialAnswerText = formData.get('initialAnswerText');
-  console.log('initialAnswerText:', initialAnswerText);
-  const initialAnswerChoiceId = formData.get('initialAnswerChoiceId');
-  console.log('initialAnswerChoiceId:', initialAnswerChoiceId);
+  let answerId = formData.get('answerId');
+  let answerChoiceId = formData.get('answerChoiceId');
+  let answerText = formData.get('answerText');
+  let initialAnswerText = formData.get('initialAnswerText');
+  let initialAnswerChoiceId = formData.get('initialAnswerChoiceId');
+
   if (
     initialAnswerText === answerText &&
     initialAnswerChoiceId === (answerChoiceId || '')
@@ -62,21 +60,32 @@ export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
 
   const supabase = createServerClient();
   const currentUser = await supabase.auth.getUser();
-
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
 
-  if (!answerId || !answerText) throw new Error('Missing Form Data');
+  const isReviewee = formType === 'reviewee';
+  const isReviewer = formType === 'reviewer';
+  const isFeedback = formType === 'feedback';
+
+  if (isFeedback && !answerText) answerText = '';
+
+  if (!answerId || answerText === undefined || answerText === null)
+    throw new Error('Missing Form Data');
 
   const answerUpdate = isReviewee
     ? {
         reviewee_answer_text: answerText.toString(),
         reviewee_answer_choice_id: answerChoiceId?.toString()
       }
-    : {
+    : isReviewer
+    ? {
         reviewer_answer_text: answerText.toString(),
         reviewer_answer_choice_id: answerChoiceId?.toString()
+      }
+    : {
+        feedback_text: answerText.toString(),
+        feedback_choice_id: answerChoiceId?.toString()
       };
-  console.log('answerUpdate:', answerUpdate);
+
   const { error } = await supabase
     .from('answers')
     .update(answerUpdate)

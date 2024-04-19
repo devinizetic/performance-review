@@ -1,5 +1,5 @@
 export enum FormType {
-  REVIEWE,
-  REVIEWER,
-  FEEDBACK
+  REVIEWEE = 'reviewee',
+  REVIEWER = 'reviewer',
+  FEEDBACK = 'feedback'
 }

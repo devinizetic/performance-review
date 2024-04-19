@@ -7,13 +7,15 @@ interface ChoiceCardProps {
   answerChoiceId: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name?: string;
+  required?: boolean;
 }
 
 const ChoiceCard: React.FC<ChoiceCardProps> = ({
   question,
   answerChoiceId,
   onChange,
-  name
+  name,
+  required = false
 }) => {
   const readOnly = !onChange;
 
@@ -26,11 +28,13 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
               type="radio"
               id={choice.id}
               value={choice.id}
+              name={name && name}
               // name="answerChoiceId" WARN: when adding this, the radio buttons don't work
               className="accent-primary cursor-pointer"
               checked={answerChoiceId === choice.id}
               onChange={(e) => (readOnly ? () => {} : onChange(e))}
               readOnly={readOnly}
+              required={required}
             />
             <input
               type="hidden"
