@@ -33,8 +33,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
     setFormState({ ...formState, answerText: e.target.value });
   };
 
-  console.log(formState);
-
   return (
     <>
       <CustomText size="medium" bold underline>
@@ -43,7 +41,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
       <form
         id="feedback-form"
         action={(formData: FormData) => {
-          console.log('feedback-form', formData);
           handleSubmitAnswer(formData);
         }}
       >

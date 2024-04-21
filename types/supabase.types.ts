@@ -1,4 +1,10 @@
-import { Inserts, Rows, Updates, FunctionsReturns } from './supabase.extension';
+import {
+  Inserts,
+  Rows,
+  Updates,
+  FunctionsReturns,
+  Views
+} from './supabase.extension';
 
 export type AppUser = Rows<'app_users'>;
 export type AppUserInsert = Inserts<'app_users'>;
@@ -48,9 +54,6 @@ export type UserRole = Rows<'user_role'>;
 export type UserRoleInsert = Inserts<'user_role'>;
 export type UserRoleUpdate = Updates<'user_role'>;
 
-export type FeedbackQuestionAnswer =
-  FunctionsReturns<'get_feedback_question_answers'>;
-
 //custom
 export type ActiveReview = { id: string | undefined };
 export type FullReviewQuestion = {
@@ -81,3 +84,5 @@ export type ReviewerRevieweeView = {
   reviewee_completed: boolean;
   reviewer_completed: boolean;
 };
+
+export type AnswersSortedView = Views<'answers_sorted'>;

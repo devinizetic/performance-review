@@ -54,7 +54,6 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   }
 
   if (!data) throw new Error('Review not found');
-  console.log(data);
   //How to explain this? This is a type assertion.
   //It's like telling TypeScript that you know what you're doing (do you?) and that you're sure that the data is of type FullUserReview.
   //The library is working weirdly and I don't know how to fix it, typesccript infers an array from this reviewer:reviewer_id(*),

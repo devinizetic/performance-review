@@ -26,7 +26,9 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
 
   if (!feedbackQuestionAnswers || !feedbackQuestionAnswers.length)
     return <div>El Feedback de esta evaluación todavia no esta listo</div>;
-
+  console.log('######################');
+  console.log(id);
+  console.log(feedbackQuestionAnswers);
   return (
     <div className="flex flex-col h-full w-full">
       <Feedback questionAnswers={feedbackQuestionAnswers} />

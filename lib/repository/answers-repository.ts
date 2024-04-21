@@ -1,12 +1,17 @@
-import { Answer, FeedbackQuestionAnswer } from '@/types/supabase.types';
+import { Answer, AnswersSortedView } from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
 
 const questionAnswersQuery = (userReviewId: string) => {
   const supabase = createServerClient();
 
-  return supabase.rpc('get_feedback_question_answers', {
-    user_review_id: userReviewId
-  });
+  return supabase
+    .from('answers_sorted')
+    .select(
+      `
+      *
+      `
+    )
+    .eq('user_review_id', userReviewId);
 };
 
 const answersByUserReviewIdQuery = (userReviewId: string) => {
@@ -49,7 +54,7 @@ const getFeedbackQuestionAnswers = async ({
   userReviewId
 }: {
   userReviewId: string;
-}): Promise<FeedbackQuestionAnswer> => {
+}): Promise<AnswersSortedView[]> => {
   const { data, error } = await questionAnswersQuery(userReviewId);
 
   if (error) {

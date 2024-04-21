@@ -45,15 +45,10 @@ export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
 export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
   'use server';
   const answerId = formData.get('answerId');
-  console.log('answerId:', answerId);
   const answerChoiceId = formData.get('answerChoiceId');
-  console.log('answerChoiceId:', answerChoiceId);
   const answerText = formData.get('answerText');
-  console.log('answerText:', answerText);
   const initialAnswerText = formData.get('initialAnswerText');
-  console.log('initialAnswerText:', initialAnswerText);
   const initialAnswerChoiceId = formData.get('initialAnswerChoiceId');
-  console.log('initialAnswerChoiceId:', initialAnswerChoiceId);
   if (
     initialAnswerText === answerText &&
     initialAnswerChoiceId === (answerChoiceId || '')
@@ -76,7 +71,7 @@ export const updateAnswer = async (formData: FormData, isReviewee: boolean) => {
         reviewer_answer_text: answerText.toString(),
         reviewer_answer_choice_id: answerChoiceId?.toString()
       };
-  console.log('answerUpdate:', answerUpdate);
+
   const { error } = await supabase
     .from('answers')
     .update(answerUpdate)

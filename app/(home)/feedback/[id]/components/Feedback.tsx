@@ -1,20 +1,20 @@
 'use client';
-import { FeedbackQuestionAnswer } from '@/types/supabase.types';
+import { AnswersSortedView } from '@/types/supabase.types';
 import React, { useState } from 'react';
 import QuestionCard from './QuestionCard';
 import { CustomButton } from '@/app/components/common';
 import { createAnswer, updateAnswer } from '@/app/actions';
 
 interface FeedbackProps {
-  questionAnswers: FeedbackQuestionAnswer;
+  questionAnswers: AnswersSortedView[];
 }
 
 const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
   const maxStep = Math.max(
-    ...questionAnswers.map((qAnswer) => qAnswer.question_sequence)
+    ...questionAnswers.map((qAnswer) => qAnswer.question_sequence ?? 0)
   );
   const minStep = Math.min(
-    ...questionAnswers.map((qAnswer) => qAnswer.question_sequence)
+    ...questionAnswers.map((qAnswer) => qAnswer.question_sequence ?? 0)
   );
 
   const [currentStep, setCurrentStep] = useState(minStep);
@@ -32,12 +32,6 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-    console.log('handleSubmitAnswer', formData.get('initialanswerChoiceId'));
-    /* const answerId = formData.get('answerId');
-
-    if (answerId) await updateAnswer(formData, true);
-    else await createAnswer(formData, true); */
-
     handleNext();
   };
 
@@ -56,13 +50,17 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
             <div key={qAnswer.id} className={`flex gap-5 w-full h-ful`}>
               <div className="flex items-between justify-center gap-5 w-full h-full">
                 <QuestionCard
-                  questionId={qAnswer.id}
-                  reviewerAnswerChoiceId={qAnswer.reviewer_answer_choice_id}
-                  reviewerAnswerText={qAnswer.reviewer_answer_text}
-                  revieweeAnswerChoiceId={qAnswer.reviewee_answer_choice_id}
-                  revieweeAnswerText={qAnswer.reviewee_answer_text}
+                  questionId={qAnswer.id ?? ''}
+                  reviewerAnswerChoiceId={
+                    qAnswer.reviewer_answer_choice_id ?? ''
+                  }
+                  reviewerAnswerText={qAnswer.reviewer_answer_text ?? ''}
+                  revieweeAnswerChoiceId={
+                    qAnswer.reviewee_answer_choice_id ?? ''
+                  }
+                  revieweeAnswerText={qAnswer.reviewee_answer_text ?? ''}
                   handleSubmitAnswer={handleSubmitAnswer}
-                  feedbackAnswerId={qAnswer.feedback_answer_id}
+                  feedbackAnswerId={qAnswer.feedback_answer_id ?? ''}
                 />
               </div>
             </div>

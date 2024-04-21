@@ -24,7 +24,7 @@ export default async function Login({
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `https://performance-review-gamma.vercel.app/auth/callback`
+        redirectTo: 'http://localhost:3000/auth/callback'
       }
     });
 

@@ -42,7 +42,6 @@ const UserReview: React.FC<UserReviewProps> = ({
   isReviewee
 }) => {
   if (!activeReview) return <div>Actualmente no hay evaluaciones activas</div>;
-  console.log(activeReview);
   const currentQuestionId = getCurrentQuestionId(activeReview, isReviewee);
   const currentQuestionIndex = activeReview.review.questions.findIndex(
     (question) => question.question.id === currentQuestionId
