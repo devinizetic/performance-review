@@ -23,7 +23,7 @@ const AnswersCard: React.FC<AnswersCardProps> = ({
   return (
     <div className="flex flex-col w-3/5">
       <div className="flex items-center justify-center p-5 w-full">
-        <CustomText size="medium" bold underline>
+        <CustomText size="medium" bold>
           {`${title}:`}
         </CustomText>
       </div>
