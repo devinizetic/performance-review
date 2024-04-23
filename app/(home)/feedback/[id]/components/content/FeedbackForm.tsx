@@ -12,6 +12,7 @@ interface FeedbackFormProps {
   feedbackChoiceId: string;
   handleSubmitAnswer: (formData: FormData) => Promise<void>;
   feedbackAnswerId: string;
+  readonly: boolean;
 }
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({
@@ -20,7 +21,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
   handleSubmitAnswer,
   feedbackAnswerId,
   feedbackText,
-  feedbackChoiceId
+  feedbackChoiceId,
+  readonly
 }) => {
   if (!question) return <div>La pregunta no existe</div>;
 
@@ -60,6 +62,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
               onChange={handleChoiceChange}
               name="answerChoiceId"
               required
+              readonly={readonly}
             />
             <input
               type="hidden"
@@ -73,6 +76,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
             required={false}
             value={formState.answerText}
             onChange={handleTextChange}
+            readonly={readonly}
           />
           <input
             type="hidden"

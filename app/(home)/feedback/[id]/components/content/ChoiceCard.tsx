@@ -8,6 +8,7 @@ interface ChoiceCardProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name?: string;
   required?: boolean;
+  readonly: boolean;
 }
 
 const ChoiceCard: React.FC<ChoiceCardProps> = ({
@@ -15,9 +16,10 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
   answerChoiceId,
   onChange,
   name,
-  required = false
+  required = false,
+  readonly
 }) => {
-  const readOnly = !onChange;
+  const isReadOnly = !onChange || readonly;
 
   return (
     <div className="shrink pb-5">
@@ -32,8 +34,8 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
               // name="answerChoiceId" WARN: when adding this, the radio buttons don't work
               className="accent-primary cursor-pointer"
               checked={answerChoiceId === choice.id}
-              onChange={(e) => (readOnly ? () => {} : onChange(e))}
-              readOnly={readOnly}
+              onChange={(e) => (isReadOnly ? () => {} : onChange(e))}
+              readOnly={isReadOnly}
               required={required}
             />
             <input

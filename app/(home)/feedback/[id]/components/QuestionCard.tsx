@@ -20,6 +20,7 @@ interface QuestionCardProps {
   feedbackChoiceId: string;
   handleSubmitAnswer: (formData: FormData) => Promise<void>;
   feedbackAnswerId: string;
+  readonly: boolean;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -32,7 +33,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   feedbackText,
   feedbackChoiceId,
   handleSubmitAnswer,
-  feedbackAnswerId
+  feedbackAnswerId,
+  readonly
 }) => {
   const [question, setQuestion] = useState<FullQuestion | null>(null);
 
@@ -84,6 +86,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               hasChoices={hasChoices}
               answerChoiceId={revieweeAnswerChoiceId}
               answerText={revieweeAnswerText}
+              readonly={readonly}
             />
             <AnswersCard
               title="Evaluador"
@@ -91,6 +94,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               hasChoices={hasChoices}
               answerChoiceId={reviewerAnswerChoiceId}
               answerText={reviewerAnswerText}
+              readonly={readonly}
             />
           </div>
         </div>
@@ -102,6 +106,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             feedbackChoiceId={feedbackChoiceId}
             handleSubmitAnswer={handleSubmitAnswer}
             feedbackAnswerId={feedbackAnswerId}
+            readonly={readonly}
           />
         </div>
       </div>

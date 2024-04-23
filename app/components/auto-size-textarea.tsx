@@ -5,12 +5,14 @@ interface Props {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const AutoSizeTextarea: React.FC<Props> = ({
   value,
   onChange,
-  required = true
+  required = true,
+  readonly = false
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -31,6 +33,7 @@ const AutoSizeTextarea: React.FC<Props> = ({
         className="w-full border-b border-black bg-transparent outline-none overflow-hidden focus:border-primary focus:border-b-2 resize-none"
         rows={1}
         required={required}
+        disabled={readonly}
       />
     </div>
   );

@@ -20,6 +20,12 @@
 npx supabase db reset
 ```
 
+#### db migration
+
+```
+npx supabase migration up
+```
+
 ##### Seed db
 
 - Step 1

@@ -11,6 +11,7 @@ interface AnswersCardProps {
   answerChoiceId: string;
   answerText: string;
   title: string;
+  readonly: boolean;
 }
 
 const AnswersCard: React.FC<AnswersCardProps> = ({
@@ -18,7 +19,8 @@ const AnswersCard: React.FC<AnswersCardProps> = ({
   hasChoices,
   answerChoiceId,
   answerText,
-  title
+  title,
+  readonly
 }) => {
   return (
     <div className="flex flex-col w-3/5">
@@ -28,7 +30,11 @@ const AnswersCard: React.FC<AnswersCardProps> = ({
         </CustomText>
       </div>
       {hasChoices && (
-        <ChoiceCard question={question} answerChoiceId={answerChoiceId} />
+        <ChoiceCard
+          question={question}
+          answerChoiceId={answerChoiceId}
+          readonly={readonly}
+        />
       )}
       {hasChoices ? (
         <CustomText size="medium" bold>
