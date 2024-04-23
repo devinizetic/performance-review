@@ -8,9 +8,13 @@ import { FormType } from '@/types';
 
 interface FeedbackProps {
   questionAnswers: AnswersSortedView[];
+  readonly?: boolean;
 }
 
-const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
+const Feedback: React.FC<FeedbackProps> = ({
+  questionAnswers,
+  readonly = false
+}) => {
   const maxStep = Math.max(
     ...questionAnswers.map((qAnswer) => qAnswer.question_sequence ?? 0)
   );
@@ -33,10 +37,12 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-    const answerId = formData.get('answerId');
-
-    if (answerId) await updateAnswer(formData, FormType.FEEDBACK);
-
+    console.log('HOLA');
+    if (!readonly) {
+      console.log('CHAU');
+      const answerId = formData.get('answerId');
+      if (answerId) await updateAnswer(formData, FormType.FEEDBACK);
+    }
     handleNext();
   };
 
@@ -61,6 +67,7 @@ const Feedback: React.FC<FeedbackProps> = ({ questionAnswers }) => {
                   feedbackText={qAnswer.feedback_text ?? ''}
                   handleSubmitAnswer={handleSubmitAnswer}
                   feedbackAnswerId={qAnswer.feedback_answer_id ?? ''}
+                  readonly={readonly}
                 />
               </div>
             </div>
