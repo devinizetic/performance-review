@@ -4,8 +4,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SIDENAV_ITEMS } from '@/constants';
 import { logout } from '../actions';
+import { SideNavItem } from '@/types/types';
 
-const HeaderMobile: React.FC = () => {
+interface HeaderMobileProps {
+  sideNavItems: SideNavItem[];
+}
+
+const HeaderMobile: React.FC<HeaderMobileProps> = ({ sideNavItems }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -18,7 +23,7 @@ const HeaderMobile: React.FC = () => {
         <>
           <div className="absolute inset-0 right-0 w-full bg-white open" />
           <ul className="absolute grid w-full gap-3 px-10 py-16">
-            {SIDENAV_ITEMS.map((item, idx) => {
+            {sideNavItems.map((item, idx) => {
               const isLastItem = idx === SIDENAV_ITEMS.length - 1; // Check if it's the last item
               const isLogout = item.isLogout;
               return (
