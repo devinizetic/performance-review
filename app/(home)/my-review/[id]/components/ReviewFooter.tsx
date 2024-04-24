@@ -10,7 +10,7 @@ const ReviewFooter: React.FC<ReviewFooterProps> = ({
   showBackButton
 }) => {
   return (
-    <div className="flex gap-2 w-full mt-4">
+    <div className="flex gap-2 w-full">
       {showBackButton && (
         <button
           className="shrink rounded-lg font-medium border bg-white shadow-lg w-36 py-1 hover:border-none hover:bg-primary hover:text-white"

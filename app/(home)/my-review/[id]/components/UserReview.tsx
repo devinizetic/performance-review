@@ -11,6 +11,7 @@ import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
+import AvatarImage from '@/app/components/avatar-image';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -127,7 +128,14 @@ const UserReview: React.FC<UserReviewProps> = ({
           />
         </div>
       ) : (
-        <div className="flex flex-col w-full h-full py-24 px-64">
+        <div className="flex flex-col w-full h-full py-24 px-64 gap-4">
+          {isReviewee ? null : (
+            <div>
+              <span>
+                Estas evaluando a: <b>{activeReview.reviewee.full_name}</b>
+              </span>
+            </div>
+          )}
           <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg">
             <form
               id="question-form"
