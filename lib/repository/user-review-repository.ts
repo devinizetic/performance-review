@@ -1,4 +1,8 @@
-import { ActiveReview, FullUserReview } from '@/types/supabase.types';
+import {
+  ActiveReview,
+  FullUserReview,
+  SimpleUserReview
+} from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
 
 const getActiveUserReviewByRevieweeIdQuery = (revieweeId: string) => {
@@ -42,7 +46,6 @@ answers(*)
     )
     .eq('id', reviewId)
     .eq('review.is_active', true)
-
     .maybeSingle();
 };
 
@@ -61,9 +64,40 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   return data as unknown as FullUserReview;
 };
 
+const getAllCurrentReviewsQuery = () => {
+  const supabase = createServerClient();
+  return supabase.from('user_review').select(
+    `
+    id,
+    reviewer:reviewer_id(*),
+    reviewee:reviewee_id(*),
+    reviewee_completed_timestamp,
+    reviewee_started_timestamp,
+    reviewer_completed_timestamp,
+    reviewer_started_timestamp
+    `
+  );
+};
+
+const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
+  const { data, error } = await getAllCurrentReviewsQuery();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) throw new Error('There are no active reviews');
+  //How to explain this? This is a type assertion.
+  //It's like telling TypeScript that you know what you're doing (do you?) and that you're sure that the data is of type FullUserReview.
+  //The library is working weirdly and I don't know how to fix it, typesccript infers an array from this reviewer:reviewer_id(*),
+  //But at runtime, it is not, it is a single object like it is supposed to be.
+  return data as unknown as SimpleUserReview[];
+};
+
 const UserReviewRepository = {
   getById,
-  getActiveUserReviewByRevieweeId
+  getActiveUserReviewByRevieweeId,
+  getAllCurrentReviews
 };
 
 export default UserReviewRepository;
