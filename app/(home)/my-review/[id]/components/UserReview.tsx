@@ -125,6 +125,7 @@ const UserReview: React.FC<UserReviewProps> = ({
             onBackPressed={handleBackToLastStep}
             isStartScreen={showStartScreen}
             personName={personName || ''}
+            isReviewee={isReviewee}
           />
         </div>
       ) : (
