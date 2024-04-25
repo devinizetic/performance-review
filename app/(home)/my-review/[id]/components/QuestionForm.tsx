@@ -62,7 +62,9 @@ const QuestionForm: FC<QuestionFormProps> = ({
             <ul>
               {question.questionHints.map((hint, index) => (
                 <li key={hint.id} className="p-1">
-                  {hint.hint_text}
+                  {isReviewee
+                    ? hint.hint_text_reviewee
+                    : hint.hint_text_reviewer}
                 </li>
               ))}
             </ul>
@@ -71,7 +73,9 @@ const QuestionForm: FC<QuestionFormProps> = ({
       ) : null}
 
       <div className="shrink text-lg font-bold px-6">
-        {question.question_text}
+        {isReviewee
+          ? question.question_text_reviewee
+          : question.question_text_reviewer}
       </div>
       {hasChoices ? (
         <div className="shrink px-6">
