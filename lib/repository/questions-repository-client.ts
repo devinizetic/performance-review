@@ -9,12 +9,13 @@ const getQuestionByIdQuery = (id: string) => {
       `
       id,
       question_answer_type,
-      question_text,
+      question_text_reviewer,
+      question_text_reviewee,
       role_id,
       question_title,
       question_description,
       choices(id, choice_text, choice_value),
-      questionHints:question_hints(id, question_id, hint_text, hint_sequence)
+      questionHints:question_hints(id, question_id, hint_text_reviewer, hint_text_reviewee, hint_sequence)
       `
     )
     .eq('id', id)
