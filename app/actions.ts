@@ -4,6 +4,7 @@ import { FormType } from '@/types';
 import { createServerClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { off } from 'process';
 
 export const logout = async () => {
   const supabase = createServerClient();
@@ -154,6 +155,62 @@ export const setPerformanceReviewCompleted = async (
     .from('user_review')
     .update(reviewUpdate)
     .eq('id', userReviewId.toString());
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
+};
+
+export const startActiveReview = async (reviewId: string) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!reviewId) throw new Error('Esta evaluación no existe');
+
+  const { data, error: reviewerError } = await supabase
+    .from('reviewer_reviewee')
+    .select('reviewer_id, reviewee_id');
+
+  if (reviewerError) throw new Error(reviewerError.message);
+
+  for (const reviewReviewee of data) {
+    const { data, error: existError } = await supabase
+      .from('user_review')
+      .select('id')
+      .eq('reviewee_id', reviewReviewee.reviewee_id)
+      .eq('reviewer_id', reviewReviewee.reviewer_id)
+      .eq('review_id', reviewId)
+      .maybeSingle();
+
+    if (existError) throw new Error(existError.message);
+
+    if (data && data.id) continue; //user_review already exists for this reviewee and reviewer
+
+    const userReview = {
+      review_id: reviewId,
+      reviewer_id: reviewReviewee.reviewer_id,
+      reviewee_id: reviewReviewee.reviewee_id
+    };
+
+    const { error: insertError } = await supabase
+      .from('user_review')
+      .insert(userReview);
+
+    if (insertError) throw new Error(insertError.message);
+  }
+
+  const timestamp = new Date().toISOString();
+  const reviewUpdate = {
+    start_date: timestamp
+  };
+  const { error } = await supabase
+    .from('reviews')
+    .update(reviewUpdate)
+    .eq('id', reviewId);
 
   if (error) throw new Error(error.message);
 
