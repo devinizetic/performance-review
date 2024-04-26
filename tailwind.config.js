@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        bounce200: 'bounce 1s infinite 200ms',
+        bounce400: 'bounce 1s infinite 400ms'
+      },
       height: {
         'screen-minus-header': 'calc(100vh - 3rem)'
       },

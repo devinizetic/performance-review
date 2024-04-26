@@ -1,11 +1,8 @@
 'use client';
 import QuestionsRepositoryClient from '@/lib/repository/questions-repository-client';
 import React, { useCallback, useEffect, useState } from 'react';
-import AnswerText from './AnswerTextForm';
 import { FullQuestion } from '@/types/supabase.types';
-import { CustomButton, CustomText } from '@/app/components/common';
-import AutoSizeTextarea from '@/app/components/auto-size-textarea';
-import ChoiceCard from './content/ChoiceCard';
+import { CustomText } from '@/app/components/common';
 import AnswersCard from './content/AnswersCard';
 import FeedbackForm from './content/FeedbackForm';
 
@@ -68,7 +65,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <ul>
                 {question.questionHints.map((hint, index) => (
                   <li key={hint.id} className="p-1">
-                    {hint.hint_text}
+                    {hint.hint_text_reviewer}
                   </li>
                 ))}
               </ul>
@@ -77,7 +74,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         ) : null}
         <div className="">
           <CustomText size="medium" bold className="pt-2">
-            {question.question_text}
+            {question.question_text_reviewer}
           </CustomText>
           <div className="flex items-between justify-around gap-8">
             <AnswersCard

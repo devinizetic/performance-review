@@ -73,6 +73,15 @@ export type FullUserReview = {
   reviewee: AppUser;
   answers: Answer[];
 } & UserReview;
+export type SimpleUserReview = {
+  id: string;
+  reviewer: AppUser;
+  reviewee: AppUser;
+  reviewee_completed_timestamp: string | null;
+  reviewee_started_timestamp: string | null;
+  reviewer_completed_timestamp: string | null;
+  reviewer_started_timestamp: string | null;
+};
 
 export type ReviewerRevieweeView = {
   reviewer_id: string;

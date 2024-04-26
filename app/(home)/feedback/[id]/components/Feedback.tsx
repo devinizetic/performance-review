@@ -3,7 +3,7 @@ import { AnswersSortedView } from '@/types/supabase.types';
 import React, { useState } from 'react';
 import QuestionCard from './QuestionCard';
 import { CustomButton } from '@/app/components/common';
-import { createAnswer, updateAnswer } from '@/app/actions';
+import { updateAnswer } from '@/app/actions';
 import { FormType } from '@/types';
 
 interface FeedbackProps {
