@@ -53,6 +53,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const hasChoices = question.choices && question.choices.length > 0;
 
+  console.log(reviewerAnswerText);
+  console.log(reviewerAnswerChoiceId);
+
   return (
     <div className={`flex w-full flex-col bg-white rounded-lg`}>
       <h1 className="shrink text-xl font-bold p-6 text-white bg-primary rounded-t-lg">
@@ -88,14 +91,16 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               answerText={revieweeAnswerText}
               readonly={readonly}
             />
-            <AnswersCard
-              title="Evaluador"
-              question={question}
-              hasChoices={hasChoices}
-              answerChoiceId={reviewerAnswerChoiceId}
-              answerText={reviewerAnswerText}
-              readonly={readonly}
-            />
+            {(reviewerAnswerText || reviewerAnswerChoiceId) && (
+              <AnswersCard
+                title="Evaluador"
+                question={question}
+                hasChoices={hasChoices}
+                answerChoiceId={reviewerAnswerChoiceId}
+                answerText={reviewerAnswerText}
+                readonly={readonly}
+              />
+            )}
           </div>
         </div>
         <div className="px-5">
