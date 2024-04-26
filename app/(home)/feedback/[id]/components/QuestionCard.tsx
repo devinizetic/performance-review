@@ -53,9 +53,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const hasChoices = question.choices && question.choices.length > 0;
 
-  console.log(reviewerAnswerText);
-  console.log(reviewerAnswerChoiceId);
-
   return (
     <div className={`flex w-full flex-col bg-white rounded-lg`}>
       <h1 className="shrink text-xl font-bold p-6 text-white bg-primary rounded-t-lg">
