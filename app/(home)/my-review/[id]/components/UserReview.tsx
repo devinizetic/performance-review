@@ -12,7 +12,6 @@ import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
 import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
-import AnswersRepository from '@/lib/repository/answers-repository';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
