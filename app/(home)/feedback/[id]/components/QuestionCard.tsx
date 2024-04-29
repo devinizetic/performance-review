@@ -85,14 +85,16 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               answerText={revieweeAnswerText}
               readonly={readonly}
             />
-            <AnswersCard
-              title="Evaluador"
-              question={question}
-              hasChoices={hasChoices}
-              answerChoiceId={reviewerAnswerChoiceId}
-              answerText={reviewerAnswerText}
-              readonly={readonly}
-            />
+            {(reviewerAnswerText || reviewerAnswerChoiceId) && (
+              <AnswersCard
+                title="Evaluador"
+                question={question}
+                hasChoices={hasChoices}
+                answerChoiceId={reviewerAnswerChoiceId}
+                answerText={reviewerAnswerText}
+                readonly={readonly}
+              />
+            )}
           </div>
         </div>
         <div className="px-5">
