@@ -5,17 +5,19 @@ import {
   setPerformanceReviewStarted,
   updateAnswer
 } from '@/app/actions';
-import React, { useEffect, useState } from 'react';
-import { FullUserReview } from '@/types/supabase.types';
+import React, { useState } from 'react';
+import { AnswersSortedView, FullUserReview } from '@/types/supabase.types';
 import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
-import AvatarImage from '@/app/components/avatar-image';
+import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
+import AnswersRepository from '@/lib/repository/answers-repository';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
   isReviewee: boolean;
+  questionAnswers: AnswersSortedView[];
 }
 
 function getCurrentQuestionId(
@@ -39,9 +41,10 @@ function getCurrentQuestionId(
     .id; // return last question
 }
 
-const UserReview: React.FC<UserReviewProps> = ({
+const UserReview: React.FC<UserReviewProps> = async ({
   activeReview,
-  isReviewee
+  isReviewee,
+  questionAnswers
 }) => {
   if (!activeReview) return <div>Actualmente no hay evaluaciones activas</div>;
   const currentQuestionId = getCurrentQuestionId(activeReview, isReviewee);
@@ -106,6 +109,18 @@ const UserReview: React.FC<UserReviewProps> = ({
   const isReviewCompleted = isReviewee
     ? activeReview.reviewee_completed_timestamp
     : activeReview.reviewer_completed_timestamp;
+  const isRevieweeAndReviewerCompleted =
+    activeReview.reviewer_completed_timestamp &&
+    activeReview.reviewee_completed_timestamp;
+
+  if (isRevieweeAndReviewerCompleted && questionAnswers.length > 0) {
+    return (
+      <div className="flex flex-col justify-center items-center flex-grow">
+        <Feedback questionAnswers={questionAnswers} readonly />
+      </div>
+    );
+  }
+
   if (isReviewCompleted) {
     return (
       <div className="flex flex-col justify-center items-center flex-grow">
