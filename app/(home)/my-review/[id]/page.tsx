@@ -1,11 +1,11 @@
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import { createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import UserReview from './components/UserReview';
-import { ActiveReviewProvider } from './context/ActiveReviewContext';
 import { FullUserReview } from '@/types/supabase.types';
 import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
+import AnswersRepository from '@/lib/repository/answers-repository';
 
 interface MyReviewProps {
   params: { id: string };
@@ -42,16 +42,28 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
 
   if (!session) redirect('/login');
 
+  const feedbackQuestionAnswers =
+    await AnswersRepository.getFeedbackQuestionAnswers({
+      userReviewId: id
+    });
+
   const activeReview = await UserReviewRepository.getById({
     id
   });
 
   if (!activeReview) redirect('my-review');
+
   const isReviewee = session.user.id === activeReview.reviewee_id;
+
   processQuestions(activeReview, isReviewee);
+
   return (
     <div className="flex flex-col h-full w-full">
-      <UserReview activeReview={activeReview} isReviewee={isReviewee} />
+      <UserReview
+        activeReview={activeReview}
+        isReviewee={isReviewee}
+        questionAnswers={feedbackQuestionAnswers}
+      />
     </div>
   );
 };
