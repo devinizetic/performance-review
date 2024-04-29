@@ -15,6 +15,14 @@ export default async function MyReview() {
       revieweeId: session.user.id
     });
 
+  /* const fullActiveReview = await UserReviewRepository.getFullReviewQuery({
+    revieweeId: session.user.id
+  });
+
+  console.log('HOLALAL');
+  console.log(fullActiveReview);
+  console.log('CHAUUUU'); */
+
   if (activeReview && activeReview.id)
     redirect(`/my-review/${activeReview.id}`);
 
