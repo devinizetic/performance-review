@@ -3,17 +3,20 @@ import { AnswersSortedView } from '@/types/supabase.types';
 import React, { useState } from 'react';
 import QuestionCard from './QuestionCard';
 import { CustomButton } from '@/app/components/common';
-import { updateAnswer } from '@/app/actions';
+import { setFeedbackCompleted, updateAnswer } from '@/app/actions';
 import { FormType } from '@/types';
+import { useRouter } from 'next/navigation';
 
 interface FeedbackProps {
   questionAnswers: AnswersSortedView[];
   readonly?: boolean;
+  userReviewId?: string;
 }
 
 const Feedback: React.FC<FeedbackProps> = ({
   questionAnswers,
-  readonly = false
+  readonly = false,
+  userReviewId = null
 }) => {
   const maxStep = Math.max(
     ...questionAnswers.map((qAnswer) => qAnswer.question_sequence ?? 0)
@@ -30,8 +33,13 @@ const Feedback: React.FC<FeedbackProps> = ({
     setCurrentStep(newStep);
   }
 
+  const router = useRouter();
   const handleNext = async () => {
-    if (currentStep === maxStep) return;
+    if (currentStep === maxStep && readonly) return;
+    if (currentStep === maxStep && !readonly) {
+      router.push(`/feedback/${userReviewId}/complete`);
+      return;
+    }
     const newStep = currentStep + 1;
     setCurrentStep(newStep);
   };
@@ -40,6 +48,8 @@ const Feedback: React.FC<FeedbackProps> = ({
     if (!readonly) {
       const answerId = formData.get('answerId');
       if (answerId) await updateAnswer(formData, FormType.FEEDBACK);
+      if (userReviewId && currentStep === maxStep)
+        await setFeedbackCompleted(userReviewId);
     }
     handleNext();
   };
@@ -83,7 +93,7 @@ const Feedback: React.FC<FeedbackProps> = ({
           </CustomButton>
         )}
         <CustomButton form="feedback-form" type="submit">
-          Siguiente
+          {currentStep === maxStep && !readonly ? 'Enviar' : 'Siguiente'}
         </CustomButton>
       </div>
     </div>

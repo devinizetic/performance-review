@@ -29,7 +29,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
 
   return (
     <div className="flex flex-col h-full w-full">
-      <Feedback questionAnswers={feedbackQuestionAnswers} />
+      <Feedback questionAnswers={feedbackQuestionAnswers} userReviewId={id} />
     </div>
   );
 };
