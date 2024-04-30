@@ -34,7 +34,14 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     isLogout: false
   },
   {
-    title: 'Logout',
+    title: 'Resultados',
+    path: '/feedback-results  ',
+    icon: <div>Icono feedback result</div>,
+    roles: [ADMIN_ROLE_ID],
+    isLogout: false
+  },
+  {
+    title: 'Salir',
     path: '',
     icon: <div>Icono Logout</div>,
     roles: [REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID, ADMIN_ROLE_ID],

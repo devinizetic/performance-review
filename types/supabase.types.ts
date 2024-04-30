@@ -95,3 +95,4 @@ export type ReviewerRevieweeView = {
 };
 
 export type AnswersSortedView = Views<'answers_sorted'>;
+export type FeedbackScore = Views<'feedback_scores'>;
