@@ -37,9 +37,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   };
 
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
-    console.log('HOLA');
     if (!readonly) {
-      console.log('CHAU');
       const answerId = formData.get('answerId');
       if (answerId) await updateAnswer(formData, FormType.FEEDBACK);
     }
