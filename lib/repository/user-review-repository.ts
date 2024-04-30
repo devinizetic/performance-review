@@ -38,16 +38,30 @@ const fullReviewQuery = (reviewId: string) => {
     .from('user_review')
     .select(
       `
-*,
-review:reviews!inner(questions:review_question(question_sequence, question:questions!inner(*, choices(*), questionHints:question_hints(*)))),
-reviewer:reviewer_id(*),
-reviewee:reviewee_id(*),
-answers(*)
-`
+      *,
+      review:reviews!inner(questions:review_question(question_sequence, question:questions!inner(*, choices(*), questionHints:question_hints(*)))),
+      reviewer:reviewer_id(*),
+      reviewee:reviewee_id(*),
+      answers(*)
+      `
     )
     .eq('id', reviewId)
     .eq('review.is_active', true)
     .maybeSingle();
+};
+
+const getFullReviewQuery = async ({
+  revieweeId
+}: {
+  revieweeId: string;
+}): Promise<any> => {
+  const { data, error } = await fullReviewQuery(revieweeId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
 
 const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
@@ -121,6 +135,7 @@ const getFeedbackResults = async (): Promise<FeedbackScore[]> => {
 
 const UserReviewRepository = {
   getById,
+  getFullReviewQuery,
   getActiveUserReviewByRevieweeId,
   getAllCurrentReviews,
   getFeedbackResults
