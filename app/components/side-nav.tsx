@@ -2,7 +2,7 @@
 import { SIDENAV_ITEMS } from '@/constants';
 import { SideNavItem } from '@/types/types';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { logout } from '../actions';
 
@@ -34,7 +34,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
       {item.isLogout ? (
         <div
           className={` hover:bg-primary hover:bg-opacity-10  ${
-            item.path === pathname ? 'bg-primary bg-opacity-10' : ''
+            pathname.includes(item.path) ? 'bg-primary bg-opacity-10' : ''
           }`}
         >
           <Link
@@ -51,7 +51,9 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
         <Link
           href={item.path}
           className={`flex flex-row space-x-4 items-center p-2 hover:bg-primary hover:bg-opacity-10 ${
-            item.path === pathname ? 'bg-primary bg-opacity-10 ' : ''
+            pathname.includes(item.path) && item.path !== '/'
+              ? 'bg-primary bg-opacity-10'
+              : ''
           }`}
         >
           <span className="font-semibold text-xl flex ml-4">{item.title}</span>

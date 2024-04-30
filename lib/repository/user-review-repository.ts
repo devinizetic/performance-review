@@ -1,5 +1,6 @@
 import {
   ActiveReview,
+  FeedbackScore,
   FullUserReview,
   SimpleUserReview
 } from '@/types/supabase.types';
@@ -108,11 +109,36 @@ const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
   return data as unknown as SimpleUserReview[];
 };
 
+const getFeedbackResultsQuery = () => {
+  const supabase = createServerClient();
+  return supabase.from('feedback_scores').select(
+    `
+    id,
+    reviewer_name,
+    reviewee_name,
+    score
+    `
+  );
+};
+
+const getFeedbackResults = async (): Promise<FeedbackScore[]> => {
+  const { data, error } = await getFeedbackResultsQuery();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) throw new Error('There are no active reviews');
+
+  return data as FeedbackScore[];
+};
+
 const UserReviewRepository = {
   getById,
   getFullReviewQuery,
   getActiveUserReviewByRevieweeId,
-  getAllCurrentReviews
+  getAllCurrentReviews,
+  getFeedbackResults
 };
 
 export default UserReviewRepository;

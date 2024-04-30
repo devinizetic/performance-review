@@ -28,14 +28,21 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   },
   {
     title: 'Evaluacion Actual',
-    path: '/current-review  ',
+    path: '/current-review',
     icon: <div>Icono current review</div>,
     roles: [ADMIN_ROLE_ID],
     isLogout: false
   },
   {
-    title: 'Logout',
-    path: '',
+    title: 'Resultados',
+    path: '/feedback-results  ',
+    icon: <div>Icono feedback result</div>,
+    roles: [ADMIN_ROLE_ID],
+    isLogout: false
+  },
+  {
+    title: 'Salir',
+    path: '/logout',
     icon: <div>Icono Logout</div>,
     roles: [REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID, ADMIN_ROLE_ID],
     isLogout: true

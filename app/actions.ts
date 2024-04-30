@@ -216,3 +216,27 @@ export const startActiveReview = async (reviewId: string) => {
 
   revalidatePath('/');
 };
+
+export const setFeedbackCompleted = async (userReviewId: string) => {
+  'use server';
+
+  const supabase = createServerClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!userReviewId) throw new Error('Esta evaluación no existe');
+
+  const timestamp = new Date().toISOString();
+  const feedbackUpdate = {
+    feedback_completed_timestamp: timestamp
+  };
+  const { error } = await supabase
+    .from('user_review')
+    .update(feedbackUpdate)
+    .eq('id', userReviewId.toString());
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/');
+};
