@@ -29,6 +29,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
           const revieweeCompleted = curReview.reviewee_completed_timestamp;
           const reviewerCompleted = curReview.reviewer_completed_timestamp;
           const isComplete = revieweeCompleted && reviewerCompleted;
+          const isFeedbackComplete = curReview.feedback_completed_timestamp;
           const bgColor = isComplete
             ? 'bg-green-100'
             : reviewerCompleted || revieweeCompleted
@@ -46,13 +47,15 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
                 {curReview.reviewee.full_name}
               </td>
               <td className="whitespace-nowrap px-6 py-4">
-                {isComplete
-                  ? 'Ambos completaron la evaluación'
+                {isFeedbackComplete
+                  ? 'Feedback completado'
+                  : isComplete
+                  ? 'Completada por ambos'
                   : revieweeCompleted
-                  ? 'Evaluado completó'
+                  ? 'Falta que el evaluador complete'
                   : reviewerCompleted
-                  ? 'Evaluador completó'
-                  : 'En progreso'}
+                  ? 'Falta que el evaluado complete'
+                  : 'Falta que ambos completen'}
               </td>
             </tr>
           );

@@ -9,6 +9,7 @@ interface ChoiceCardProps {
   name?: string;
   required?: boolean;
   readonly: boolean;
+  isReviewee: boolean;
 }
 
 const ChoiceCard: React.FC<ChoiceCardProps> = ({
@@ -17,7 +18,8 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
   onChange,
   name,
   required = false,
-  readonly
+  readonly,
+  isReviewee
 }) => {
   const isReadOnly = !onChange || readonly;
 
@@ -45,7 +47,11 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
             />
             <label className="cursor-pointer flex gap-1" htmlFor={choice.id}>
               <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
-              <span>{`${choice.choice_text}`}</span>
+              <span>{`${
+                isReviewee
+                  ? choice.choice_text_reviewee
+                  : choice.choice_text_reviewer
+              }`}</span>
             </label>
           </div>
         );

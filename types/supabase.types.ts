@@ -81,6 +81,7 @@ export type SimpleUserReview = {
   reviewee_started_timestamp: string | null;
   reviewer_completed_timestamp: string | null;
   reviewer_started_timestamp: string | null;
+  feedback_completed_timestamp: string | null;
 };
 
 export type ReviewerRevieweeView = {

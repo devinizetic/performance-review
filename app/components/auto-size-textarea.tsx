@@ -6,13 +6,15 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   required?: boolean;
   readonly?: boolean;
+  className?: string;
 }
 
 const AutoSizeTextarea: React.FC<Props> = ({
   value,
   onChange,
   required = true,
-  readonly = false
+  readonly = false,
+  className
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -24,7 +26,7 @@ const AutoSizeTextarea: React.FC<Props> = ({
   }, [value]);
 
   return (
-    <div className="px-6 pb-6">
+    <div className={`${className}`}>
       <textarea
         ref={textareaRef}
         name="answerText"

@@ -8,13 +8,17 @@ interface AnswerTextProps {
 
 const AnswerText: React.FC<AnswerTextProps> = ({ answerText, isReadOnly }) => {
   return (
-    <div className="flex h-full w-full border border-gray-200 rounded p-1">
+    <div className="flex h-full w-full border border-gray-200 rounded p-1 break-words">
       {isReadOnly ? (
         <div className="p-2">
           <p>{answerText}</p>
         </div>
       ) : (
-        <AutoSizeTextarea value={answerText} onChange={() => {}} />
+        <AutoSizeTextarea
+          className="px-6 pb-6"
+          value={answerText}
+          onChange={() => {}}
+        />
       )}
     </div>
   );
