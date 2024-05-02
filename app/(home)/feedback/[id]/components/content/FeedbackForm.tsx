@@ -4,6 +4,7 @@ import { FullQuestion } from '@/types/supabase.types';
 import { CustomText } from '@/app/components/common';
 import AutoSizeTextarea from '@/app/components/auto-size-textarea';
 import ChoiceCard from './ChoiceCard';
+import Loading from '@/app/(home)/loading';
 
 interface FeedbackFormProps {
   hasChoices: boolean;
@@ -24,7 +25,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
   feedbackChoiceId,
   readonly
 }) => {
-  if (!question) return <div>La pregunta no existe</div>;
+  if (!question)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
 
   const [formState, setFormState] = useState({
     initialAnswerText: '',

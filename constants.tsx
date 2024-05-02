@@ -24,7 +24,8 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     path: '/reviewees',
     icon: <div>Icono reviewees</div>,
     roles: [REVIEWER_ROLE_ID],
-    isLogout: false
+    isLogout: false,
+    highlightAlso: '/feedback'
   },
   {
     title: 'Evaluacion Actual',

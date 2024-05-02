@@ -5,6 +5,7 @@ import { FullQuestion } from '@/types/supabase.types';
 import { CustomText } from '@/app/components/common';
 import AnswersCard from './content/AnswersCard';
 import FeedbackForm from './content/FeedbackForm';
+import Loading from '@/app/(home)/loading';
 
 interface QuestionCardProps {
   questionId: string;
@@ -46,7 +47,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     getQuestion();
   }, [getQuestion]);
 
-  if (!question) return <div>La pregunta no existe</div>;
+  if (!question)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
 
   const hasChoices = question.choices && question.choices.length > 0;
 
