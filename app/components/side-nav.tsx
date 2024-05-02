@@ -1,8 +1,7 @@
 'use client';
-import { SIDENAV_ITEMS } from '@/constants';
 import { SideNavItem } from '@/types/types';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import { logout } from '../actions';
 
@@ -29,6 +28,13 @@ export default SideNav;
 const MenuItem = ({ item }: { item: SideNavItem }) => {
   const pathname = usePathname();
 
+  const highlight = (item: SideNavItem) =>
+    (pathname.includes(item.path) ||
+      (item.highlightAlso
+        ? pathname.includes(item.highlightAlso || '')
+        : null)) &&
+    item.path !== '/';
+
   return (
     <div>
       {item.isLogout ? (
@@ -51,9 +57,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
         <Link
           href={item.path}
           className={`flex flex-row space-x-4 items-center p-2 hover:bg-primary hover:bg-opacity-10 ${
-            pathname.includes(item.path) && item.path !== '/'
-              ? 'bg-primary bg-opacity-10'
-              : ''
+            highlight(item) ? 'bg-primary bg-opacity-10' : ''
           }`}
         >
           <span className="font-semibold text-xl flex ml-4">{item.title}</span>

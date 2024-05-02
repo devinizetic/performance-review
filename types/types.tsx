@@ -4,6 +4,7 @@ export type SideNavItem = {
   icon?: JSX.Element;
   roles?: string[];
   isLogout?: boolean;
+  highlightAlso?: string;
 };
 
 export type UserRoleMap = {
