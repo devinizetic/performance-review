@@ -120,7 +120,7 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
           </CustomSimpleButton>
         </div>
       ) : (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <CustomSimpleButton onClick={onBackPressed}>Atrás</CustomSimpleButton>
           <CustomSimpleButton onClick={onComplete}>Enviar</CustomSimpleButton>
         </div>

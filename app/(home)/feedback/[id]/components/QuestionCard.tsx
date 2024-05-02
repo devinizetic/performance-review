@@ -62,7 +62,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         {question.question_title}
       </h1>
       <div className="flex flex-col gap-4 px-6 py-4">
-        <div className="shrink text-lg font-medium">
+        <div className="shrink text-lg font-medium text-justify">
           {question.question_description}
         </div>
         {question.questionHints && question.questionHints.length > 0 ? (
@@ -90,6 +90,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               answerChoiceId={revieweeAnswerChoiceId}
               answerText={revieweeAnswerText}
               readonly={readonly}
+              isReviewee={true}
             />
             {(reviewerAnswerText || reviewerAnswerChoiceId) && (
               <AnswersCard
@@ -99,11 +100,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 answerChoiceId={reviewerAnswerChoiceId}
                 answerText={reviewerAnswerText}
                 readonly={readonly}
+                isReviewee={false}
               />
             )}
           </div>
         </div>
-        <div className="px-5">
+        <div>
           <FeedbackForm
             question={question}
             hasChoices={hasChoices}
@@ -112,6 +114,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             handleSubmitAnswer={handleSubmitAnswer}
             feedbackAnswerId={feedbackAnswerId}
             readonly={readonly}
+            isReviewee={false}
           />
         </div>
       </div>

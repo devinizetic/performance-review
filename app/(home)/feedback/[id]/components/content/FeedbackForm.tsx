@@ -14,6 +14,7 @@ interface FeedbackFormProps {
   handleSubmitAnswer: (formData: FormData) => Promise<void>;
   feedbackAnswerId: string;
   readonly: boolean;
+  isReviewee: boolean;
 }
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({
@@ -23,7 +24,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
   feedbackAnswerId,
   feedbackText,
   feedbackChoiceId,
-  readonly
+  readonly,
+  isReviewee
 }) => {
   if (!question)
     return (
@@ -69,6 +71,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
               name="answerChoiceId"
               required
               readonly={readonly}
+              isReviewee={isReviewee}
             />
             <input
               type="hidden"

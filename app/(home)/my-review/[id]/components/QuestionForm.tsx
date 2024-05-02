@@ -53,7 +53,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
       <h1 className="shrink text-xl font-bold p-6 text-white bg-primary rounded-t-lg">
         {question.question_title}
       </h1>
-      <div className="shrink text-lg px-6 font-medium">
+      <div className="shrink text-lg px-6 font-medium text-justify">
         {question.question_description}
       </div>
       {question.questionHints && question.questionHints.length > 0 ? (
@@ -98,7 +98,11 @@ const QuestionForm: FC<QuestionFormProps> = ({
               />
               <label className="cursor-pointer flex gap-1" htmlFor={choice.id}>
                 <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
-                <span>{`${choice.choice_text}`}</span>
+                <span>{`${
+                  isReviewee
+                    ? choice.choice_text_reviewee
+                    : choice.choice_text_reviewer
+                }`}</span>
               </label>
             </div>
           ))}
@@ -106,7 +110,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
       ) : null}
       {hasChoices ? (
         <div className="shrink text-lg font-bold px-6">
-          Justifique su respuesta
+          Justificá tu respuesta
         </div>
       ) : null}
       <input type="hidden" name="questionId" value={question.id || ''} />
@@ -117,6 +121,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
         value={formState.initialAnswerText}
       />
       <AutoSizeTextarea
+        className="px-6 pb-6"
         value={formState.answerText}
         onChange={(e) =>
           setFormState({ ...formState, answerText: e.target.value })

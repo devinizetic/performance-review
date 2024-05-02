@@ -130,7 +130,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
   }
 
   return (
-    <div className="h-full flex flex-col justify-center items-center flex-grow">
+    <div className="h-full w-full flex flex-col justify-center items-center flex-grow">
       {showStartScreen || showCompleteScreen ? (
         <div className="flex flex-col w-full h-full py-24 px-64">
           <InfoScreen
@@ -145,7 +145,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
       ) : (
         <div className="flex flex-col w-full h-full py-24 px-64 gap-4">
           {isReviewee ? null : (
-            <div>
+            <div className="flex-1">
               <span>
                 Estas evaluando a: <b>{activeReview.reviewee.full_name}</b>
               </span>

@@ -12,6 +12,7 @@ interface AnswersCardProps {
   answerText: string;
   title: string;
   readonly: boolean;
+  isReviewee: boolean;
 }
 
 const AnswersCard: React.FC<AnswersCardProps> = ({
@@ -20,11 +21,12 @@ const AnswersCard: React.FC<AnswersCardProps> = ({
   answerChoiceId,
   answerText,
   title,
-  readonly
+  readonly,
+  isReviewee
 }) => {
   return (
     <div className="flex flex-col w-3/5">
-      <div className="flex items-center justify-center p-5 w-full">
+      <div className="flex items-center justify-center py-5 pr-5 w-full">
         <CustomText size="medium" bold>
           {`${title}:`}
         </CustomText>
@@ -34,11 +36,12 @@ const AnswersCard: React.FC<AnswersCardProps> = ({
           question={question}
           answerChoiceId={answerChoiceId}
           readonly={readonly}
+          isReviewee={isReviewee}
         />
       )}
       {hasChoices ? (
         <CustomText size="medium" bold>
-          Justifique su respuesta
+          Justificá tu respuesta
         </CustomText>
       ) : null}
       <input type="hidden" name="questionId" value={question.id || ''} />
