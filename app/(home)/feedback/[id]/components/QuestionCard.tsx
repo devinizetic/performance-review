@@ -40,6 +40,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const questionData = await QuestionsRepositoryClient.getById({
       id: questionId
     });
+
+    if (questionData && questionData.choices) {
+      questionData.choices.sort(
+        (a, b) => (a.choice_value || 0) - (b.choice_value || 0)
+      );
+    }
+
     setQuestion(questionData);
   }, [questionId]);
 
