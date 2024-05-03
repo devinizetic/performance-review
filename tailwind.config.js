@@ -13,6 +13,9 @@ module.exports = {
       height: {
         'screen-minus-header': 'calc(100vh - 3rem)'
       },
+      backgroundImage: {
+        'devlights-bg': "url('/images/devlights-bg.jpg')"
+      },
       colors: {
         primary: '#8D408D',
         secondary: '#5090CC',

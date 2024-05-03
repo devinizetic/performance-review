@@ -4,6 +4,7 @@ import CurrentReviewTable from './components/CurrentReviewTable';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import ReviewsRepository from '@/lib/repository/reviews-repository';
 import ClientButton from './components/ClientButton';
+import Link from 'next/link';
 
 export default async function CurrentReview() {
   const supabase = createServerClient();
@@ -27,7 +28,13 @@ export default async function CurrentReview() {
   const currentReviews = await UserReviewRepository.getAllCurrentReviews();
 
   return currentReviews && currentReviews.length ? (
-    <div>
+    <div className="flex flex-col gap-4">
+      <Link
+        className="bg-green-700 p-3 text-white font-bold rounded-md text-center w-1/6"
+        href={'/api/current-review/download'}
+      >
+        Exportar
+      </Link>
       <CurrentReviewTable currentReviews={currentReviews}></CurrentReviewTable>
     </div>
   ) : (

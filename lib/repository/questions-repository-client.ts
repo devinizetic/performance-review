@@ -14,7 +14,7 @@ const getQuestionByIdQuery = (id: string) => {
       role_id,
       question_title,
       question_description,
-      choices(id, choice_text, choice_value),
+      choices(id, choice_text_reviewer, choice_text_reviewee, choice_value),
       questionHints:question_hints(id, question_id, hint_text_reviewer, hint_text_reviewee, hint_sequence)
       `
     )

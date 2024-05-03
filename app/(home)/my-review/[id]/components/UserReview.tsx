@@ -51,7 +51,8 @@ const UserReview: React.FC<UserReviewProps> = async ({
     (question) => question.question.id === currentQuestionId
   );
 
-  const [currentStep, setCurrentStep] = useState(currentQuestionIndex || 0);
+  const step = currentQuestionIndex < 0 ? 0 : currentQuestionIndex;
+  const [currentStep, setCurrentStep] = useState(step || 0);
   const [showCompleteScreen, setShowCompleteScreen] = useState(false);
 
   function handlePrevious(): void {
@@ -130,9 +131,9 @@ const UserReview: React.FC<UserReviewProps> = async ({
   }
 
   return (
-    <div className="h-full flex flex-col justify-center items-center flex-grow">
+    <div className="h-full w-full flex flex-col justify-center items-center flex-grow">
       {showStartScreen || showCompleteScreen ? (
-        <div className="flex flex-col w-full h-full py-24 px-64">
+        <div className="flex flex-col w-full h-full lg:pb-24 lg:px-64">
           <InfoScreen
             onStart={handleStartReview}
             onComplete={handleCompleteReview}
@@ -143,7 +144,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
           />
         </div>
       ) : (
-        <div className="flex flex-col w-full h-full py-24 px-64 gap-4">
+        <div className="flex flex-col w-full h-full lg:pb-24 lg:px-64 gap-4">
           {isReviewee ? null : (
             <div>
               <span>

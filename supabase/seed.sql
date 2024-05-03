@@ -5,13 +5,13 @@ VALUES
   ('f7bd405b-ff62-47a5-812c-c6058781b2e1', 'reviewee')
   ;
 
-INSERT INTO public.choices (id, choice_text, choice_value) 
+INSERT INTO public.choices (id, choice_text_reviewer, choice_text_reviewee, choice_value) 
 VALUES 
-  ('e6baf2e7-1cb3-4c9c-a063-557c84a01e3d', 'No cumplió las expectativas', 1),
-  ('0fe15ebf-4dbc-4529-a602-1a875af97b94', 'Cumplió las expectativas parcialmente', 2),
-  ('34baac1b-e558-43f7-9e02-cb1080e66b66', 'Cumplió las expectativas con éxito', 3),
-  ('3b9625b1-7cd1-4293-812e-c8fc2dbf6ffc', 'Superó las expectativas', 4),
-  ('f559db54-a438-40c7-8fb5-3cfda244a7ec', 'Superó las expectativas ampliamente', 5)
+  ('e6baf2e7-1cb3-4c9c-a063-557c84a01e3d', 'No cumplió las expectativas', 'No cumplí las expectativas', 1),
+  ('0fe15ebf-4dbc-4529-a602-1a875af97b94', 'Cumplió las expectativas parcialmente', 'Cumplí las expectativas parcialmente', 2),
+  ('34baac1b-e558-43f7-9e02-cb1080e66b66', 'Cumplió las expectativas con éxito', 'Cumplí las expectativas con éxito', 3),
+  ('3b9625b1-7cd1-4293-812e-c8fc2dbf6ffc', 'Superó las expectativas', 'Superé las expectativas', 4),
+  ('f559db54-a438-40c7-8fb5-3cfda244a7ec', 'Superó las expectativas ampliamente', 'Superé las expectativas ampliamente', 5)
   ;
 
 INSERT INTO public.questions (id, question_answer_type, question_text_reviewer, question_text_reviewee, role_id, question_title, question_description) 
@@ -21,11 +21,11 @@ VALUES
   ('5E2BD2BF-5D9E-43F8-B150-4BC8E310C966', 'text', '¿Cómo crees que tu referente puede acompañarte mejor?', '¿Cómo crees que tu referente puede acompañarte mejor?', 'f7bd405b-ff62-47a5-812c-c6058781b2e1', 'Relación con tu referente (PM, Líder Técnico) dentro del proyecto', null),
   ('319CD909-34A1-4E09-95BA-86D939690AB4', 'text', '¿Estás satisfecho con la comunicación con tu referente? ¿Por qué?', '¿Estás satisfecho con la comunicación con tu referente? ¿Por qué?', 'f7bd405b-ff62-47a5-812c-c6058781b2e1', 'Relación con tu referente (PM, Líder Técnico) dentro del proyecto', null),
   ('6A1865E2-2BED-41D9-9082-9E14F3FA9B01', 'text', '¿Algún feedback que quieras compartir sobre tu referente?', '¿Algún feedback que quieras compartir sobre tu referente?', 'f7bd405b-ff62-47a5-812c-c6058781b2e1', 'Relación con tu referente (PM, Líder Técnico) dentro del proyecto', null),
-  ('8F5FC2D7-5D0A-41EB-AF91-5D789B77EE65', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Calidad en entregas', 'La "calidad de entrega"  se refiere a la efectividad con la que un empleado o un equipo completa y entrega los resultados de su trabajo'),
+  ('8F5FC2D7-5D0A-41EB-AF91-5D789B77EE65', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Calidad en entregas', 'La "calidad de entrega" se refiere a la efectividad con la que el evaluado o un equipo completa y entrega los resultados de su trabajo'),
   ('96311BB5-2F2E-4940-9470-91A7AEE8145D', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Actitud ante los desafíos', 'La "actitud ante desafíos" se refiere a la disposición mental y emocional que una persona muestra cuando se enfrenta a situaciones difíciles, problemas o tareas que requieren un esfuerzo adicional o superación de obstáculos. Una actitud positiva y proactiva ante los desafíos es fundamental para el crecimiento personal y profesional'),
   ('57E35424-085F-4684-B58F-718E728E760E', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Espíritu de equipo', 'Se refiere a la actitud y la mentalidad compartida por los miembros de un grupo o equipo de trabajo. Implica colaboración, apoyo mutuo, compromiso compartido con metas y objetivos comunes, así como un sentido de compañerismo y cohesión dentro del equipo. '),
   ('CB579AD8-EF6A-43B3-8E66-B2E89117221F', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Dueño de tu futuro', 'Enfatiza la responsabilidad y el control que una persona tiene sobre su propio destino y desarrollo personal y profesional. Implica la idea de que cada individuo tiene la capacidad de tomar decisiones conscientes y acciones que moldean su futuro en lugar de simplemente dejarse llevar por circunstancias externas o pasivas. Ser dueño de tu futuro es un enfoque proactivo y capacitante para la vida y la carrera, que te permite crear la vida que deseas en lugar de esperar a que las cosas sucedan por sí solas.'),
-  ('3B09B63F-DAD7-4153-A4D2-A129D8586210', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Inglés', 'TODO: definir descripcion de ingles'),
+  ('3B09B63F-DAD7-4153-A4D2-A129D8586210', 'multiple_choice_with_text', 'Marcá el puntaje que consideres correcto', 'Marcá el puntaje que consideres correcto', null, 'Inglés', 'El nivel de inglés se refiere a la capacidad de una persona para usar el idioma inglés en términos de lectura, escritura, habla y comprensión. Este nivel puede ser desde básico hasta avanzado o fluido. Evaluar el nivel de inglés puede ayudar a determinar la capacidad de una persona para desempeñarse en roles que requieren el uso del inglés.'),
   ('3C70B7B5-EB22-4D6E-870C-CC1F1614AE97', 'text', '¿En que aspectos te gustaría que se enfoque estos próximos 6 meses?', '¿En qué aspectos te gustaría enfocarte estos próximos 6 meses?', null, 'Próximo ciclo', null),
   ('873632CB-3FCA-48FB-91A6-FB16417B0224', 'text', '¿Qué podemos hacer para ayudarlo a cumplir sus metas?', '¿Qué podemos hacer para ayudarte a cumplir tus metas?', null, 'Próximo ciclo', null)
   ;
@@ -269,13 +269,12 @@ VALUES
 ('677CB2DB-6F64-4D7D-95D2-12EAA1EFDC74', '66D583F5-3804-47CE-8BBF-813CFB9B7358'),
 --dummy
 ('3A95D6F3-D9F8-4B45-8A13-3DC82FABE148', '049DC895-FAC7-426D-AF63-79E8FF431B2D'),
-('3A95D6F3-D9F8-4B45-8A13-3DC82FABE148', 'EAF78615-7CAE-48FC-A8A8-4355B965C6B6'),
 ('EAF78615-7CAE-48FC-A8A8-4355B965C6B6', '3A95D6F3-D9F8-4B45-8A13-3DC82FABE148')
   ;
 
 INSERT INTO public.reviews (id, start_date, end_date, is_active)
 VALUES
-  ('F8A54867-D690-451F-989B-6337CEAA651C', '2024-01-01', '2024-01-01', true)
+  ('F8A54867-D690-451F-989B-6337CEAA651C', null, null, true)
   ;
 
 INSERT INTO public.review_question (review_id, question_id, question_sequence)

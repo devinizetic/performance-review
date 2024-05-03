@@ -89,7 +89,8 @@ const getAllCurrentReviewsQuery = () => {
     reviewee_completed_timestamp,
     reviewee_started_timestamp,
     reviewer_completed_timestamp,
-    reviewer_started_timestamp
+    reviewer_started_timestamp,
+    feedback_completed_timestamp
     `
   );
 };

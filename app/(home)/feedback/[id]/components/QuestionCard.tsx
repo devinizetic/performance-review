@@ -5,6 +5,7 @@ import { FullQuestion } from '@/types/supabase.types';
 import { CustomText } from '@/app/components/common';
 import AnswersCard from './content/AnswersCard';
 import FeedbackForm from './content/FeedbackForm';
+import Loading from '@/app/(home)/loading';
 
 interface QuestionCardProps {
   questionId: string;
@@ -46,7 +47,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     getQuestion();
   }, [getQuestion]);
 
-  if (!question) return <div>La pregunta no existe</div>;
+  if (!question)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
 
   const hasChoices = question.choices && question.choices.length > 0;
 
@@ -56,7 +62,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         {question.question_title}
       </h1>
       <div className="flex flex-col gap-4 px-6 py-4">
-        <div className="shrink text-lg font-medium">
+        <div className="shrink text-lg font-medium text-justify">
           {question.question_description}
         </div>
         {question.questionHints && question.questionHints.length > 0 ? (
@@ -84,6 +90,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               answerChoiceId={revieweeAnswerChoiceId}
               answerText={revieweeAnswerText}
               readonly={readonly}
+              isReviewee={true}
             />
             {(reviewerAnswerText || reviewerAnswerChoiceId) && (
               <AnswersCard
@@ -93,11 +100,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 answerChoiceId={reviewerAnswerChoiceId}
                 answerText={reviewerAnswerText}
                 readonly={readonly}
+                isReviewee={false}
               />
             )}
           </div>
         </div>
-        <div className="px-5">
+        <div>
           <FeedbackForm
             question={question}
             hasChoices={hasChoices}
@@ -106,6 +114,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             handleSubmitAnswer={handleSubmitAnswer}
             feedbackAnswerId={feedbackAnswerId}
             readonly={readonly}
+            isReviewee={false}
           />
         </div>
       </div>

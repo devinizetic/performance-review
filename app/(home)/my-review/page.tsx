@@ -15,19 +15,8 @@ export default async function MyReview() {
       revieweeId: session.user.id
     });
 
-  const fullActiveReview = await UserReviewRepository.getFullReviewQuery({
-    revieweeId: session.user.id
-  });
-
-  console.log('HOLALAL');
-  console.log(fullActiveReview);
-  console.log('CHAUUUU');
-
   if (activeReview && activeReview.id)
     redirect(`/my-review/${activeReview.id}`);
-
-  /* if (  isRevieweeCompleted && isReviewerCompleted && isFeedbackCompleted)
-    redirect(`/my-review/${activeReview.id}/feedback`); */
 
   return (
     <div className="text-xl font-bold flex justify-center items-center flex-grow">
