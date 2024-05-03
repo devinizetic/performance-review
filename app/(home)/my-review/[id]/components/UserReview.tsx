@@ -78,7 +78,11 @@ const UserReview: React.FC<UserReviewProps> = async ({
   const handleSubmitAnswer = async (formData: FormData): Promise<void> => {
     const answerId = formData.get('answerId');
 
-    if (answerId) await updateAnswer(formData, FormType.REVIEWEE);
+    if (answerId)
+      await updateAnswer(
+        formData,
+        isReviewee ? FormType.REVIEWEE : FormType.REVIEWER
+      );
     else await createAnswer(formData, isReviewee);
 
     handleNext();
