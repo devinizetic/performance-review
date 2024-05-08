@@ -12,6 +12,7 @@ import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
 import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
+import Image from 'next/image';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -128,8 +129,18 @@ const UserReview: React.FC<UserReviewProps> = async ({
   if (isReviewCompleted) {
     return (
       <div className="flex flex-col justify-center items-center flex-grow">
-        Gracias por haber completado la evaluacion! Por favor, espera a que tu
-        evaluado{isReviewee ? 'r' : ''} complete la suya.
+        <div>
+          <Image
+            src="/images/axel-fiesta.png"
+            width={250}
+            height={250}
+            alt="Picture of the author"
+          />
+        </div>
+        <div>
+          Gracias por haber completado la evaluacion! Por favor, espera a que tu
+          evaluado{isReviewee ? 'r' : ''} complete la suya.
+        </div>
       </div>
     );
   }
