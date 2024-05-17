@@ -6,6 +6,7 @@ import UserReview from './components/UserReview';
 import { FullUserReview } from '@/types/supabase.types';
 import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
 import AnswersRepository from '@/lib/repository/answers-repository';
+import { ProgressBar } from '@/app/components/common';
 
 interface MyReviewProps {
   params: { id: string };
@@ -58,7 +59,13 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
   processQuestions(activeReview, isReviewee);
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full w-full gap-4">
+      <div className="flex flex-col w-full lg:px-52">
+        <ProgressBar
+          total={activeReview.review.questions.length}
+          completed={activeReview.answers.length}
+        />
+      </div>
       <UserReview
         activeReview={activeReview}
         isReviewee={isReviewee}
