@@ -148,7 +148,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
   return (
     <div className="h-full w-full flex flex-col justify-center items-center flex-grow">
       {showStartScreen || showCompleteScreen ? (
-        <div className="flex flex-col w-full h-full lg:pb-24 lg:px-64">
+        <div className="flex flex-col w-full h-full lg:pb-20 lg:px-52">
           <InfoScreen
             onStart={handleStartReview}
             onComplete={handleCompleteReview}
@@ -159,7 +159,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
           />
         </div>
       ) : (
-        <div className="flex flex-col w-full h-full lg:pb-24 lg:px-64 gap-4">
+        <div className="flex flex-col w-full h-full lg:pb-20 lg:px-52 gap-4">
           {isReviewee ? null : (
             <div>
               <span>
