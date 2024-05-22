@@ -4,7 +4,6 @@ import { FormType } from '@/types';
 import { createServerClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { off } from 'process';
 
 export const logout = async () => {
   const supabase = createServerClient();
@@ -28,6 +27,24 @@ export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
 
   if (!questionId || !userReviewId || !answerText)
     throw new Error('Missing Form Data');
+
+  const { data: existingAnswer, error: existingAnswerError } = await supabase
+    .from('answers')
+    .select(
+      `
+    id
+    `
+    )
+    .eq('user_review_id', userReviewId)
+    .eq('question_id', questionId)
+    .maybeSingle();
+
+  if (existingAnswer != null) {
+    const type = isReviewee ? FormType.REVIEWEE : FormType.REVIEWER;
+    formData.set('answerId', existingAnswer.id);
+    await updateAnswer(formData, type);
+    return;
+  }
 
   const answer = {
     question_id: questionId.toString(),
