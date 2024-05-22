@@ -42,7 +42,7 @@ export default async function Login({
     >
       <button className="bg-[#fff] border-[#d3d3d3] border-solid border-[1px] rounded-[4px] text-[#737373] cursor-pointerm-0 px-3 py-3 text-center flex items-center justify-center gap-3">
         <Image src={googleLogo} alt="Google logo" width="20" height="20" />
-        Sign in with Google
+        Iniciar sesión con Google
       </button>
       {searchParams?.message && (
         <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
