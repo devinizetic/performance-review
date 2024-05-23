@@ -98,15 +98,15 @@ const sendStartReviewEmail = async ({
     const reviewerResp = await sendEmail({
       to: reviewerData.username,
       from: DEFAULT_FROM_EMAIL,
-      subject: 'Evaluación completada',
-      body: messageBody
+      subject: 'Inicio de Periodo de Evaluacion',
+      body: reviewerMessageBody
     });
 
     const revieweeResp = await sendEmail({
-      to: reviewerData.username,
+      to: revieweeData.username,
       from: DEFAULT_FROM_EMAIL,
-      subject: 'Evaluación completada',
-      body: messageBody
+      subject: 'Inicio de Periodo de Evaluacion',
+      body: revieweeMessageBody
     });
 
     return true;
