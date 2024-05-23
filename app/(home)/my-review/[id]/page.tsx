@@ -56,6 +56,16 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
 
   const isReviewee = session.user.id === activeReview.reviewee_id;
 
+  const isReviewCompleted = isReviewee
+    ? activeReview.reviewee_completed_timestamp
+    : activeReview.reviewer_completed_timestamp;
+  const isRevieweeAndReviewerCompleted =
+    activeReview.reviewer_completed_timestamp &&
+    activeReview.reviewee_completed_timestamp;
+
+  if (isReviewCompleted && !isRevieweeAndReviewerCompleted)
+    redirect(`/my-review/${activeReview.id}/complete`);
+
   processQuestions(activeReview, isReviewee);
 
   return (
