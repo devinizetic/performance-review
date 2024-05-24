@@ -1,5 +1,7 @@
 'use server';
 
+import { sendEmail } from '@/lib/services/amazon-ses-service';
+import EmailService from '@/lib/services/email-service';
 import { FormType } from '@/types';
 import { createServerClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -148,6 +150,8 @@ export const setPerformanceReviewStarted = async (
 
 export const setPerformanceReviewCompleted = async (
   userReviewId: string,
+  reviewerId: string,
+  revieweeId: string,
   isReviewee: boolean
 ) => {
   'use server';
@@ -174,6 +178,13 @@ export const setPerformanceReviewCompleted = async (
     .eq('id', userReviewId.toString());
 
   if (error) throw new Error(error.message);
+  if (isReviewee)
+    await EmailService.sendCompleteReviewRevieweeEmail({ revieweeId });
+  else
+    await EmailService.sendCompleteReviewReviewerEmail({
+      revieweeId,
+      reviewerId
+    });
 
   revalidatePath('/');
 };
@@ -230,6 +241,9 @@ export const startActiveReview = async (reviewId: string) => {
     .eq('id', reviewId);
 
   if (error) throw new Error(error.message);
+
+  //send start email to all users
+  EmailService.sendInitialReviewEmail();
 
   revalidatePath('/');
 };
