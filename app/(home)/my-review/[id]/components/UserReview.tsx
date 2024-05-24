@@ -5,14 +5,14 @@ import {
   setPerformanceReviewStarted,
   updateAnswer
 } from '@/app/actions';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { AnswersSortedView, FullUserReview } from '@/types/supabase.types';
 import QuestionForm from './QuestionForm';
 import ReviewFooter from './ReviewFooter';
 import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
 import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -38,10 +38,10 @@ function getCurrentQuestionId(
   }
 
   return activeReview.review.questions[activeReview.review.questions.length - 1]
-    .id; // return last question
+    .question.id; // return last question
 }
 
-const UserReview: React.FC<UserReviewProps> = async ({
+const UserReview: React.FC<UserReviewProps> = ({
   activeReview,
   isReviewee,
   questionAnswers
@@ -55,6 +55,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
   const step = currentQuestionIndex < 0 ? 0 : currentQuestionIndex;
   const [currentStep, setCurrentStep] = useState(step || 0);
   const [showCompleteScreen, setShowCompleteScreen] = useState(false);
+  const router = useRouter();
 
   function handlePrevious(): void {
     if (currentStep === 0) return;
@@ -102,7 +103,13 @@ const UserReview: React.FC<UserReviewProps> = async ({
 
     if (!userReviewId) throw new Error('Missing user review id');
 
-    await setPerformanceReviewCompleted(userReviewId, isReviewee);
+    await setPerformanceReviewCompleted(
+      userReviewId,
+      activeReview.reviewer_id,
+      activeReview.reviewee_id,
+      isReviewee
+    );
+    router.push(`/my-review/${userReviewId}/complete`);
   };
 
   const showStartScreen = isReviewee
@@ -111,9 +118,7 @@ const UserReview: React.FC<UserReviewProps> = async ({
   const personName = isReviewee
     ? activeReview.reviewee.full_name
     : activeReview.reviewer.full_name;
-  const isReviewCompleted = isReviewee
-    ? activeReview.reviewee_completed_timestamp
-    : activeReview.reviewer_completed_timestamp;
+
   const isRevieweeAndReviewerCompleted =
     activeReview.reviewer_completed_timestamp &&
     activeReview.reviewee_completed_timestamp;
@@ -122,25 +127,6 @@ const UserReview: React.FC<UserReviewProps> = async ({
     return (
       <div className="flex flex-col justify-center items-center flex-grow">
         <Feedback questionAnswers={questionAnswers} readonly />
-      </div>
-    );
-  }
-
-  if (isReviewCompleted) {
-    return (
-      <div className="flex flex-col justify-center items-center flex-grow">
-        <div>
-          <Image
-            src="/images/axel-fiesta.png"
-            width={250}
-            height={250}
-            alt="Picture of the author"
-          />
-        </div>
-        <div>
-          Gracias por haber completado la evaluacion! Por favor, espera a que tu
-          evaluado{isReviewee ? 'r' : ''} complete la suya.
-        </div>
       </div>
     );
   }

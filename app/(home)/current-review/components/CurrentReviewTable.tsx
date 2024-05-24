@@ -1,4 +1,3 @@
-import AvatarImage from '@/app/components/avatar-image';
 import { SimpleUserReview } from '@/types/supabase.types';
 import React from 'react';
 

@@ -1,5 +1,29 @@
-import { UserRole } from '@/types/supabase.types';
+import { AppUser, UserRole } from '@/types/supabase.types';
 import { createServerClient } from '@/utils/supabase/server';
+
+const getAllUsersQuery = () => {
+  const supabase = createServerClient();
+  return supabase
+    .from('app_users')
+    .select(
+      `
+      full_name,
+      username
+      `
+    )
+    .eq('is_active', true);
+};
+
+const getAllUsers = async (): Promise<AppUser[]> => {
+  const { data, error } = await getAllUsersQuery();
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) return [] as AppUser[];
+
+  return data as AppUser[];
+};
 
 const userRolesQuery = (userId: string) => {
   const supabase = createServerClient();
@@ -26,7 +50,8 @@ const getUserRoles = async ({ id }: { id: string }): Promise<UserRole[]> => {
 };
 
 const UserRepository = {
-  getUserRoles
+  getUserRoles,
+  getAllUsers
 };
 
 export default UserRepository;

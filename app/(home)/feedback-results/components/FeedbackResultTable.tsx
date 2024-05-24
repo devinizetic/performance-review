@@ -1,4 +1,3 @@
-import AvatarImage from '@/app/components/avatar-image';
 import { FeedbackScore } from '@/types/supabase.types';
 import React from 'react';
 
@@ -37,7 +36,9 @@ const FeedbackResultTable: React.FC<FeedbackResultTableProps> = ({
               <td className="whitespace-nowrap px-6 py-4 items-center">
                 {feedback.reviewee_name}
               </td>
-              <td className="whitespace-nowrap px-6 py-4">{feedback.score}</td>
+              <td className="whitespace-nowrap px-6 py-4">
+                {feedback.score}/25
+              </td>
             </tr>
           );
         })}
