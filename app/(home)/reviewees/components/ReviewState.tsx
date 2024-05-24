@@ -32,7 +32,7 @@ const ReviewState: React.FC<ReviewStateProps> = ({
   return (
     <Link
       className="text-blue-700 underline cursor-pointer"
-      href={{ pathname: linkPath, query: { reviewerId, revieweeId } }}
+      href={{ pathname: linkPath }}
     >
       {linkLabel}
     </Link>
