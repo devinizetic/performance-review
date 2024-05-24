@@ -229,8 +229,6 @@ export const startActiveReview = async (reviewId: string) => {
       .insert(userReview);
 
     if (insertError) throw new Error(insertError.message);
-
-    //send start email to all users
   }
 
   const timestamp = new Date().toISOString();
@@ -243,6 +241,9 @@ export const startActiveReview = async (reviewId: string) => {
     .eq('id', reviewId);
 
   if (error) throw new Error(error.message);
+
+  //send start email to all users
+  EmailService.sendInitialReviewEmail();
 
   revalidatePath('/');
 };
