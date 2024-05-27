@@ -14,7 +14,7 @@ module.exports = {
         'screen-minus-header': 'calc(100vh - 3rem)'
       },
       backgroundImage: {
-        'devlights-bg': "url('/images/dev-party-2.jpg')"
+        'devlights-bg': "url('/images/dev-login.png')"
       },
       colors: {
         primary: '#8D408D',

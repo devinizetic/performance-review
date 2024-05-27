@@ -68,18 +68,20 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
 
   processQuestions(activeReview, isReviewee);
 
-  const completedAnswersLength = activeReview.answers.filter(
-    (answer) =>
-      (isReviewee && answer.reviewee_answer_text) ||
-      (!isReviewee && answer.reviewer_answer_text)
-  ).length;
+  const completedAnswersLength = !activeReview.answers
+    ? 0
+    : activeReview.answers.filter(
+        (answer) =>
+          (isReviewee && answer.reviewee_answer_text) ||
+          (!isReviewee && answer.reviewer_answer_text)
+      ).length;
 
   return (
     <div className="flex flex-col h-full w-full gap-4">
       <div className="flex flex-col w-full lg:px-52">
         <ProgressBar
           total={activeReview.review.questions.length}
-          completed={activeReview.answers.length}
+          completed={completedAnswersLength}
         />
       </div>
       <UserReview
