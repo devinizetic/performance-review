@@ -85,7 +85,7 @@ const sendCompleteReviewReviewerEmail = async ({
     <p>Estimado/a <b>${reviewerData.full_name}</b>,</p>
     <p>
       Esperamos que este mensaje te encuentre bien. Nos complace informarte que hemos recibido con éxito
-      la evaluación de desempeño que has completado sobre ${revieweeData.full_name}.
+      la evaluación de desempeño que has completado sobre <b>${revieweeData.full_name}</b>.
     </p>
     <p>
       Queremos agradecerte por tu tiempo y dedicación en este importante proceso.

@@ -1,6 +1,5 @@
 'use server';
 
-import { sendEmail } from '@/lib/services/amazon-ses-service';
 import EmailService from '@/lib/services/email-service';
 import { FormType } from '@/types';
 import { createServerClient } from '@/utils/supabase/server';
@@ -243,7 +242,7 @@ export const startActiveReview = async (reviewId: string) => {
   if (error) throw new Error(error.message);
 
   //send start email to all users
-  EmailService.sendInitialReviewEmail();
+  await EmailService.sendInitialReviewEmail();
 
   revalidatePath('/');
 };
