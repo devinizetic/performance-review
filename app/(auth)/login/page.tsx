@@ -37,13 +37,15 @@ export default async function Login({
 
   return (
     <form
-      className="flex h-screen items-center justify-center"
+      className="flex h-screen items-end justify-center"
       action={signInWithGoogle}
     >
-      <button className="bg-[#fff] border-[#d3d3d3] border-solid border-[1px] rounded-[4px] text-[#737373] cursor-pointerm-0 px-3 py-3 text-center flex items-center justify-center gap-3">
-        <Image src={googleLogo} alt="Google logo" width="20" height="20" />
-        Iniciar sesión con Google
-      </button>
+      <div className="flex items-center justify-center h-1/2">
+        <button className="bg-[#fff] border-[#d3d3d3] border-solid border-[1px] rounded-[4px] text-[#737373] cursor-pointerm-0 px-3 py-3 text-center flex items-center justify-center gap-3">
+          <Image src={googleLogo} alt="Google logo" width="20" height="20" />
+          Iniciar sesión con Google
+        </button>
+      </div>
       {searchParams?.message && (
         <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
           {searchParams.message}

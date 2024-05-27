@@ -8,8 +8,8 @@ import UserRepository from '@/lib/repository/user-repository';
 import { redirect } from 'next/navigation';
 import { SIDENAV_ITEMS } from '@/constants';
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
+const defaultUrl = process.env.VERCEL_SITE_URL
+  ? `https://${process.env.VERCEL_SITE_URL}`
   : 'http://localhost:3000';
 
 export const metadata = {

@@ -135,7 +135,7 @@ const sendStartReviewEmail = async ({
       Para participar, por favor ingresa al siguiente enlace utilizando tu correo de Devlights (@devlights.com):
     </p>
     <p>
-      <b>${process.env.VERCEL_URL}</b>
+      <b>${process.env.VERCEL_SITE_URL}</b>
     </p>
     <p>
       Si eres evaluador, tienes hasta el <b>21/06/2024</b> para completar tu evaluación.
