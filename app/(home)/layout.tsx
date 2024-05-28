@@ -14,8 +14,8 @@ const defaultUrl = process.env.VERCEL_SITE_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: 'Next.js and Supabase Starter Kit',
-  description: 'The fastest way to build apps with Next.js and Supabase'
+  title: 'Devlights ED',
+  description: 'Best performance reviews in the county'
 };
 
 const montserrat = Montserrat({

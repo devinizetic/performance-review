@@ -154,10 +154,7 @@ const UserReview: React.FC<UserReviewProps> = ({
             </div>
           )}
           <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg">
-            <form
-              id="question-form"
-              action={(formData: FormData) => handleSubmitAnswer(formData)}
-            >
+            <form id="question-form">
               <input
                 type="hidden"
                 name="userReviewId"
@@ -172,7 +169,9 @@ const UserReview: React.FC<UserReviewProps> = ({
           </div>
           <ReviewFooter
             onPrevious={handlePrevious}
+            onSubmit={handleSubmitAnswer}
             showBackButton={currentStep !== 0}
+            formId="question-form"
           />
         </div>
       )}

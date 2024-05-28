@@ -1,9 +1,10 @@
+'use client';
 import CustomSimpleButton from '@/app/components/common/CustomSimpleButton';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface InfoScreenProps {
   onStart: () => void;
-  onComplete: () => void;
+  onComplete: () => Promise<void>;
   onBackPressed: () => void;
   isStartScreen: boolean;
   personName: string;
@@ -86,6 +87,12 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
   personName,
   isReviewee
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSendClick = async () => {
+    setIsLoading(true);
+    await onComplete();
+    setIsLoading(false);
+  };
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col flex-1 gap-4 bg-white rounded-lg p-4">
@@ -122,7 +129,9 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
       ) : (
         <div className="flex items-center justify-center gap-2">
           <CustomSimpleButton onClick={onBackPressed}>Atrás</CustomSimpleButton>
-          <CustomSimpleButton onClick={onComplete}>Enviar</CustomSimpleButton>
+          <CustomSimpleButton onClick={handleSendClick} disabled={isLoading}>
+            {isLoading ? 'Enviando...' : 'Enviando'}
+          </CustomSimpleButton>
         </div>
       )}
     </div>
