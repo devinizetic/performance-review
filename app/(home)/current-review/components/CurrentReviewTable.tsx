@@ -65,7 +65,8 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
                   <Link
                     className="text-blue-700 underline cursor-pointer"
                     href={{
-                      pathname: `/feedback/${curReview.id}?readonly=true`
+                      pathname: `/feedback/${curReview.id}`,
+                      query: { readonly: true }
                     }}
                   >
                     Ver Feedback
