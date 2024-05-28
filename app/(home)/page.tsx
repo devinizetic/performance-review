@@ -1,3 +1,5 @@
+import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
+import UserRepository from '@/lib/repository/user-repository';
 import { createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -8,6 +10,18 @@ export default async function Home() {
   } = await supabase.auth.getSession();
 
   if (!session) redirect('/login');
+
+  const userRoles = await UserRepository.getUserRoles({ id: session.user.id });
+  const isReviewer = userRoles.some(
+    (uRole) => uRole.role_id === REVIEWER_ROLE_ID
+  );
+
+  const isReviewee = userRoles.some(
+    (uRole) => uRole.role_id === REVIEWEE_ROLE_ID
+  );
+
+  if (isReviewer) redirect('/reviewees');
+  else if (isReviewee) redirect('/my-review');
 
   return session.user ? (
     <div className="flex-1 w-full flex flex-col items-center">

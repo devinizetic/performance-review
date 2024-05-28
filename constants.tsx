@@ -6,13 +6,6 @@ export const ADMIN_ROLE_ID = 'ced3b2b5-cb87-4010-bfbf-f034d4d96d71';
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
-    title: 'Inicio',
-    path: '/',
-    icon: <div>Icono Home</div>,
-    roles: [REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID, ADMIN_ROLE_ID],
-    isLogout: false
-  },
-  {
     title: 'Mi Evaluación',
     path: '/my-review',
     icon: <div>Icono review</div>,
@@ -36,8 +29,8 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   },
   {
     title: 'Resultados',
-    path: '/feedback-results  ',
-    icon: <div>Icono feedback result</div>,
+    path: '/results',
+    icon: <div>Icono result</div>,
     roles: [ADMIN_ROLE_ID],
     isLogout: false
   },

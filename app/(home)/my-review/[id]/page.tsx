@@ -76,14 +76,20 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
           (!isReviewee && answer.reviewer_answer_text)
       ).length;
 
+  const showStartScreen = isReviewee
+    ? !activeReview.reviewee_started_timestamp
+    : !activeReview.reviewer_started_timestamp;
+
   return (
     <div className="flex flex-col h-full w-full gap-4">
-      <div className="flex flex-col w-full lg:px-52">
-        <ProgressBar
-          total={activeReview.review.questions.length}
-          completed={completedAnswersLength}
-        />
-      </div>
+      {showStartScreen || isRevieweeAndReviewerCompleted ? null : (
+        <div className="flex flex-col w-full lg:px-52">
+          <ProgressBar
+            total={activeReview.review.questions.length}
+            completed={completedAnswersLength}
+          />
+        </div>
+      )}
       <UserReview
         activeReview={activeReview}
         isReviewee={isReviewee}
