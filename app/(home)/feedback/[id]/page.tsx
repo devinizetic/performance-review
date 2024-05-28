@@ -6,11 +6,12 @@ import Feedback from './components/Feedback';
 
 interface FeedbackPageProps {
   params: { id: string };
-  searchParams: { reviewerId: string; revieweeId: string };
+  searchParams: { readonly: boolean };
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({
-  params: { id }
+  params: { id },
+  searchParams: { readonly = false }
 }) => {
   const supabase = createServerClient();
   const {
@@ -29,7 +30,11 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
 
   return (
     <div className="flex flex-col h-full w-full">
-      <Feedback questionAnswers={feedbackQuestionAnswers} userReviewId={id} />
+      <Feedback
+        questionAnswers={feedbackQuestionAnswers}
+        userReviewId={id}
+        readonly={readonly}
+      />
     </div>
   );
 };

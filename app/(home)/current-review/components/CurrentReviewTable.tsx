@@ -1,4 +1,5 @@
 import { SimpleUserReview } from '@/types/supabase.types';
+import Link from 'next/link';
 import React from 'react';
 
 interface CurrentReviewTableProps {
@@ -20,6 +21,9 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
           </th>
           <th scope="col" className="px-6 py-4">
             Estado
+          </th>
+          <th scope="col" className="px-6 py-4">
+            Evaluacion
           </th>
         </tr>
       </thead>
@@ -55,6 +59,18 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
                   : reviewerCompleted
                   ? 'Falta que el evaluado complete'
                   : 'Falta que ambos completen'}
+              </td>
+              <td>
+                {isComplete ? (
+                  <Link
+                    className="text-blue-700 underline cursor-pointer"
+                    href={{
+                      pathname: `/feedback/${curReview.id}?readonly=true`
+                    }}
+                  >
+                    Ver Feedback
+                  </Link>
+                ) : null}
               </td>
             </tr>
           );
