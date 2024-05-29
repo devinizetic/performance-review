@@ -63,7 +63,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
               <td>
                 {isComplete ? (
                   <Link
-                    className="text-blue-700 underline cursor-pointer"
+                    className="inline-block px-6 py-2 rounded-lg bg-primary text-white text-center cursor-pointer font-bold transform transition-transform duration-300 hover:scale-105"
                     href={{
                       pathname: `/feedback/${curReview.id}`,
                       query: { readonly: true }
