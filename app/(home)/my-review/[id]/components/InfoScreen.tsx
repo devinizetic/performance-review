@@ -130,7 +130,7 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
         <div className="flex items-center justify-center gap-2">
           <CustomSimpleButton onClick={onBackPressed}>Atrás</CustomSimpleButton>
           <CustomSimpleButton onClick={handleSendClick} disabled={isLoading}>
-            {isLoading ? 'Enviando...' : 'Enviando'}
+            {isLoading ? 'Enviando...' : 'Enviar'}
           </CustomSimpleButton>
         </div>
       )}
