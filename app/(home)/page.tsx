@@ -1,5 +1,6 @@
 import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
 import UserRepository from '@/lib/repository/user-repository';
+import UserReviewRepository from '@/lib/repository/user-review-repository';
 import { createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -21,7 +22,13 @@ export default async function Home() {
   );
 
   if (isReviewer) redirect('/reviewees');
-  else if (isReviewee) redirect('/my-review');
+  else if (isReviewee) {
+    const userReview =
+      await UserReviewRepository.getActiveUserReviewByRevieweeId({
+        revieweeId: session.user.id
+      });
+    redirect(`/my-review/${userReview.id}`);
+  }
 
   return session.user ? (
     <div className="flex-1 w-full flex flex-col items-center">
