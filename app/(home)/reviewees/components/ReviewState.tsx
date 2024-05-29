@@ -31,7 +31,7 @@ const ReviewState: React.FC<ReviewStateProps> = ({
 
   return (
     <Link
-      className="inline-block px-6 py-2 rounded-lg bg-primary text-white text-center cursor-pointer font-bold transform transition-transform duration-300 hover:scale-105"
+      className="inline-block px-6 py-2 rounded-lg bg-primary text-white text-center cursor-pointer font-bold transform transition-transform duration-150 hover:scale-105"
       href={{ pathname: linkPath }}
     >
       {linkLabel}
