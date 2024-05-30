@@ -13,7 +13,7 @@ const ProgressBar = ({ total, completed }: ProgressBarProps) => {
       <div className="w-full bg-gray-200 rounded-full h-4">
         <div className="w-full bg-white rounded-full h-4 border border-gray-200">
           <div
-            className="bg-primary h-4 rounded-full"
+            className="bg-primary h-4 rounded-full transition-all duration-500 ease-in-out"
             style={{ width: `${progress}%` }}
           />
         </div>
