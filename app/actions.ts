@@ -267,6 +267,15 @@ export const setFeedbackCompleted = async (userReviewId: string) => {
     .eq('id', userReviewId.toString());
 
   if (error) throw new Error(error.message);
+  const { data: userReviewData, error: userReviewError } = await supabase
+    .from('user_review')
+    .select('reviewee_id')
+    .eq('id', userReviewId.toString())
+    .single();
+
+  await EmailService.sendCompleteFeedbackRevieweeEmail({
+    revieweeId: userReviewData?.reviewee_id || ''
+  });
 
   revalidatePath('/');
 };
