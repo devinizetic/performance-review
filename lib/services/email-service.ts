@@ -103,8 +103,7 @@ const sendCompleteReviewReviewerEmail = async ({
     const response = await sendEmail({
       to: reviewerData.username,
       from: DEFAULT_FROM_EMAIL,
-      subject:
-        'Confirmación de finalización de la Evaluación de Desempeño de tu evaluado',
+      subject: `Confirmación de finalización de la Evaluación de Desempeño de ${revieweeData.full_name}`,
       body: messageBody
     });
 
@@ -178,10 +177,60 @@ const sendInitialReviewEmail = async (): Promise<boolean> => {
   }
 };
 
+const sendCompleteFeedbackRevieweeEmail = async ({
+  revieweeId
+}: {
+  revieweeId: string;
+}): Promise<boolean> => {
+  try {
+    const { data, error } = await getUserInfoQuery(revieweeId);
+
+    if (error) return false;
+
+    const messageBody = `
+    <div>
+    <p>Estimado/a <b>${data.full_name}</b>,</p>
+    <p>
+      Esperamos que este mensaje te encuentre bien. Nos complace informarte que tu proceso de
+      Evaluación de Desempeño en Devlights ha sido completado con éxito
+    </p>
+    <p>
+      La entrevista de retroalimentación se ha llevado a cabo y el formulario de feedback correspondiente
+      ha sido completado. Queremos agradecerte por tu participación activa y tu compromiso durante todo el proceso.
+    </p>
+    <p>
+      Ahora puedes acceder a los resultados de tu evaluación en cualquier momento para revisarla.
+      Creemos que esta información será valiosa para tu desarrollo profesional continuo.
+    </p>
+    <p>
+      Si tienes alguna pregunta o inquietud sobre tu evaluación o el proceso en general, 
+      no dudes en ponerte en contacto con nosotros.
+    </p>
+    <p>
+      Saludos cordiales
+    </p>
+    </div>
+    `;
+
+    const response = await sendEmail({
+      to: data.username,
+      from: DEFAULT_FROM_EMAIL,
+      subject:
+        '¡Tu Evaluación de Desempeño está completa y lista para revisar!',
+      body: messageBody
+    });
+
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 const EmailService = {
   sendCompleteReviewRevieweeEmail,
   sendCompleteReviewReviewerEmail,
-  sendInitialReviewEmail
+  sendInitialReviewEmail,
+  sendCompleteFeedbackRevieweeEmail
 };
 
 export default EmailService;
