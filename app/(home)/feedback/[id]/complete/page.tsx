@@ -13,13 +13,11 @@ const FeedbackCompletePage: React.FC = async () => {
         />
         <div className="p-4">
           <p className="text-center">
-            ¡Excelente! Has completado tu autoevaluación con éxito. Agradecemos
-            tu tiempo y reflexión en este importante paso. En breve recibirás un
-            correo de confirmación. Recuerda, esta evaluación es una herramienta
-            valiosa para tu crecimiento y desarrollo profesional. Una vez que
-            ambos, tú y tu evaluador, hayan completado la evaluación, podrás ver
-            los resultados en esta página. ¡Gracias por tu compromiso con este
-            proceso!
+            ¡Felicitaciones a ambos! Han completado el último paso de este
+            proceso de evaluación. Apreciamos su compromiso y colaboración en
+            este proceso. Los resultados de esta evaluación serán de gran ayuda
+            para el crecimiento y desarrollo profesional. ¡Gracias por su
+            participación activa!
           </p>
         </div>
       </div>
