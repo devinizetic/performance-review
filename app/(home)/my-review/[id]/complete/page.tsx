@@ -27,7 +27,7 @@ const MyReviewCompletePage: React.FC<MyReviewProps> = async ({
 
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="card-container flex flex-col items-center justify-center bg-white rounded-lg shadow-lg max-w-sm sm:max-w-md md:max-w-lg w-full min-w-[300px] min-h-[200px] p-4 m-4 overflow-hidden">
+      <div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-lg max-w-sm sm:max-w-md md:max-w-lg w-full p-4 m-4 overflow-hidden">
         <Image
           src="/images/axel-fiesta.png"
           width={250}
