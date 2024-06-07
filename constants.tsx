@@ -42,3 +42,11 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     isLogout: true
   }
 ];
+
+export const COMPLETED_IMAGES: string[] = [
+  'completed-1.png',
+  'completed-2.gif',
+  'completed-3.gif',
+  'completed-4.gif',
+  'completed-5.gif'
+];

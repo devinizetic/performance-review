@@ -13,6 +13,7 @@ import InfoScreen from './InfoScreen';
 import { FormType } from '@/types';
 import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
 import { useRouter } from 'next/navigation';
+import ProgressBar from '@/app/components/common/ProgressBar';
 
 interface UserReviewProps {
   activeReview: FullUserReview;
@@ -119,11 +120,15 @@ const UserReview: React.FC<UserReviewProps> = ({
     ? activeReview.reviewee.full_name
     : activeReview.reviewer.full_name;
 
-  const isRevieweeAndReviewerCompleted =
-    activeReview.reviewer_completed_timestamp &&
-    activeReview.reviewee_completed_timestamp;
+  const completedAnswersLength = !activeReview.answers
+    ? 0
+    : activeReview.answers.filter(
+        (answer) =>
+          (isReviewee && answer.reviewee_answer_text) ||
+          (!isReviewee && answer.reviewer_answer_text)
+      ).length;
 
-  if (isRevieweeAndReviewerCompleted && questionAnswers.length > 0) {
+  if (activeReview.feedback_completed_timestamp && questionAnswers.length > 0) {
     return (
       <div className="flex flex-col justify-center items-center flex-grow">
         <Feedback questionAnswers={questionAnswers} readonly />
@@ -146,6 +151,13 @@ const UserReview: React.FC<UserReviewProps> = ({
         </div>
       ) : (
         <div className="flex flex-col w-full h-full lg:pb-20 lg:px-52 gap-4">
+          <div className="flex flex-col w-full">
+            <ProgressBar
+              total={activeReview.review.questions.length}
+              completed={completedAnswersLength}
+              currentStep={currentStep + 1}
+            />
+          </div>
           {isReviewee ? null : (
             <div>
               <span>
