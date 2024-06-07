@@ -3,9 +3,10 @@ import CustomText from './CustomText';
 interface ProgressBarProps {
   total: number;
   completed: number;
+  currentStep: number;
 }
 
-const ProgressBar = ({ total, completed }: ProgressBarProps) => {
+const ProgressBar = ({ total, completed, currentStep }: ProgressBarProps) => {
   const progress = Number(((completed / total) * 100).toFixed(0));
 
   return (
@@ -22,7 +23,7 @@ const ProgressBar = ({ total, completed }: ProgressBarProps) => {
         className="inset-0 flex items-center justify-center pt-2"
         bold
       >
-        {`${completed} / ${total} `}
+        {`${currentStep} / ${total} `}
       </CustomText>
     </div>
   );

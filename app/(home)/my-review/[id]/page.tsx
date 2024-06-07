@@ -59,37 +59,14 @@ const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
   const isReviewCompleted = isReviewee
     ? activeReview.reviewee_completed_timestamp
     : activeReview.reviewer_completed_timestamp;
-  const isRevieweeAndReviewerCompleted =
-    activeReview.reviewer_completed_timestamp &&
-    activeReview.reviewee_completed_timestamp;
 
-  if (isReviewCompleted && !isRevieweeAndReviewerCompleted)
+  if (isReviewCompleted && !activeReview.feedback_completed_timestamp)
     redirect(`/my-review/${activeReview.id}/complete`);
 
   processQuestions(activeReview, isReviewee);
 
-  const completedAnswersLength = !activeReview.answers
-    ? 0
-    : activeReview.answers.filter(
-        (answer) =>
-          (isReviewee && answer.reviewee_answer_text) ||
-          (!isReviewee && answer.reviewer_answer_text)
-      ).length;
-
-  const showStartScreen = isReviewee
-    ? !activeReview.reviewee_started_timestamp
-    : !activeReview.reviewer_started_timestamp;
-
   return (
     <div className="flex flex-col h-full w-full gap-4">
-      {showStartScreen || isRevieweeAndReviewerCompleted ? null : (
-        <div className="flex flex-col w-full lg:px-52">
-          <ProgressBar
-            total={activeReview.review.questions.length}
-            completed={completedAnswersLength}
-          />
-        </div>
-      )}
       <UserReview
         activeReview={activeReview}
         isReviewee={isReviewee}

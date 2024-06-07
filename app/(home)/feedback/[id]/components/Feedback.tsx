@@ -92,9 +92,11 @@ const Feedback: React.FC<FeedbackProps> = ({
             Anterior
           </CustomButton>
         )}
-        <CustomButton form="feedback-form" type="submit">
-          {currentStep === maxStep && !readonly ? 'Enviar' : 'Siguiente'}
-        </CustomButton>
+        {currentStep === maxStep && readonly ? null : (
+          <CustomButton form="feedback-form" type="submit">
+            {currentStep === maxStep && !readonly ? 'Enviar' : 'Siguiente'}
+          </CustomButton>
+        )}
       </div>
     </div>
   );

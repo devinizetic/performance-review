@@ -30,7 +30,7 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
           <div key={choice.id} className="flex gap-1">
             <input
               type="radio"
-              id={choice.id}
+              id={`${choice.id}${isReadOnly ? 'r' : 'w'}`}
               value={choice.id}
               name={name && name}
               // name="answerChoiceId" WARN: when adding this, the radio buttons don't work
@@ -45,7 +45,10 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
               name="initialanswerChoiceId"
               value={answerChoiceId ?? ''}
             />
-            <label className="cursor-pointer flex gap-1" htmlFor={choice.id}>
+            <label
+              className="cursor-pointer flex gap-1"
+              htmlFor={`${choice.id}${isReadOnly ? 'r' : 'w'}`}
+            >
               <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
               <span>{`${
                 isReviewee
