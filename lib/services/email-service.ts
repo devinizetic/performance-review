@@ -31,7 +31,7 @@ const sendCompleteReviewRevieweeEmail = async ({
 
     const messageBody = `
     <div>
-    <p>Estimado/a <b>${data.full_name}</b>,</p>
+    <p>Hola <b>${data.full_name}</b>,</p>
     <p>
       Esperamos que este mensaje te encuentre bien. Nos complace informarte que hemos recibido
       tu autoevaluación de desempeño de manera exitosa.
@@ -82,7 +82,7 @@ const sendCompleteReviewReviewerEmail = async ({
 
     const messageBody = `
     <div>
-    <p>Estimado/a <b>${reviewerData.full_name}</b>,</p>
+    <p>Hola <b>${reviewerData.full_name}</b>,</p>
     <p>
       Esperamos que este mensaje te encuentre bien. Nos complace informarte que hemos recibido con éxito
       la evaluación de desempeño que has completado sobre <b>${revieweeData.full_name}</b>.
@@ -123,12 +123,17 @@ const sendStartReviewEmail = async ({
   try {
     const messageBody = `
     <div>
-    <p>Estimado/a <b>${userFullName}</b>,</p>
+    <p>Hola <b>${userFullName}</b>,</p>
     <p>
       Esperamos que te encuentres bien. Nos complace informarte que ha comenzado el proceso de
       Evaluación de Desempeño en Devlights. Este proceso tiene como objetivo acompañarte en
       tu desarrollo profesional dentro de nuestra organización, identificando aspectos de rendimiento
-      y áreas de crecimiento.      
+      y áreas de crecimiento.
+    </p>
+    <p>
+      Durante las últimas semanas, hemos realizado un seguimiento quincenal de tu desempeño,
+      y nos gustaría cerrar esta etapa con un feedback integral de todo este tiempo. Esta evaluación es una
+      oportunidad para reflexionar sobre tus logros, identificar oportunidades de mejora y establecer nuevos objetivos.
     </p>
     <p>
       Para participar, por favor ingresa al siguiente enlace utilizando tu correo de Devlights (@devlights.com):
@@ -137,13 +142,14 @@ const sendStartReviewEmail = async ({
       <b>${process.env.VERCEL_SITE_URL}</b>
     </p>
     <p>
-      Si eres evaluador, tienes hasta el <b>21/06/2024</b> para completar tu evaluación.
+      Si eres evaluador, tienes hasta el <b>07/07/2024</b> para completar tus evaluaciones.
     </p>
     <p>
-      Si eres evaluado, tienes hasta el <b>14/06/2024</b> para completar tu autoevaluación.
+      Si eres evaluado, tienes hasta el <b>30/06/2024</b> para completar tu autoevaluación.
     </p>
     <p>Si tienes alguna pregunta o necesitas ayuda con algo, no dudes en ponerte en contacto con nosotros.</p>
     <p>Saludos cordiales</p>
+    <img src="https://drive.google.com/file/d/1MP3eGxn_S4QFumzeFs1jihAY8KNXnhcW/view?usp=drive_link" alt="Image">
     </div>
     `;
 
@@ -189,7 +195,7 @@ const sendCompleteFeedbackRevieweeEmail = async ({
 
     const messageBody = `
     <div>
-    <p>Estimado/a <b>${data.full_name}</b>,</p>
+    <p>Hola <b>${data.full_name}</b>,</p>
     <p>
       Esperamos que este mensaje te encuentre bien. Nos complace informarte que tu proceso de
       Evaluación de Desempeño en Devlights ha sido completado con éxito
