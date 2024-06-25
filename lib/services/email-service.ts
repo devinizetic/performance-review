@@ -149,7 +149,7 @@ const sendStartReviewEmail = async ({
     </p>
     <p>Si tienes alguna pregunta o necesitas ayuda con algo, no dudes en ponerte en contacto con nosotros.</p>
     <p>Saludos cordiales</p>
-    <img style="width:100%" src="https://drive.usercontent.google.com/download?id=1loBkDN-m9Rrwnz1qL873DDycq9wkkZro&amp;export=view&amp;authuser=0" alt="Image">
+    <img style="width:100%" src="https://drive.usercontent.google.com/download?id=1MkTW1dVTEULP9hxOUUdWaNfzJILf-b-e&export=view&authuser=0" alt="Image">
     </div>
     `;
 
