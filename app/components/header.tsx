@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import logo from '../../public/images/white-logo.png';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import AvatarImage from './avatar-image';
 
 const Header: React.FC = async () => {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { user }
   } = await supabase.auth.getUser();

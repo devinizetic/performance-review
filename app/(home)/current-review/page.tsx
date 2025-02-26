@@ -1,4 +1,4 @@
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import CurrentReviewTable from './components/CurrentReviewTable';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
@@ -7,7 +7,7 @@ import ClientButton from './components/ClientButton';
 import Link from 'next/link';
 
 export default async function CurrentReview() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

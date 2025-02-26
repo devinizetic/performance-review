@@ -1,8 +1,8 @@
 import { AppUser, UserRole } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const getAllUsersQuery = () => {
-  const supabase = createServerClient();
+const getAllUsersQuery = async () => {
+  const supabase = await createClient();
   return supabase
     .from('app_users')
     .select(
@@ -25,8 +25,8 @@ const getAllUsers = async (): Promise<AppUser[]> => {
   return data as AppUser[];
 };
 
-const userRolesQuery = (userId: string) => {
-  const supabase = createServerClient();
+const userRolesQuery = async (userId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('user_role')
     .select(

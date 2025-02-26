@@ -1,11 +1,11 @@
 import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
 import UserRepository from '@/lib/repository/user-repository';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 export default async function Home() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

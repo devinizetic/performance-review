@@ -3,7 +3,7 @@ import HeaderMobile from '../components/header-mobile';
 import Header from '../components/header';
 import SideNav from '../components/side-nav';
 import { Montserrat } from 'next/font/google';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import UserRepository from '@/lib/repository/user-repository';
 import { redirect } from 'next/navigation';
 import { SIDENAV_ITEMS } from '@/constants';
@@ -28,7 +28,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

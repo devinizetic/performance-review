@@ -4,10 +4,10 @@ import {
   FullUserReview,
   SimpleUserReview
 } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const getActiveUserReviewByRevieweeIdQuery = (revieweeId: string) => {
-  const supabase = createServerClient();
+const getActiveUserReviewByRevieweeIdQuery = async (revieweeId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('user_review')
     .select('id, review:reviews!inner(is_active)')
@@ -32,8 +32,8 @@ const getActiveUserReviewByRevieweeId = async ({
   return { id: data?.id };
 };
 
-const fullReviewQuery = (reviewId: string) => {
-  const supabase = createServerClient();
+const fullReviewQuery = async (reviewId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('user_review')
     .select(
@@ -79,8 +79,8 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   return data as unknown as FullUserReview;
 };
 
-const getAllCurrentReviewsQuery = () => {
-  const supabase = createServerClient();
+const getAllCurrentReviewsQuery = async () => {
+  const supabase = await createClient();
   return supabase.from('user_review').select(
     `
     id,
@@ -110,8 +110,8 @@ const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
   return data as unknown as SimpleUserReview[];
 };
 
-const getFeedbackResultsQuery = () => {
-  const supabase = createServerClient();
+const getFeedbackResultsQuery = async () => {
+  const supabase = await createClient();
   return supabase.from('feedback_scores').select(
     `
     id,

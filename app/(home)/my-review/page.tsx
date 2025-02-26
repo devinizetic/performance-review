@@ -1,9 +1,9 @@
 import UserReviewRepository from '@/lib/repository/user-review-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 export default async function MyReview() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

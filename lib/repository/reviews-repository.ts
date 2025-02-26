@@ -1,8 +1,8 @@
 import { Review } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const getActiveReviewQuery = () => {
-  const supabase = createServerClient();
+const getActiveReviewQuery = async () => {
+  const supabase = await createClient();
   return supabase
     .from('reviews')
     .select(

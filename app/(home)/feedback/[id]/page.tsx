@@ -1,5 +1,5 @@
 import AnswersRepository from '@/lib/repository/answers-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import Feedback from './components/Feedback';
@@ -13,7 +13,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = async ({
   params: { id },
   searchParams: { readonly = false }
 }) => {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

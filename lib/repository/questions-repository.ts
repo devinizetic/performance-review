@@ -1,8 +1,8 @@
 import { FullQuestion } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const getQuestionByIdQuery = (id: string) => {
-  const supabase = createServerClient();
+const getQuestionByIdQuery = async (id: string) => {
+  const supabase = await createClient();
   return supabase
     .from('questions')
     .select(

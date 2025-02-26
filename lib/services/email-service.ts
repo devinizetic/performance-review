@@ -1,11 +1,11 @@
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { sendEmail } from './amazon-ses-service';
 import UserRepository from '../repository/user-repository';
 
 const DEFAULT_FROM_EMAIL = 'Devlights ED <ed@devlights.com>';
 
-const getUserInfoQuery = (userId: string) => {
-  const supabase = createServerClient();
+const getUserInfoQuery = async (userId: string) => {
+  const supabase = await createClient();
 
   return supabase
     .from('app_users')

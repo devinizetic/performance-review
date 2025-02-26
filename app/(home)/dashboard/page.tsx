@@ -1,4 +1,4 @@
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -6,7 +6,7 @@ import ReviewerDashboard from './components/reviewer-dashboard';
 import RevieweeDashboard from './components/reviewee-dashboard';
 
 const Dashboard: React.FC = async () => {
-  const supabase = createServerClient();
+  const supabase = await createClient();
 
   const {
     data: { session }

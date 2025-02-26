@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface MyReviewProps {
 const MyReviewCompletePage: React.FC<MyReviewProps> = async ({
   params: { id }
 }) => {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

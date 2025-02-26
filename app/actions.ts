@@ -2,12 +2,12 @@
 
 import EmailService from '@/lib/services/email-service';
 import { FormType } from '@/types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export const logout = async () => {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   return redirect('/login');
 };
@@ -16,7 +16,7 @@ export const logout = async () => {
 export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
   'use server';
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
@@ -36,8 +36,8 @@ export const createAnswer = async (formData: FormData, isReviewee: boolean) => {
     id
     `
     )
-    .eq('user_review_id', userReviewId)
-    .eq('question_id', questionId)
+    .eq('user_review_id', userReviewId.toString())
+    .eq('question_id', questionId.toString())
     .maybeSingle();
 
   if (existingAnswer != null) {
@@ -77,7 +77,7 @@ export const updateAnswer = async (formData: FormData, formType: FormType) => {
   )
     return;
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
 
@@ -121,7 +121,7 @@ export const setPerformanceReviewStarted = async (
 ) => {
   'use server';
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
@@ -155,7 +155,7 @@ export const setPerformanceReviewCompleted = async (
 ) => {
   'use server';
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
@@ -191,7 +191,7 @@ export const setPerformanceReviewCompleted = async (
 export const startActiveReview = async (reviewId: string) => {
   'use server';
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
@@ -250,7 +250,7 @@ export const startActiveReview = async (reviewId: string) => {
 export const setFeedbackCompleted = async (userReviewId: string) => {
   'use server';
 
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
