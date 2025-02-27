@@ -18,9 +18,10 @@ const Navbar: React.FC = async () => {
     .eq('id', user?.id || '')
     .single();
 
-  const fullName = appUser?.full_name?.split(' ');
-  const firstName = (fullName && fullName[0]) ?? '';
-  const lastName = (fullName && fullName[fullName.length - 1]) ?? '';
+  const names = appUser?.full_name?.split(' ') || [];
+  const firstName = names[0] || '';
+  const lastName = names[names.length - 1] || '';
+  const initials = `${firstName[0]}${lastName[0]}`;
   const avatarImg = appUser?.avatar_url ?? '';
 
   return (
@@ -35,7 +36,7 @@ const Navbar: React.FC = async () => {
             <DropdownMenuTrigger className="focus:outline-none">
               <AvatarImage
                 src={avatarImg}
-                userInitials={`${firstName[0]}${lastName[0]}`}
+                userInitials={initials}
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">

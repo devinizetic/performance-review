@@ -1,8 +1,10 @@
-import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
-import UserRepository from '@/lib/repository/user-repository';
-import UserReviewRepository from '@/lib/repository/user-review-repository';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import UserReviewRepository from '@/lib/repository/user-review-repository';
+import RevieweesRepository from '@/lib/repository/reviewees-repository';
+import { DashboardCard } from '../components/dashboard/DashboardCard';
+import { ReviewList } from '../components/dashboard/ReviewList';
+import { RevieweesList } from '../components/dashboard/RevieweesList';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -12,31 +14,31 @@ export default async function Home() {
 
   if (!session) redirect('/login');
 
-  const userRoles = await UserRepository.getUserRoles({ id: session.user.id });
-  const isReviewer = userRoles.some(
-    (uRole) => uRole.role_id === REVIEWER_ROLE_ID
+  // Get reviews where I am the reviewee
+  const currentReviews = await UserReviewRepository.getAllCurrentReviews();
+  const myReviews = currentReviews.filter(
+    (review) => review.reviewee.id === session.user.id
   );
 
-  const isReviewee = userRoles.some(
-    (uRole) => uRole.role_id === REVIEWEE_ROLE_ID
-  );
+  // Get reviewees assigned to me
+  const myReviewees = await RevieweesRepository.getAllByReviewerId({
+    id: session.user.id
+  });
 
-  if (isReviewer) redirect('/reviewees');
-  else if (isReviewee) {
-    const userReview =
-      await UserReviewRepository.getActiveUserReviewByRevieweeId({
-        revieweeId: session.user.id
-      });
-    redirect(`/my-review/${userReview.id}`);
-  }
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] mx-auto w-full">
+      <div className="grid gap-8 md:grid-cols-2">
+        <DashboardCard title="Mis Evaluaciones">
+          <ReviewList 
+            reviews={myReviews}
+            baseUrl="/my-review"
+          />
+        </DashboardCard>
 
-  return session.user ? (
-    <div className="flex-1 w-full flex flex-col items-center">
-      Hello {session.user.email}!!!
-    </div>
-  ) : (
-    <div className="flex-1 w-full flex flex-col items-center">
-      You are logged in but this is wrong
+        <DashboardCard title="Mis Evaluados">
+          <RevieweesList reviewees={myReviewees} />
+        </DashboardCard>
+      </div>
     </div>
   );
 }

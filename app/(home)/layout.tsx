@@ -37,7 +37,7 @@ export default async function RootLayout({
         <Navbar />
         <main className="flex-1 overflow-auto">
           <div className="flex flex-col min-h-[calc(100vh-3rem)]">
-            <div className="flex flex-col p-4 bg-zinc-50 flex-grow">
+            <div className="flex flex-col p-4 px-8 bg-zinc-50 flex-grow">
               {children}
             </div>
           </div>
