@@ -25,7 +25,7 @@ export default async function CurrentReview() {
       </div>
     );
 
-  const currentReviews = await UserReviewRepository.getAllCurrentReviews();
+  const currentReviews = await UserReviewRepository.getAllCurrentReviews(activeReview.id);
 
   return currentReviews && currentReviews.length ? (
     <div className="flex flex-col gap-4">

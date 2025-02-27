@@ -79,7 +79,7 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   return data as unknown as FullUserReview;
 };
 
-const getAllCurrentReviewsQuery = async () => {
+const getAllCurrentReviewsQuery = async (reviewId: string) => {
   const supabase = await createClient();
   return supabase.from('user_review').select(
     `
@@ -92,11 +92,11 @@ const getAllCurrentReviewsQuery = async () => {
     reviewer_started_timestamp,
     feedback_completed_timestamp
     `
-  );
+  ).eq('review_id', reviewId);
 };
 
-const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
-  const { data, error } = await getAllCurrentReviewsQuery();
+const getAllCurrentReviews = async (reviewId: string): Promise<SimpleUserReview[]> => {
+  const { data, error } = await getAllCurrentReviewsQuery(reviewId);
 
   if (error) {
     throw new Error(error.message);

@@ -1,8 +1,13 @@
+import ReviewsRepository from '@/lib/repository/reviews-repository';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import * as XLSX from 'xlsx';
 
 export async function GET(request: Request) {
-  const currentReviews = await UserReviewRepository.getAllCurrentReviews();
+  const activeReview = await ReviewsRepository.getActive();
+
+  if (!activeReview) return new Response('No hay evaluaciones activas', { status: 404 });
+
+  const currentReviews = await UserReviewRepository.getAllCurrentReviews(activeReview.id);
   const exportItems = currentReviews.map((review) => {
     return {
       Evaluador: review.reviewer.full_name,
@@ -11,12 +16,12 @@ export async function GET(request: Request) {
         ? 'Feedback completado'
         : review.reviewee_completed_timestamp &&
           review.reviewer_completed_timestamp
-        ? 'Completada por ambos'
-        : review.reviewee_completed_timestamp
-        ? 'Falta que el evaluador complete'
-        : review.reviewer_completed_timestamp
-        ? 'Falta que el evaluado complete'
-        : 'Falta que ambos completen'
+          ? 'Completada por ambos'
+          : review.reviewee_completed_timestamp
+            ? 'Falta que el evaluador complete'
+            : review.reviewer_completed_timestamp
+              ? 'Falta que el evaluado complete'
+              : 'Falta que ambos completen'
     };
   });
 
