@@ -5,6 +5,8 @@ import UserReviewRepository from '@/lib/repository/user-review-repository';
 import ReviewsRepository from '@/lib/repository/reviews-repository';
 import ClientButton from './components/ClientButton';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { FileDown } from 'lucide-react';
 
 export default async function CurrentReview() {
   const supabase = await createClient();
@@ -28,14 +30,16 @@ export default async function CurrentReview() {
   const currentReviews = await UserReviewRepository.getAllCurrentReviews(activeReview.id);
 
   return currentReviews && currentReviews.length ? (
-    <div className="flex flex-col gap-4">
-      <Link
-        className="bg-green-700 p-3 text-white font-bold rounded-md text-center w-1/6"
-        href={'/api/current-review/download'}
-      >
-        Exportar
-      </Link>
-      <CurrentReviewTable currentReviews={currentReviews}></CurrentReviewTable>
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-end">
+        <Button asChild>
+          <Link href="/api/current-review/download">
+            <FileDown className="mr-2 h-4 w-4" />
+            Exportar a Excel
+          </Link>
+        </Button>
+      </div>
+      <CurrentReviewTable currentReviews={currentReviews} />
     </div>
   ) : (
     <div className="flex-1 w-full flex flex-col items-center">
