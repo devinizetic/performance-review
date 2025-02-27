@@ -110,6 +110,43 @@ const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
   return data as unknown as SimpleUserReview[];
 };
 
+const getCurrentReviewsByRevieweeIdQuery = async (revieweeId: string) => {
+  const supabase = await createClient();
+  return supabase.from('user_review').select(
+    `
+    id,
+    reviewer:reviewer_id(*),
+    reviewee:reviewee_id(*),
+    reviewee_completed_timestamp,
+    reviewee_started_timestamp,
+    reviewer_completed_timestamp,
+    reviewer_started_timestamp,
+    feedback_completed_timestamp,
+    review:reviews!inner(
+      start_date,
+      end_date,
+      is_active,
+      name
+    )
+    `
+  ).eq('reviewee_id', revieweeId);
+};
+
+const getCurrentReviewsByRevieweeId = async ({
+  revieweeId
+}: {
+  revieweeId: string;
+}): Promise<SimpleUserReview[]> => {
+  const { data, error } = await getCurrentReviewsByRevieweeIdQuery(revieweeId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) return [];
+  return data as unknown as SimpleUserReview[];
+};
+
 const getFeedbackResultsQuery = async () => {
   const supabase = await createClient();
   return supabase.from('feedback_scores').select(
@@ -139,6 +176,7 @@ const UserReviewRepository = {
   getFullReviewQuery,
   getActiveUserReviewByRevieweeId,
   getAllCurrentReviews,
+  getCurrentReviewsByRevieweeId,
   getFeedbackResults
 };
 

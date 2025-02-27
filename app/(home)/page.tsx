@@ -14,12 +14,13 @@ export default async function Home() {
 
   if (!session) redirect('/login');
 
-  // Get reviews where I am the reviewee
-  const currentReviews = await UserReviewRepository.getAllCurrentReviews();
-  const myReviews = currentReviews.filter(
-    (review) => review.reviewee.id === session.user.id
-  );
-
+  // Get reviews where I am the reviewee using the optimized query
+  const myReviews = await UserReviewRepository.getCurrentReviewsByRevieweeId({
+    revieweeId: session.user.id
+  });
+console.log("--------------------------")
+console.log(myReviews)
+console.log("--------------------------")
   // Get reviewees assigned to me
   const myReviewees = await RevieweesRepository.getAllByReviewerId({
     id: session.user.id

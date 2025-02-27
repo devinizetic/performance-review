@@ -82,6 +82,12 @@ export type SimpleUserReview = {
   reviewer_completed_timestamp: string | null;
   reviewer_started_timestamp: string | null;
   feedback_completed_timestamp: string | null;
+  review: {
+    start_date: string | null;
+    end_date: string | null;
+    is_active: boolean;
+    name: string;
+  };
 };
 
 export type ReviewerRevieweeView = {
