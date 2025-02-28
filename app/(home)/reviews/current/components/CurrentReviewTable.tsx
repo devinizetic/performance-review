@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from 'next/navigation';
 
 interface CurrentReviewTableProps {
   currentReviews: SimpleUserReview[];
@@ -47,6 +48,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
   const [sortField, setSortField] = useState<SortField>('reviewer');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [statusFilter, setStatusFilter] = useState<ReviewStatus>("all");
+  const router = useRouter();
 
   const getStatusInfo = (
     reviewerCompleted: string | null, 
@@ -89,6 +91,16 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
     } else {
       setSortField(field);
       setSortDirection('asc');
+    }
+  };
+
+  const handleRowClick = (review: SimpleUserReview) => {
+    const revieweeCompleted = review.reviewee_completed_timestamp;
+    const reviewerCompleted = review.reviewer_completed_timestamp;
+    const isComplete = revieweeCompleted && reviewerCompleted;
+    
+    if (isComplete) {
+      router.push(`/feedback/${review.id}?readonly=true`);
     }
   };
 
@@ -209,11 +221,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
               <TableRow 
                 key={review.id}
                 className="group cursor-pointer hover:bg-muted/50"
-                onClick={() => {
-                  if (isComplete) {
-                    window.location.href = `/feedback/${review.id}?readonly=true`;
-                  }
-                }}
+                onClick={() => handleRowClick(review)}
               >
                 <TableCell className="font-medium">
                   {review.reviewer.full_name}

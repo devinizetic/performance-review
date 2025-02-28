@@ -14,7 +14,7 @@ export function AdminReviewCard({ reviews }: AdminReviewCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/current-review");
+    router.push("/reviews/current");
   };
 
   return (

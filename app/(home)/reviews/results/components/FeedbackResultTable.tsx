@@ -30,7 +30,7 @@ const FeedbackResultTable: React.FC<FeedbackResultTableProps> = ({
         </TableHeader>
         <TableBody>
           {feedbackScores.map((feedback) => {
-            // Calculate score percentage
+            // Calculate score percentage, defaulting to 0 if score is null
             const scorePercentage = ((feedback.score ?? 0) / 25) * 100;
             let scoreVariant: "default" | "destructive" | "secondary" | "outline" = "default";
             
@@ -45,7 +45,7 @@ const FeedbackResultTable: React.FC<FeedbackResultTableProps> = ({
                   {feedback.reviewer_name}
                 </TableCell>
                 <TableCell>{feedback.reviewee_name}</TableCell>
-                <TableCell>{feedback.score}/25 ({Math.round(scorePercentage)}%)</TableCell>
+                <TableCell>{feedback.score ?? 0}/25 ({Math.round(scorePercentage)}%)</TableCell>
                 <TableCell>
                   <Badge variant={scoreVariant}>
                     {scorePercentage >= 80 ? "Excelente" :
