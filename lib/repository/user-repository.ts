@@ -1,4 +1,4 @@
-import { AppUser, UserRole } from '@/types/supabase.types';
+import { AppUser, UserRole, UserWithRoles } from '@/types/supabase.types';
 import { createClient } from '@/utils/supabase/server';
 
 const getAllUsersQuery = async () => {
@@ -49,9 +49,68 @@ const getUserRoles = async ({ id }: { id: string }): Promise<UserRole[]> => {
   return data as UserRole[];
 };
 
+const getAllUsersWithRolesQuery = async () => {
+  const supabase = await createClient();
+  return supabase
+    .from('app_users')
+    .select(`
+      id,
+      username,
+      full_name,
+      is_active
+    `);
+};
+
+const getAllUsersWithRoles = async (): Promise<UserWithRoles[]> => {
+  const supabase = await createClient();
+  
+  // Get all users
+  const { data: users, error } = await getAllUsersWithRolesQuery();
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!users || users.length === 0) return [] as UserWithRoles[];
+
+  // Get all roles
+  const { data: allRoles } = await supabase
+    .from('roles')
+    .select('id, role_name');
+
+  // Create a mapping of role ids to role names
+  const rolesMap = allRoles?.reduce((map, role) => {
+    map[role.id] = role.role_name;
+    return map;
+  }, {} as Record<string, string>) || {};
+
+  // Get roles for each user
+  const usersWithRoles: UserWithRoles[] = [];
+  
+  for (const user of users) {
+    const { data: userRoles } = await supabase
+      .from('user_role')
+      .select('role_id')
+      .eq('user_id', user.id);
+      
+    const userWithRoles = {
+      ...user,
+      roles: userRoles?.map(ur => ({
+        role_id: ur.role_id,
+        role_name: rolesMap[ur.role_id] || 'Unknown'
+      })) || []
+    };
+    
+    usersWithRoles.push(userWithRoles);
+  }
+
+  return usersWithRoles;
+};
+
 const UserRepository = {
   getUserRoles,
-  getAllUsers
+  getAllUsers,
+  getAllUsersWithRoles
 };
 
 export default UserRepository;

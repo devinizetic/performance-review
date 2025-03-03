@@ -54,6 +54,20 @@ export type UserRole = Rows<'user_role'>;
 export type UserRoleInsert = Inserts<'user_role'>;
 export type UserRoleUpdate = Updates<'user_role'>;
 
+// User with roles type for admin panel
+export type UserRoleWithName = {
+  role_id: string;
+  role_name: string;
+};
+
+export type UserWithRoles = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  is_active: boolean;
+  roles: UserRoleWithName[];
+};
+
 //custom
 export type ActiveReview = { id: string | undefined };
 export type FullReviewQuestion = {
