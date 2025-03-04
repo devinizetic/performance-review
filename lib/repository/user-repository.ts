@@ -141,8 +141,7 @@ const getReviewersWithReviewees = async (): Promise<ReviewerWithReviewees[]> => 
   if (roleError) {
     throw new Error(roleError.message);
   }
-  console.log(reviewerIds);
-  console.log('-------------------------');
+
   if (!reviewerIds || reviewerIds.length === 0) return [] as ReviewerWithReviewees[];
   
   const reviewerIdArray = reviewerIds.map(item => item.user_id);
@@ -161,7 +160,6 @@ const getReviewersWithReviewees = async (): Promise<ReviewerWithReviewees[]> => 
 
   // For each reviewer, get their reviewees
   const reviewersWithReviewees: ReviewerWithReviewees[] = [];
-  console.log(reviewers);
   for (const reviewer of reviewers) {
     const { data: reviewerReviewees, error: revieweesError } = await supabase
       .from('reviewer_reviewee')
