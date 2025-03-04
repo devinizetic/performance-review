@@ -15,19 +15,10 @@ interface RelationshipsListProps {
 }
 
 export function RelationshipsList({ reviewers, allUsers }: RelationshipsListProps) {
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  // Instead of tracking expanded items in an array, use a single value for each accordion
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const [selectedReviewer, setSelectedReviewer] = useState<ReviewerWithReviewees | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-
-  const handleExpand = (itemId: string) => {
-    setExpandedItems((current) => {
-      if (current.includes(itemId)) {
-        return current.filter((id) => id !== itemId);
-      } else {
-        return [...current, itemId];
-      }
-    });
-  };
 
   const handleAddRevieweeClick = (reviewer: ReviewerWithReviewees) => {
     setSelectedReviewer(reviewer);
@@ -41,8 +32,8 @@ export function RelationshipsList({ reviewers, allUsers }: RelationshipsListProp
           <Accordion
             type="single"
             collapsible
-            value={expandedItems.includes(reviewer.id) ? reviewer.id : undefined}
-            onValueChange={(value: string | undefined) => value && handleExpand(value)}
+            value={activeItem}
+            onValueChange={setActiveItem}
           >
             <AccordionItem value={reviewer.id} className="border-none">
               <div className="flex items-center justify-between p-4">

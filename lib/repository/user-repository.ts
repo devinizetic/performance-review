@@ -187,7 +187,7 @@ const getReviewersWithReviewees = async (): Promise<ReviewerWithReviewees[]> => 
     
     reviewersWithReviewees.push(reviewerWithReviewees);
   }
-console.log(reviewersWithReviewees);
+
   return reviewersWithReviewees;
 };
 
