@@ -11,20 +11,31 @@ interface DashboardCardProps {
 }
 
 export function DashboardCard({ title, href, children }: DashboardCardProps) {
-  const CardWrapper = href ? Link : 'div';
+  if (href) {
+    return (
+      <Link 
+        href={href}
+        className="bg-white rounded-lg shadow-md p-6 h-full"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+          <ChevronRight className="text-gray-400" />
+        </div>
+        <div className="space-y-4">
+          {children}
+        </div>
+      </Link>
+    );
+  }
   
   return (
-    <CardWrapper 
-      href={href || ''}
-      className={`bg-white rounded-lg shadow-md p-6 h-full`}
-    >
+    <div className="bg-white rounded-lg shadow-md p-6 h-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-        {href && <ChevronRight className="text-gray-400" />}
       </div>
       <div className="space-y-4">
         {children}
       </div>
-    </CardWrapper>
+    </div>
   );
 }

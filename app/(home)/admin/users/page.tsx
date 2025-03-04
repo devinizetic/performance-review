@@ -12,6 +12,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import UserRepository from '@/lib/repository/user-repository';
 import { ADMIN_ROLE_ID } from '@/constants';
+import { EditRolesDialog } from './components/edit-roles-dialog';
+import { UserStatusToggle } from './components/user-status-toggle';
 
 export default async function UsersAdminPage() {
   const supabase = await createClient();
@@ -30,8 +32,11 @@ export default async function UsersAdminPage() {
     redirect('/');
   }
 
-  // Get all users with their roles
-  const users = await UserRepository.getAllUsersWithRoles();
+  // Get all users with their roles and all available roles
+  const [users, allRoles] = await Promise.all([
+    UserRepository.getAllUsersWithRoles(),
+    UserRepository.getAllRoles()
+  ]);
 
   return (
     <Card>
@@ -47,6 +52,7 @@ export default async function UsersAdminPage() {
                 <TableHead>Email</TableHead>
                 <TableHead>Roles</TableHead>
                 <TableHead>Estado</TableHead>
+                <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -67,12 +73,13 @@ export default async function UsersAdminPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge 
-                      variant={user.is_active ? "default" : "destructive"}
-                      className={user.is_active ? "bg-green-500 hover:bg-green-600" : ""}
-                    >
-                      {user.is_active ? 'Activo' : 'Inactivo'}
-                    </Badge>
+                    <UserStatusToggle user={user} />
+                  </TableCell>
+                  <TableCell>
+                    <EditRolesDialog 
+                      user={user}
+                      allRoles={allRoles}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

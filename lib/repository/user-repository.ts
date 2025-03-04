@@ -1,4 +1,4 @@
-import { AppUser, UserRole, UserWithRoles } from '@/types/supabase.types';
+import { AppUser, Role, UserRole, UserWithRoles } from '@/types/supabase.types';
 import { createClient } from '@/utils/supabase/server';
 
 const getAllUsersQuery = async () => {
@@ -107,10 +107,33 @@ const getAllUsersWithRoles = async (): Promise<UserWithRoles[]> => {
   return usersWithRoles;
 };
 
+const getAllRoles = async (): Promise<Role[]> => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('roles')
+    .select('id, role_name')
+    .order('role_name');
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) return [] as Role[];
+
+  return data as Role[];
+};
+
+const getUserRoleIds = async (userId: string): Promise<string[]> => {
+  const userRoles = await getUserRoles({ id: userId });
+  return userRoles.map(role => role.role_id);
+};
+
 const UserRepository = {
   getUserRoles,
   getAllUsers,
-  getAllUsersWithRoles
+  getAllUsersWithRoles,
+  getAllRoles,
+  getUserRoleIds
 };
 
 export default UserRepository;
