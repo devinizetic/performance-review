@@ -15,8 +15,7 @@ interface RelationshipsListProps {
 }
 
 export function RelationshipsList({ reviewers, allUsers }: RelationshipsListProps) {
-  // Instead of tracking expanded items in an array, use a single value for each accordion
-  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [activeItem, setActiveItem] = useState<string | undefined>(undefined);
   const [selectedReviewer, setSelectedReviewer] = useState<ReviewerWithReviewees | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
