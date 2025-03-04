@@ -68,6 +68,22 @@ export type UserWithRoles = {
   roles: UserRoleWithName[];
 };
 
+// Reviewer with reviewees type for relationships management
+export type RevieweeInfo = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  avatar_url?: string | null;
+};
+
+export type ReviewerWithReviewees = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  avatar_url?: string | null;
+  reviewees: RevieweeInfo[];
+};
+
 //custom
 export type ActiveReview = { id: string | undefined };
 export type FullReviewQuestion = {

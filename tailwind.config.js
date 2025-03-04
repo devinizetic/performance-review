@@ -9,7 +9,9 @@ module.exports = {
   	extend: {
   		animation: {
   			bounce200: 'bounce 1s infinite 200ms',
-  			bounce400: 'bounce 1s infinite 400ms'
+  			bounce400: 'bounce 1s infinite 400ms',
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
   		height: {
   			'screen-minus-header': 'calc(100vh - 3rem)'
@@ -68,6 +70,24 @@ module.exports = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
   		}
   	}
   },

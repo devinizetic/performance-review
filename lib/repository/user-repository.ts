@@ -1,5 +1,6 @@
-import { AppUser, Role, UserRole, UserWithRoles } from '@/types/supabase.types';
+import { AppUser, ReviewerWithReviewees, Role, UserRole, UserWithRoles } from '@/types/supabase.types';
 import { createClient } from '@/utils/supabase/server';
+import { REVIEWER_ROLE_ID } from '@/constants';
 
 const getAllUsersQuery = async () => {
   const supabase = await createClient();
@@ -128,12 +129,77 @@ const getUserRoleIds = async (userId: string): Promise<string[]> => {
   return userRoles.map(role => role.role_id);
 };
 
+const getReviewersWithReviewees = async (): Promise<ReviewerWithReviewees[]> => {
+  const supabase = await createClient();
+  
+  // Get all users with reviewer role
+  const { data: reviewerIds, error: roleError } = await supabase
+    .from('user_role')
+    .select('user_id')
+    .eq('role_id', REVIEWER_ROLE_ID);
+  
+  if (roleError) {
+    throw new Error(roleError.message);
+  }
+  console.log(reviewerIds);
+  console.log('-------------------------');
+  if (!reviewerIds || reviewerIds.length === 0) return [] as ReviewerWithReviewees[];
+  
+  const reviewerIdArray = reviewerIds.map(item => item.user_id);
+  
+  const { data: reviewers, error: reviewersError } = await supabase
+    .from('app_users')
+    .select('id, username, full_name, avatar_url')
+    .eq('is_active', true)
+    .in('id', reviewerIdArray);
+    
+  if (reviewersError) {
+    throw new Error(reviewersError.message);
+  }
+
+  if (!reviewers || reviewers.length === 0) return [] as ReviewerWithReviewees[];
+
+  // For each reviewer, get their reviewees
+  const reviewersWithReviewees: ReviewerWithReviewees[] = [];
+  console.log(reviewers);
+  for (const reviewer of reviewers) {
+    const { data: reviewerReviewees, error: revieweesError } = await supabase
+      .from('reviewer_reviewee')
+      .select(`
+        reviewee:reviewee_id(
+          id,
+          username,
+          full_name,
+          avatar_url
+        )
+      `)
+      .eq('reviewer_id', reviewer.id);
+      
+    if (revieweesError) {
+      console.error(`Error fetching reviewees for reviewer ${reviewer.id}:`, revieweesError.message);
+      continue;
+    }
+
+    const reviewerWithReviewees = {
+      ...reviewer,
+      reviewees: reviewerReviewees
+        ? reviewerReviewees.map(r => r.reviewee as any)
+        : []
+    };
+    
+    reviewersWithReviewees.push(reviewerWithReviewees);
+  }
+console.log(reviewersWithReviewees);
+  return reviewersWithReviewees;
+};
+
 const UserRepository = {
   getUserRoles,
   getAllUsers,
   getAllUsersWithRoles,
   getAllRoles,
-  getUserRoleIds
+  getUserRoleIds,
+  getReviewersWithReviewees
 };
 
 export default UserRepository;
