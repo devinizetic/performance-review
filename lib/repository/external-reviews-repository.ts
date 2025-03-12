@@ -15,6 +15,11 @@ export type ExternalReviewWithQuestionsAndAnswers = ExternalReview & {
     })[];
 };
 
+// Define a type for external review list items
+export type ExternalReviewListItem = ExternalReview & {
+    reviewee: Pick<AppUser, 'id' | 'full_name' | 'username' | 'avatar_url'>;
+};
+
 /**
  * Fetches an external review by token with its questions and answers
  * @param token The unique token for the external review
@@ -80,7 +85,7 @@ export async function getExternalReviewByToken(token: string): Promise<ExternalR
             answers: questionAnswers
         };
     });
-
+console.log(externalReview);
     // Return the complete external review with questions and answers
     return {
         ...externalReview,
@@ -134,5 +139,158 @@ export async function submitExternalReviewAnswers(
         return false;
     }
 
+    return true;
+}
+
+/**
+ * Gets all external reviews for a specific review
+ * @param reviewId The ID of the review to fetch external reviews for
+ * @returns List of external reviews with reviewee information
+ */
+export async function getExternalReviewsByReviewId(reviewId: string): Promise<ExternalReviewListItem[]> {
+    const supabase = await createClient();
+    
+    const { data, error } = await supabase
+        .from('external_reviews')
+        .select(`
+            *,
+            reviewee:reviewee_id(
+                id,
+                full_name,
+                username,
+                avatar_url
+            )
+        `)
+        .eq('review_id', reviewId)
+        .order('created_at', { ascending: false });
+    
+    if (error) {
+        console.error('Error fetching external reviews:', error);
+        return [];
+    }
+    
+    return data as ExternalReviewListItem[];
+}
+
+/**
+ * Gets all external reviews for the active review
+ * @returns List of external reviews with reviewee information
+ */
+export async function getExternalReviewsForActiveReview(): Promise<ExternalReviewListItem[]> {
+    const supabase = await createClient();
+    
+    // First, get the active review ID
+    const { data: activeReview, error: reviewError } = await supabase
+        .from('reviews')
+        .select('id')
+        .eq('is_active', true)
+        .single();
+    
+    if (reviewError || !activeReview) {
+        console.error('Error fetching active review:', reviewError);
+        return [];
+    }
+    
+    return getExternalReviewsByReviewId(activeReview.id);
+}
+
+/**
+ * Creates a new external review
+ * @param revieweeId The ID of the user being reviewed
+ * @param reviewId The ID of the review (defaults to active review if not provided)
+ * @returns The created external review or null if failed
+ */
+export async function createExternalReview(
+    revieweeId: string, 
+    reviewId?: string
+): Promise<ExternalReview | null> {
+    const supabase = await createClient();
+    
+    // If no reviewId provided, get the active review
+    if (!reviewId) {
+        const { data: activeReview, error: reviewError } = await supabase
+            .from('reviews')
+            .select('id')
+            .eq('is_active', true)
+            .single();
+        
+        if (reviewError || !activeReview) {
+            console.error('Error fetching active review:', reviewError);
+            return null;
+        }
+        
+        reviewId = activeReview.id;
+    }
+    
+    // Create a new external review
+    const { data: newExternalReview, error: createError } = await supabase
+        .from('external_reviews')
+        .insert({
+            review_id: reviewId,
+            reviewee_id: revieweeId,
+            status: 'pending'
+        })
+        .select()
+        .single();
+    
+    if (createError) {
+        console.error('Error creating external review:', createError);
+        return null;
+    }
+    
+    return newExternalReview;
+}
+
+/**
+ * Creates default questions for a new external review
+ * @param externalReviewId The ID of the external review to create questions for
+ * @returns Boolean indicating success or failure
+ */
+export async function createDefaultExternalReviewQuestions(
+    externalReviewId: string
+): Promise<boolean> {
+    const supabase = await createClient();
+    
+    // Create some default questions
+    const defaultQuestions = [
+        {
+            external_review_id: externalReviewId,
+            text: '¿Cómo evaluarías el rendimiento general de esta persona?',
+            type: 'rating',
+            options: JSON.stringify({ min: 1, max: 5, labels: ['Malo', 'Regular', 'Bueno', 'Muy Bueno', 'Excelente'] }),
+            order: 1
+        },
+        {
+            external_review_id: externalReviewId,
+            text: '¿Cuáles crees que son las fortalezas principales de esta persona?',
+            type: 'text',
+            options: null,
+            order: 2
+        },
+        {
+            external_review_id: externalReviewId,
+            text: '¿En qué áreas crees que esta persona podría mejorar?',
+            type: 'text',
+            options: null,
+            order: 3
+        },
+        {
+            external_review_id: externalReviewId,
+            text: '¿Recomendarías trabajar con esta persona nuevamente?',
+            type: 'multiple_choice',
+            options: JSON.stringify(['Definitivamente sí', 'Probablemente sí', 'No estoy seguro', 'Probablemente no', 'Definitivamente no']),
+            order: 4
+        }
+    ];
+    
+    const { error } = await supabase
+        .from('external_review_questions')
+        .insert(defaultQuestions);
+    
+    if (error) {
+        console.error('Error creating default questions:', error);
+        return false;
+    }
+    
     return true;
 }

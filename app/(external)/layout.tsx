@@ -29,7 +29,6 @@ export default function ExternalLayout({
                   height={40}
                   priority
                 />
-                <span className="font-semibold text-lg">Performance Review</span>
               </div>
             </div>
           </header>

@@ -8,19 +8,19 @@ import { usePathname } from "next/navigation";
 const navItems = [
   {
     name: "Evaluación Actual",
-    href: "/reviews/current",
+    href: "/active-review/current",
   },
   {
     name: "Resultados",
-    href: "/reviews/results",
+    href: "/active-review/results",
   },
   {
-    name: "Histórico",
-    href: "/reviews/history",
+    name: "Evaluaciones Externas",
+    href: "/active-review/external",
   },
 ];
 
-export default function ReviewsLayout({
+export default function ActiveReviewLayout({
   children,
 }: {
   children: React.ReactNode;

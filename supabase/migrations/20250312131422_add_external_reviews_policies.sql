@@ -14,12 +14,22 @@ ON external_reviews FOR UPDATE
 TO public
 USING (true);
 
+CREATE POLICY "Authenticated can create external reviews"
+ON external_reviews FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
 -- Policies for external_review_questions: Allow users to fetch questions
 -- related to an external review they have access to
 CREATE POLICY "Anyone can view external review questions"
 ON external_review_questions FOR SELECT
 TO public
 USING (true);
+
+CREATE POLICY "Authenticated can create external review questions"
+ON external_review_questions FOR INSERT
+TO authenticated
+WITH CHECK (true);
 
 -- Policies for external_review_answers
 -- Allow users to view answers
