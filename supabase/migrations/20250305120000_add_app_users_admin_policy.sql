@@ -7,9 +7,9 @@ DROP POLICY IF EXISTS "Users can only access their own user data" ON "public"."a
 CREATE POLICY "Users can only access their own user data" 
 ON "public"."app_users"
 FOR SELECT 
-TO authenticated
+TO public
 USING (
-  auth.uid() = id
+  true
 );
 
 -- Create policy for admin users to see all users

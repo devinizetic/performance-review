@@ -85,7 +85,7 @@ export async function getExternalReviewByToken(token: string): Promise<ExternalR
             answers: questionAnswers
         };
     });
-console.log(externalReview);
+
     // Return the complete external review with questions and answers
     return {
         ...externalReview,
