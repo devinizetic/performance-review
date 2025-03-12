@@ -54,6 +54,18 @@ export type UserRole = Rows<'user_role'>;
 export type UserRoleInsert = Inserts<'user_role'>;
 export type UserRoleUpdate = Updates<'user_role'>;
 
+export type ExternalReview = Rows<'external_reviews'>;
+export type ExternalReviewInsert = Inserts<'external_reviews'>;
+export type ExternalReviewUpdate = Updates<'external_reviews'>;
+
+export type ExternalReviewQuestion = Rows<'external_review_questions'>;
+export type ExternalReviewQuestionInsert = Inserts<'external_review_questions'>;
+export type ExternalReviewQuestionUpdate = Updates<'external_review_questions'>;
+
+export type ExternalReviewAnswer = Rows<'external_review_answers'>;
+export type ExternalReviewAnswerInsert = Inserts<'external_review_answers'>;
+export type ExternalReviewAnswerUpdate = Updates<'external_review_answers'>;
+
 // User with roles type for admin panel
 export type UserRoleWithName = {
   role_id: string;
