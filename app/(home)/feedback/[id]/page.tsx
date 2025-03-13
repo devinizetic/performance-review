@@ -5,14 +5,15 @@ import React from 'react';
 import Feedback from './components/Feedback';
 
 interface FeedbackPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: { readonly: boolean };
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({
-  params: { id },
+  params,
   searchParams: { readonly = false }
 }) => {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { session }

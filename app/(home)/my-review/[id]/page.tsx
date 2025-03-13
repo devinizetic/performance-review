@@ -9,7 +9,7 @@ import AnswersRepository from '@/lib/repository/answers-repository';
 import { ProgressBar } from '@/app/components/common';
 
 interface MyReviewProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const processQuestions = (
@@ -35,7 +35,8 @@ const processQuestions = (
   }
 };
 
-const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
+const MyReview: React.FC<MyReviewProps> = async ({ params }) => {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { session }

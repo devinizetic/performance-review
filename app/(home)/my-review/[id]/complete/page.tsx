@@ -7,12 +7,13 @@ import Link from 'next/link';
 import { getRandomCompletedImage } from '@/utils/common/common';
 
 interface MyReviewProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const MyReviewCompletePage: React.FC<MyReviewProps> = async ({
-  params: { id }
+  params
 }) => {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { session }
