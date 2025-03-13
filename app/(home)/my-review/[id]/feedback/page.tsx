@@ -6,7 +6,7 @@ import Feedback from '@/app/(home)/feedback/[id]/components/Feedback';
 
 interface FeedbackPageProps {
   params: Promise<{ id: string }>;
-  searchParams: { reviewerId: string; revieweeId: string };
+  searchParams: Promise<{ reviewerId: string; revieweeId: string }>;
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({

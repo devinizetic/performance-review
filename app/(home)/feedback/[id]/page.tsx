@@ -6,13 +6,14 @@ import Feedback from './components/Feedback';
 
 interface FeedbackPageProps {
   params: Promise<{ id: string }>;
-  searchParams: { readonly: boolean };
+  searchParams: Promise<{ readonly: boolean }>;
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({
   params,
-  searchParams: { readonly = false }
+  searchParams
 }) => {
+  const { readonly } = await searchParams;
   const { id } = await params;
   const supabase = await createClient();
   const {
