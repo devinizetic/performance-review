@@ -4,14 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ExternalReviewForm from "./ExternalReviewForm";
 
-interface ExternalReviewPageProps {
-  params: {
-    token: string;
-  };
-}
-
-export default async function ExternalReviewPage({ params }: ExternalReviewPageProps) {
-  const { token } = await params;
+export default async function ExternalReviewPage({ params } : { params: { token: string } }) {
+  const { token } = params;
   const externalReview = await getExternalReviewByToken(token);
 
   // Handle case where review is not found or invalid token
