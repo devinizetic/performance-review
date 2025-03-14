@@ -14,6 +14,10 @@ const navItems = [
     name: "Relaciones",
     href: "/admin/relationships",
   },
+  {
+    name: "Periodos",
+    href: "/admin/reviews",
+  },
 ];
 
 export default function AdminLayout({

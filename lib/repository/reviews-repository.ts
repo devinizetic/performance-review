@@ -16,6 +16,21 @@ const getActiveReviewQuery = async () => {
     .maybeSingle();
 };
 
+const getAllReviewsQuery = async () => {
+  const supabase = await createClient();
+  return supabase
+    .from('reviews')
+    .select(
+      `id,
+             name,
+             created_at,
+             start_date,
+             end_date,
+             is_active`
+    )
+    .order('created_at', { ascending: false });
+};
+
 const getActive = async (): Promise<Review> => {
   const { data, error } = await getActiveReviewQuery();
 
@@ -24,15 +39,25 @@ const getActive = async (): Promise<Review> => {
   }
 
   if (!data) throw new Error('There are no active reviews');
-  //How to explain this? This is a type assertion.
-  //It's like telling TypeScript that you know what you're doing (do you?) and that you're sure that the data is of type FullUserReview.
   //The library is working weirdly and I don't know how to fix it, typesccript infers an array from this reviewer:reviewer_id(*),
   //But at runtime, it is not, it is a single object like it is supposed to be.
   return data as Review;
 };
 
+const getAll = async (): Promise<Review[]> => {
+  const { data, error } = await getAllReviewsQuery();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) return [] as Review[];
+  return data as Review[];
+};
+
 const ReviewsRepository = {
-  getActive
+  getActive,
+  getAll
 };
 
 export default ReviewsRepository;
