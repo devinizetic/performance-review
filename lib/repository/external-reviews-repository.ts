@@ -4,6 +4,7 @@ import {
     ExternalReviewQuestion,
     ExternalReviewAnswer,
     ExternalReviewAnswerInsert,
+    ExternalReviewUpdate,
     AppUser
 } from '@/types/supabase.types';
 
@@ -41,6 +42,79 @@ export async function getExternalReviewByToken(token: string): Promise<ExternalR
       )
     `)
         .eq('token', token)
+        .single();
+
+    if (reviewError || !externalReview) {
+        console.error('Error fetching external review:', reviewError);
+        return null;
+    }
+
+    // Get the questions for this external review
+    const { data: questions, error: questionsError } = await supabase
+        .from('external_review_questions')
+        .select('*')
+        .eq('external_review_id', externalReview.id)
+        .order('order', { ascending: true }) as { 
+            data: ExternalReviewQuestion[], 
+            error: any 
+        };
+
+    if (questionsError) {
+        console.error('Error fetching external review questions:', questionsError);
+        return null;
+    }
+
+    // Get any existing answers
+    const { data: answers, error: answersError } = await supabase
+        .from('external_review_answers')
+        .select('*')
+        .eq('external_review_id', externalReview.id) as {
+            data: ExternalReviewAnswer[],
+            error: any
+        };
+
+    if (answersError) {
+        console.error('Error fetching external review answers:', answersError);
+        return null;
+    }
+
+    // Associate answers with their questions
+    const questionsWithAnswers = questions.map(question => {
+        const questionAnswers = answers?.filter(answer => answer.external_review_question_id === question.id) || [];
+        return {
+            ...question,
+            answers: questionAnswers
+        };
+    });
+
+    // Return the complete external review with questions and answers
+    return {
+        ...externalReview,
+        questions: questionsWithAnswers
+    } as ExternalReviewWithQuestionsAndAnswers;
+}
+
+/**
+ * Fetches an external review by ID with its questions and answers
+ * @param id The ID of the external review
+ * @returns The external review, including questions and answers, or null if not found
+ */
+export async function getExternalReviewById(id: string): Promise<ExternalReviewWithQuestionsAndAnswers | null> {
+    const supabase = await createClient();
+
+    // Get the external review
+    const { data: externalReview, error: reviewError } = await supabase
+        .from('external_reviews')
+        .select(`
+      *,
+      reviewee:reviewee_id(
+        id,
+        full_name,
+        username,
+        avatar_url
+      )
+    `)
+        .eq('id', id)
         .single();
 
     if (reviewError || !externalReview) {
@@ -143,6 +217,33 @@ export async function submitExternalReviewAnswers(
 }
 
 /**
+ * Updates an external review
+ * @param reviewId The ID of the external review to update
+ * @param updates The updates to apply to the external review
+ * @returns The updated external review or null if failed
+ */
+export async function updateExternalReview(
+    reviewId: string,
+    updates: Partial<ExternalReviewUpdate>
+): Promise<ExternalReview | null> {
+    const supabase = await createClient();
+    
+    const { data: updatedReview, error: updateError } = await supabase
+        .from('external_reviews')
+        .update(updates)
+        .eq('id', reviewId)
+        .select()
+        .single();
+    
+    if (updateError) {
+        console.error('Error updating external review:', updateError);
+        return null;
+    }
+    
+    return updatedReview;
+}
+
+/**
  * Gets all external reviews for a specific review
  * @param reviewId The ID of the review to fetch external reviews for
  * @returns List of external reviews with reviewee information
@@ -198,6 +299,7 @@ export async function getExternalReviewsForActiveReview(): Promise<ExternalRevie
  * Creates a new external review
  * @param revieweeId The ID of the user being reviewed
  * @param reviewId The ID of the review (defaults to active review if not provided)
+ * @param reviewerName The name of the external reviewer
  * @returns The created external review or null if failed
  */
 export async function createExternalReview(

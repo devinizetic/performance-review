@@ -3,7 +3,9 @@
 import { 
   createExternalReview,
   createDefaultExternalReviewQuestions,
-  getExternalReviewsForActiveReview
+  getExternalReviewsForActiveReview,
+  getExternalReviewById,
+  updateExternalReview
 } from '@/lib/repository/external-reviews-repository';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
@@ -72,5 +74,49 @@ export async function fetchExternalReviews() {
   } catch (error) {
     console.error('Error fetching external reviews:', error);
     return { success: false, error: 'Failed to fetch external reviews', reviews: [] };
+  }
+}
+
+/**
+ * Server action to get detailed information about an external review
+ * @param reviewId The ID of the external review
+ * @returns Object containing the external review with questions and answers
+ */
+export async function getExternalReviewDetails(reviewId: string) {
+  try {
+    const review = await getExternalReviewById(reviewId);
+    
+    if (!review) {
+      return { success: false, error: 'Review not found' };
+    }
+    
+    return { success: true, review };
+  } catch (error) {
+    console.error('Error fetching external review details:', error);
+    return { success: false, error: 'Failed to fetch external review details' };
+  }
+}
+
+/**
+ * Server action to update the status of an external review
+ * @param reviewId The ID of the external review
+ * @param status The new status for the external review
+ * @returns Object indicating success/failure
+ */
+export async function updateExternalReviewStatus(reviewId: string, status: 'approved' | 'declined') {
+  try {
+    const updated = await updateExternalReview(reviewId, { status });
+    
+    if (!updated) {
+      return { success: false, error: 'Failed to update external review status' };
+    }
+    
+    // Revalidate the page to show the updated status
+    revalidatePath('/active-review/external');
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating external review status:', error);
+    return { success: false, error: 'An unexpected error occurred' };
   }
 }

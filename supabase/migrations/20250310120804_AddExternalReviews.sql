@@ -4,7 +4,7 @@ CREATE TABLE public.external_reviews (
     token UUID NOT NULL DEFAULT gen_random_uuid(),
     review_id UUID NOT NULL,
     reviewee_id UUID NOT NULL,
-    status TEXT NOT NULL CHECK (status IN ('pending', 'completed')),
+    status TEXT NOT NULL CHECK (status IN ('pending', 'completed', 'approved', 'declined')),
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     completed_at TIMESTAMP WITH TIME ZONE
 );
