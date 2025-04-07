@@ -202,7 +202,8 @@ export async function getExternalReviewsForActiveReview(): Promise<ExternalRevie
  */
 export async function createExternalReview(
     revieweeId: string, 
-    reviewId?: string
+    reviewId?: string,
+    reviewerName?: string
 ): Promise<ExternalReview | null> {
     const supabase = await createClient();
     
@@ -228,6 +229,7 @@ export async function createExternalReview(
         .insert({
             review_id: reviewId,
             reviewee_id: revieweeId,
+            reviewer_name: reviewerName,
             status: 'pending'
         })
         .select()

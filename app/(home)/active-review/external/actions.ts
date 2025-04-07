@@ -11,6 +11,7 @@ import { z } from 'zod';
 // Schema for validating new external review creation
 const CreateExternalReviewSchema = z.object({
   revieweeId: z.string().uuid(),
+  reviewerName: z.string().min(1, 'El nombre del evaluador es requerido'),
 });
 
 export type CreateExternalReviewInput = z.infer<typeof CreateExternalReviewSchema>;
@@ -26,7 +27,7 @@ export async function createNewExternalReview(input: CreateExternalReviewInput) 
     const validatedInput = CreateExternalReviewSchema.parse(input);
     
     // Create the external review
-    const externalReview = await createExternalReview(validatedInput.revieweeId);
+    const externalReview = await createExternalReview(validatedInput.revieweeId, undefined, validatedInput.reviewerName);
     
     if (!externalReview) {
       return { success: false, error: 'Failed to create external review' };

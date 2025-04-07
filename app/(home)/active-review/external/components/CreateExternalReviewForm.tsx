@@ -22,6 +22,8 @@ import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { createNewExternalReview, CreateExternalReviewInput } from '../actions';
 import { toast } from 'sonner';
+import { FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 interface CreateExternalReviewFormProps {
   reviewees: Pick<AppUser, 'id' | 'full_name'>[];
@@ -30,6 +32,7 @@ interface CreateExternalReviewFormProps {
 export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewFormProps) {
   const [open, setOpen] = useState(false);
   const [selectedReviewee, setSelectedReviewee] = useState<string>('');
+  const [reviewerName, setReviewerName] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -38,11 +41,17 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
       return;
     }
 
+    if (!reviewerName.trim()) {
+      toast.error('Por favor ingrese el nombre del evaluador externo');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const input: CreateExternalReviewInput = {
         revieweeId: selectedReviewee,
+        reviewerName: reviewerName.trim(),
       };
 
       const result = await createNewExternalReview(input);
@@ -51,6 +60,7 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
         toast.success('Evaluación externa creada exitosamente');
         setOpen(false);
         setSelectedReviewee('');
+        setReviewerName('');
       } else {
         toast.error(result.error || 'Error al crear la evaluación externa');
       }
@@ -77,35 +87,46 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
             Seleccione un evaluado para crear una nueva evaluación externa
           </DialogDescription>
         </DialogHeader>
-        
-        <div className="py-4">
-          <Select
-            value={selectedReviewee}
-            onValueChange={setSelectedReviewee}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Seleccionar evaluado" />
-            </SelectTrigger>
-            <SelectContent>
-              {reviewees.map((reviewee) => (
-                <SelectItem key={reviewee.id} value={reviewee.id}>
-                  {reviewee.full_name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+        <div className="py-4 space-y-4">
+          <div className="space-y-2">
+            <FormLabel>Evaluado</FormLabel>
+            <Select
+              value={selectedReviewee}
+              onValueChange={setSelectedReviewee}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Seleccionar evaluado" />
+              </SelectTrigger>
+              <SelectContent>
+                {reviewees.map((reviewee) => (
+                  <SelectItem key={reviewee.id} value={reviewee.id}>
+                    {reviewee.full_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <FormLabel>Nombre del evaluador externo</FormLabel>
+            <Input
+              value={reviewerName}
+              onChange={(e) => setReviewerName(e.target.value)}
+              placeholder="Nombre completo del evaluador"
+            />
+          </div>
         </div>
-        
+
         <DialogFooter>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setOpen(false)}
             disabled={isSubmitting}
           >
             Cancelar
           </Button>
-          <Button 
-            onClick={handleSubmit} 
+          <Button
+            onClick={handleSubmit}
             disabled={!selectedReviewee || isSubmitting}
           >
             {isSubmitting ? 'Creando...' : 'Crear'}
