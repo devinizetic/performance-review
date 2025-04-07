@@ -22,8 +22,8 @@ import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { createNewExternalReview, CreateExternalReviewInput } from '../actions';
 import { toast } from 'sonner';
-import { FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@radix-ui/react-label';
 
 interface CreateExternalReviewFormProps {
   reviewees: Pick<AppUser, 'id' | 'full_name'>[];
@@ -90,7 +90,15 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
 
         <div className="py-4 space-y-4">
           <div className="space-y-2">
-            <FormLabel>Evaluado</FormLabel>
+            <Label>Nombre del evaluador externo</Label>
+            <Input
+              value={reviewerName}
+              onChange={(e) => setReviewerName(e.target.value)}
+              placeholder="Nombre completo del evaluador"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Evaluado</Label>
             <Select
               value={selectedReviewee}
               onValueChange={setSelectedReviewee}
@@ -106,14 +114,6 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-2">
-            <FormLabel>Nombre del evaluador externo</FormLabel>
-            <Input
-              value={reviewerName}
-              onChange={(e) => setReviewerName(e.target.value)}
-              placeholder="Nombre completo del evaluador"
-            />
           </div>
         </div>
 
