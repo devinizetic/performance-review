@@ -20,7 +20,8 @@ import {
   Badge
 } from "@/components/ui/badge";
 import { format } from "date-fns";
-import { CalendarIcon, CheckCircle } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
+import { CreateReviewDialog } from '@/app/components/performance/create-review-dialog';
 
 export default async function ReviewsPage() {
   const supabase = await createClient();
@@ -42,7 +43,7 @@ export default async function ReviewsPage() {
               Administra los períodos de evaluación de desempeño
             </CardDescription>
           </div>
-          {/* We can add actions like "Create new period" button here later */}
+          <CreateReviewDialog />
         </div>
       </CardHeader>
       <CardContent>

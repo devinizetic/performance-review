@@ -247,7 +247,7 @@ export const startActiveReview = async (reviewId: string) => {
   revalidatePath('/');
 };
 
-export const setFeedbackCompleted = async (userReviewId: string) => {
+export const createNewReview = async (formData: FormData) => {
   'use server';
 
   const supabase = await createClient();
@@ -255,27 +255,27 @@ export const setFeedbackCompleted = async (userReviewId: string) => {
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
 
-  if (!userReviewId) throw new Error('Esta evaluación no existe');
+  const name = formData.get('name')?.toString();
+  const startDate = formData.get('startDate')?.toString();
+  const endDate = formData.get('endDate')?.toString();
 
-  const timestamp = new Date().toISOString();
-  const feedbackUpdate = {
-    feedback_completed_timestamp: timestamp
-  };
-  const { error } = await supabase
-    .from('user_review')
-    .update(feedbackUpdate)
-    .eq('id', userReviewId.toString());
+  if (!name || !startDate || !endDate) {
+    throw new Error('Todos los campos son requeridos');
+  }
 
-  if (error) throw new Error(error.message);
-  const { data: userReviewData, error: userReviewError } = await supabase
-    .from('user_review')
-    .select('reviewee_id')
-    .eq('id', userReviewId.toString())
+  const { data, error } = await supabase
+    .from('reviews')
+    .insert({
+      name,
+      start_date: startDate,
+      end_date: endDate,
+      is_active: false
+    })
+    .select()
     .single();
 
-  await EmailService.sendCompleteFeedbackRevieweeEmail({
-    revieweeId: userReviewData?.reviewee_id || ''
-  });
+  if (error) throw new Error(error.message);
 
-  revalidatePath('/');
+  revalidatePath('/admin/reviews');
+  return data;
 };

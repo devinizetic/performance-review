@@ -55,9 +55,30 @@ const getAll = async (): Promise<Review[]> => {
   return data as Review[];
 };
 
+const createReview = async (name: string, startDate: string, endDate: string): Promise<Review> => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('reviews')
+    .insert({
+      name,
+      start_date: startDate,
+      end_date: endDate,
+      is_active: false
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as Review;
+};
+
 const ReviewsRepository = {
   getActive,
-  getAll
+  getAll,
+  createReview
 };
 
 export default ReviewsRepository;
