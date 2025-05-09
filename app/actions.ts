@@ -258,12 +258,18 @@ export const createNewReview = async (formData: FormData) => {
   const name = formData.get('name')?.toString();
   const startDate = formData.get('startDate')?.toString();
   const endDate = formData.get('endDate')?.toString();
+  const questionsRaw = formData.get('questions');
+  const usersRaw = formData.get('users');
 
-  if (!name || !startDate || !endDate) {
+  if (!name || !startDate || !endDate || !questionsRaw || !usersRaw) {
     throw new Error('Todos los campos son requeridos');
   }
 
-  const { data, error } = await supabase
+  const questions = JSON.parse(questionsRaw.toString()); // [{id, sequence}]
+  const users = JSON.parse(usersRaw.toString()); // [userId, ...]
+
+  // 1. Create the review
+  const { data: review, error } = await supabase
     .from('reviews')
     .insert({
       name,
@@ -276,6 +282,34 @@ export const createNewReview = async (formData: FormData) => {
 
   if (error) throw new Error(error.message);
 
+  // 2. Insert review_question records
+  for (const q of questions) {
+    const { error: rqError } = await supabase.from('review_question').insert({
+      review_id: review.id,
+      question_id: q.id,
+      question_sequence: q.sequence
+    });
+    if (rqError) throw new Error(rqError.message);
+  }
+
+  // 3. Insert user_review records (find reviewer for each reviewee)
+  for (const userId of users) {
+    // Find reviewer for this reviewee
+    const { data: reviewerRow, error: reviewerError } = await supabase
+      .from('reviewer_reviewee')
+      .select('reviewer_id')
+      .eq('reviewee_id', userId)
+      .maybeSingle();
+    if (reviewerError) throw new Error(reviewerError.message);
+    const reviewerId = reviewerRow?.reviewer_id || '';
+    const { error: urError } = await supabase.from('user_review').insert({
+      review_id: review.id,
+      reviewee_id: userId,
+      reviewer_id: reviewerId
+    });
+    if (urError) throw new Error(urError.message);
+  }
+
   revalidatePath('/admin/reviews');
-  return data;
+  return review;
 };
