@@ -1,27 +1,27 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import ReviewsRepository from '@/lib/repository/reviews-repository';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Badge
-} from "@/components/ui/badge";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+  TableRow
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
 import { CreateReviewDialog } from '@/app/components/performance/create-review-dialog';
+import Link from 'next/link';
+import { Pencil } from 'lucide-react';
 
 export default async function ReviewsPage() {
   const supabase = await createClient();
@@ -56,17 +56,27 @@ export default async function ReviewsPage() {
                 <TableHead>Fecha de Inicio</TableHead>
                 <TableHead>Fecha de Fin</TableHead>
                 <TableHead>Creado</TableHead>
+                <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {reviews.map((review) => (
-                <TableRow key={review.id} className="cursor-pointer hover:bg-muted/50">
+                <TableRow
+                  key={review.id}
+                  className="cursor-pointer hover:bg-muted/50"
+                >
                   <TableCell className="font-medium">
-                    {review.name || `Período ${format(new Date(review.created_at), 'yyyy-MM')}`}
+                    {review.name ||
+                      `Período ${format(
+                        new Date(review.created_at),
+                        'yyyy-MM'
+                      )}`}
                   </TableCell>
                   <TableCell>
                     {review.is_active ? (
-                      <Badge className="bg-green-500 hover:bg-green-600">Activo</Badge>
+                      <Badge className="bg-green-500 hover:bg-green-600">
+                        Activo
+                      </Badge>
                     ) : (
                       <Badge variant="outline">Inactivo</Badge>
                     )}
@@ -88,11 +98,20 @@ export default async function ReviewsPage() {
                         {format(new Date(review.end_date), 'dd/MM/yyyy')}
                       </div>
                     ) : (
-                      <span className="text-muted-foreground">Sin finalizar</span>
+                      <span className="text-muted-foreground">
+                        Sin finalizar
+                      </span>
                     )}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {format(new Date(review.created_at), 'dd/MM/yyyy')}
+                  </TableCell>
+                  <TableCell>
+                    <Link href={`/admin/reviews/${review.id}/edit`}>
+                      <button className="inline-flex items-center gap-1 px-3 py-1 rounded bg-primary text-white hover:bg-primary/80 transition text-sm">
+                        <Pencil className="w-4 h-4" /> Editar
+                      </button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -100,7 +119,9 @@ export default async function ReviewsPage() {
           </Table>
         ) : (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="text-muted-foreground mb-2">No hay periodos de evaluación registrados</div>
+            <div className="text-muted-foreground mb-2">
+              No hay periodos de evaluación registrados
+            </div>
           </div>
         )}
       </CardContent>

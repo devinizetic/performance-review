@@ -1,8 +1,8 @@
 import { Review } from '@/types/supabase.types';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/client';
 
 const getActiveReviewQuery = async () => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('reviews')
     .select(
@@ -17,7 +17,7 @@ const getActiveReviewQuery = async () => {
 };
 
 const getAllReviewsQuery = async () => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('reviews')
     .select(
@@ -60,7 +60,7 @@ const createReview = async (
   startDate: string,
   endDate: string
 ): Promise<Review> => {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('reviews')
     .insert({
@@ -80,7 +80,7 @@ const createReview = async (
 };
 
 const getById = async ({ id }: { id: string }): Promise<Review> => {
-  const supabase = await createClient();
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('reviews')
     .select('id, name, created_at, start_date, end_date, is_active')
@@ -91,11 +91,11 @@ const getById = async ({ id }: { id: string }): Promise<Review> => {
   return data as Review;
 };
 
-const ReviewsRepository = {
+const ReviewsRepositoryClient = {
   getActive,
   getAll,
   createReview,
   getById
 };
 
-export default ReviewsRepository;
+export default ReviewsRepositoryClient;

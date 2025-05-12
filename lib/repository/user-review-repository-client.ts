@@ -4,10 +4,10 @@ import {
   FullUserReview,
   SimpleUserReview
 } from '@/types/supabase.types';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/client';
 
 const getActiveUserReviewByRevieweeIdQuery = async (revieweeId: string) => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('user_review')
     .select('id, review:reviews!inner(is_active)')
@@ -33,7 +33,7 @@ const getActiveUserReviewByRevieweeId = async ({
 };
 
 const fullReviewQuery = async (reviewId: string) => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('user_review')
     .select(
@@ -80,7 +80,7 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
 };
 
 const getAllCurrentReviewsQuery = async (reviewId: string) => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('user_review')
     .select(
@@ -116,7 +116,7 @@ const getAllCurrentReviews = async (
 };
 
 const getCurrentReviewsByRevieweeIdQuery = async (revieweeId: string) => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase
     .from('user_review')
     .select(
@@ -156,7 +156,7 @@ const getCurrentReviewsByRevieweeId = async ({
 };
 
 const getFeedbackResultsQuery = async () => {
-  const supabase = await createClient();
+  const supabase = createClient();
   return supabase.from('feedback_scores').select(
     `
     id,
@@ -180,7 +180,7 @@ const getFeedbackResults = async (): Promise<FeedbackScore[]> => {
 };
 
 const getByReviewId = async ({ reviewId }: { reviewId: string }) => {
-  const supabase = await createClient();
+  const supabase = createClient();
   // Get all user_review records for this review
   const { data: userReviews, error: urError } = await supabase
     .from('user_review')
@@ -200,7 +200,7 @@ const getByReviewId = async ({ reviewId }: { reviewId: string }) => {
   };
 };
 
-const UserReviewRepository = {
+const UserReviewRepositoryClient = {
   getById,
   getFullReviewQuery,
   getActiveUserReviewByRevieweeId,
@@ -210,4 +210,4 @@ const UserReviewRepository = {
   getByReviewId
 };
 
-export default UserReviewRepository;
+export default UserReviewRepositoryClient;
