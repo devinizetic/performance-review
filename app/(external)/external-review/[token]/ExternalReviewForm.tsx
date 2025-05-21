@@ -66,6 +66,16 @@ export default function ExternalReviewForm({
     }
   };
 
+  // Determine language for button text
+  const lang = externalReview.language === 'spanish' ? 'es' : 'en';
+  const submitLabel = isSubmitting
+    ? lang === 'es'
+      ? 'Enviando...'
+      : 'Submitting...'
+    : lang === 'es'
+    ? 'Enviar evaluación'
+    : 'Submit Review';
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {submissionError && (
@@ -161,7 +171,7 @@ export default function ExternalReviewForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting} className="px-8">
-          {isSubmitting ? 'Submitting...' : 'Submit Review'}
+          {submitLabel}
         </Button>
       </div>
     </form>
