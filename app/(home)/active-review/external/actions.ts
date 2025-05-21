@@ -1,6 +1,6 @@
 'use server';
 
-import { 
+import {
   createExternalReview,
   createDefaultExternalReviewQuestions,
   getExternalReviewsForActiveReview,
@@ -14,38 +14,56 @@ import { z } from 'zod';
 const CreateExternalReviewSchema = z.object({
   revieweeId: z.string().uuid(),
   reviewerName: z.string().min(1, 'El nombre del evaluador es requerido'),
+  companyName: z.string().min(1, 'El nombre de la empresa es requerido'),
+  language: z.enum(['english', 'spanish']).default('english')
 });
 
-export type CreateExternalReviewInput = z.infer<typeof CreateExternalReviewSchema>;
+export type CreateExternalReviewInput = z.infer<
+  typeof CreateExternalReviewSchema
+>;
 
 /**
  * Server action to create a new external review
  * @param input Form values for external review creation
  * @returns Object indicating success/failure and any error message or the created review ID
  */
-export async function createNewExternalReview(input: CreateExternalReviewInput) {
+export async function createNewExternalReview(
+  input: CreateExternalReviewInput
+) {
   try {
     // Validate input
     const validatedInput = CreateExternalReviewSchema.parse(input);
-    
+
     // Create the external review
-    const externalReview = await createExternalReview(validatedInput.revieweeId, undefined, validatedInput.reviewerName);
-    
+    const externalReview = await createExternalReview(
+      validatedInput.revieweeId,
+      undefined,
+      validatedInput.reviewerName,
+      validatedInput.companyName,
+      validatedInput.language
+    );
+
     if (!externalReview) {
       return { success: false, error: 'Failed to create external review' };
     }
-    
+
     // Create default questions for the review
-    const questionsCreated = await createDefaultExternalReviewQuestions(externalReview.id);
-    
+    const questionsCreated = await createDefaultExternalReviewQuestions(
+      externalReview.id,
+      validatedInput.language
+    );
+
     if (!questionsCreated) {
-      return { success: false, error: 'Failed to create questions for external review' };
+      return {
+        success: false,
+        error: 'Failed to create questions for external review'
+      };
     }
-    
+
     // Revalidate the page to show the new review
     revalidatePath('/active-review/external');
-    
-    return { 
+
+    return {
       success: true,
       reviewId: externalReview.id,
       reviewToken: externalReview.token
@@ -53,8 +71,8 @@ export async function createNewExternalReview(input: CreateExternalReviewInput) 
   } catch (error) {
     console.error('Error creating external review:', error);
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'Invalid input data',
         validationErrors: error.flatten().fieldErrors
       };
@@ -73,7 +91,11 @@ export async function fetchExternalReviews() {
     return { success: true, reviews };
   } catch (error) {
     console.error('Error fetching external reviews:', error);
-    return { success: false, error: 'Failed to fetch external reviews', reviews: [] };
+    return {
+      success: false,
+      error: 'Failed to fetch external reviews',
+      reviews: []
+    };
   }
 }
 
@@ -85,11 +107,11 @@ export async function fetchExternalReviews() {
 export async function getExternalReviewDetails(reviewId: string) {
   try {
     const review = await getExternalReviewById(reviewId);
-    
+
     if (!review) {
       return { success: false, error: 'Review not found' };
     }
-    
+
     return { success: true, review };
   } catch (error) {
     console.error('Error fetching external review details:', error);
@@ -103,17 +125,23 @@ export async function getExternalReviewDetails(reviewId: string) {
  * @param status The new status for the external review
  * @returns Object indicating success/failure
  */
-export async function updateExternalReviewStatus(reviewId: string, status: 'approved' | 'declined') {
+export async function updateExternalReviewStatus(
+  reviewId: string,
+  status: 'approved' | 'declined'
+) {
   try {
     const updated = await updateExternalReview(reviewId, { status });
-    
+
     if (!updated) {
-      return { success: false, error: 'Failed to update external review status' };
+      return {
+        success: false,
+        error: 'Failed to update external review status'
+      };
     }
-    
+
     // Revalidate the page to show the updated status
     revalidatePath('/active-review/external');
-    
+
     return { success: true };
   } catch (error) {
     console.error('Error updating external review status:', error);

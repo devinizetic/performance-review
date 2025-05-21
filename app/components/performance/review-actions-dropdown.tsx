@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Review } from '@/types/supabase.types';
-import { setActiveReviewAction } from '@/app/actions';
+import { setActiveReviewAction, setReviewDeletedAction } from '@/app/actions';
 
 interface ReviewActionsDropdownProps {
   review: Review;
@@ -37,14 +37,28 @@ export function ReviewActionsDropdown({ review }: ReviewActionsDropdownProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => {
-            // Placeholder for delete functionality
-            console.log('Delete review:', review.id);
+          onClick={async () => {
+            if (!review.is_deleted) {
+              await setReviewDeletedAction(review.id, true);
+            } else {
+              await setReviewDeletedAction(review.id, false);
+            }
           }}
-          className="flex items-center gap-2 cursor-pointer"
+          className={`flex items-center gap-2 cursor-pointer ${
+            review.is_deleted ? 'text-yellow-600' : ''
+          }`}
         >
-          <Trash2 className="w-4 h-4" /> Borrar
+          <Trash2 className="w-4 h-4" />
+          {review.is_deleted ? 'Restaurar' : 'Borrar'}
         </DropdownMenuItem>
+        {review.is_deleted && (
+          <DropdownMenuItem
+            disabled
+            className="flex items-center gap-2 text-red-500 cursor-not-allowed"
+          >
+            Eliminado
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem
           onClick={async () => {
             await setActiveReviewAction(review.id);

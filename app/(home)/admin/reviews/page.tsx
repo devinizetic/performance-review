@@ -72,7 +72,11 @@ export default async function ReviewsPage() {
                       )}`}
                   </TableCell>
                   <TableCell>
-                    {review.is_active ? (
+                    {review.is_deleted ? (
+                      <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white">
+                        Eliminado
+                      </Badge>
+                    ) : review.is_active ? (
                       <Badge className="bg-green-500 hover:bg-green-600">
                         Activo
                       </Badge>

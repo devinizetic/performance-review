@@ -38,9 +38,9 @@ export type ReviewerReviewee = Rows<'reviewer_reviewee'>;
 export type ReviewerRevieweeInsert = Inserts<'reviewer_reviewee'>;
 export type ReviewerRevieweeUpdate = Updates<'reviewer_reviewee'>;
 
-export type Review = Rows<'reviews'>;
-export type ReviewInsert = Inserts<'reviews'>;
-export type ReviewUpdate = Updates<'reviews'>;
+export type Review = Rows<'reviews'> & { is_deleted?: boolean };
+export type ReviewInsert = Inserts<'reviews'> & { is_deleted?: boolean };
+export type ReviewUpdate = Updates<'reviews'> & { is_deleted?: boolean };
 
 export type Role = Rows<'roles'>;
 export type RoleInsert = Inserts<'roles'>;

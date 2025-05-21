@@ -1,28 +1,33 @@
 'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ExternalReviewWithQuestionsAndAnswers } from "@/lib/repository/external-reviews-repository";
-import AutoSizeTextarea from "@/app/components/auto-size-textarea";
-import { submitExternalReview } from "../actions";
-import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ExternalReviewWithQuestionsAndAnswers } from '@/lib/repository/external-reviews-repository';
+import AutoSizeTextarea from '@/app/components/auto-size-textarea';
+import { submitExternalReview } from '../actions';
+import { useRouter } from 'next/navigation';
+import { Card } from '@/components/ui/card';
 
 interface ExternalReviewFormProps {
   externalReview: ExternalReviewWithQuestionsAndAnswers;
 }
 
 // Simple form using useState instead of react-hook-form
-export default function ExternalReviewForm({ externalReview }: ExternalReviewFormProps) {
+export default function ExternalReviewForm({
+  externalReview
+}: ExternalReviewFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  
+
   // Initialize form data from the external review
   const [answers, setAnswers] = useState(
-    externalReview.questions.map(question => ({
+    externalReview.questions.map((question) => ({
       questionId: question.id,
-      answer: question.answers && question.answers.length > 0 ? String(question.answers[0].answer || "") : ""
+      answer:
+        question.answers && question.answers.length > 0
+          ? String(question.answers[0].answer || '')
+          : ''
     }))
   );
 
@@ -44,16 +49,18 @@ export default function ExternalReviewForm({ externalReview }: ExternalReviewFor
         externalReviewId: externalReview.id,
         answers: answers
       });
-      
+
       if (result.success) {
         // Refresh the page to show completion message
         router.refresh();
       } else {
-        setSubmissionError(result.error || "An error occurred while submitting your feedback.");
+        setSubmissionError(
+          result.error || 'An error occurred while submitting your feedback.'
+        );
       }
     } catch (error) {
-      console.error("Error submitting external review:", error);
-      setSubmissionError("An unexpected error occurred. Please try again.");
+      console.error('Error submitting external review:', error);
+      setSubmissionError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -67,40 +74,94 @@ export default function ExternalReviewForm({ externalReview }: ExternalReviewFor
         </div>
       )}
 
-      {externalReview.questions.map((question, index) => (
-        <Card key={question.id} className="overflow-hidden">
-          <div className="p-6 space-y-4">
-            <h3 className="font-medium text-lg">
-              {index + 1}. {question.text}
-            </h3>
-            
-            <div className="space-y-2">
-              <label htmlFor={`answer-${index}`} className="block font-medium text-sm">
-                Your Answer
-              </label>
-              
-              <AutoSizeTextarea
-                value={answers[index].answer}
-                onChange={(e) => handleTextChange(index, e.target.value)}
-                required
-                className="p-3 bg-gray-50"
-              />
-              
-              <p className="text-sm text-gray-500">
-                Please provide your honest feedback.
-              </p>
+      {externalReview.questions.map((question, index) => {
+        let inputField = null;
+        if (question.type === 'text') {
+          inputField = (
+            <AutoSizeTextarea
+              value={answers[index].answer}
+              onChange={(e) => handleTextChange(index, e.target.value)}
+              required
+              className="p-3 bg-gray-50"
+            />
+          );
+        } else if (question.type === 'rating') {
+          let opts: any = { min: 1, max: 5, labels: [] };
+          try {
+            opts = question.options
+              ? JSON.parse(question.options as string)
+              : opts;
+          } catch {}
+          inputField = (
+            <div className="flex items-center gap-4">
+              {[...Array(opts.max - opts.min + 1)].map((_, i) => {
+                const val = opts.min + i;
+                return (
+                  <label
+                    key={val}
+                    className="flex flex-col items-center cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name={`rating-${question.id}`}
+                      value={val}
+                      checked={answers[index].answer == String(val)}
+                      onChange={() => handleTextChange(index, String(val))}
+                      required
+                      className="accent-primary"
+                    />
+                    <span className="text-xs mt-1">
+                      {opts.labels?.[i] || val}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
-          </div>
-        </Card>
-      ))}
+          );
+        } else if (question.type === 'multiple_choice') {
+          let opts: string[] = [];
+          try {
+            opts = question.options
+              ? JSON.parse(question.options as string)
+              : [];
+          } catch {}
+          inputField = (
+            <div className="flex flex-col gap-2">
+              {opts.map((opt, i) => (
+                <label
+                  key={i}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name={`mc-${question.id}`}
+                    value={opt}
+                    checked={answers[index].answer === opt}
+                    onChange={() => handleTextChange(index, opt)}
+                    required
+                    className="accent-primary"
+                  />
+                  <span>{opt}</span>
+                </label>
+              ))}
+            </div>
+          );
+        }
+        return (
+          <Card key={question.id} className="overflow-hidden">
+            <div className="p-6 space-y-4">
+              <h3 className="font-medium text-lg">
+                {index + 1}. {question.text}
+              </h3>
+              <div className="space-y-2">{inputField}</div>
+            </div>
+          </Card>
+        );
+      })}
 
       <div className="flex justify-end">
-        <Button 
-          type="submit" 
-          disabled={isSubmitting}
-          className="px-8"
-        >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
+        <Button type="submit" disabled={isSubmitting} className="px-8">
+          {isSubmitting ? 'Submitting...' : 'Submit Review'}
         </Button>
       </div>
     </form>

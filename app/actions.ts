@@ -454,3 +454,26 @@ export const setActiveReviewAction = async (reviewId: string) => {
 
   revalidatePath('/admin/reviews');
 };
+
+export const setReviewDeletedAction = async (
+  reviewId: string,
+  isDeleted: boolean
+) => {
+  'use server';
+  const supabase = await createClient();
+  const currentUser = await supabase.auth.getUser();
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!reviewId) throw new Error('Review ID is required');
+
+  const { error } = await supabase
+    .from('reviews')
+    .update({ is_deleted: isDeleted })
+    .eq('id', reviewId);
+
+  if (error) {
+    throw new Error(`Error updating review deleted state: ${error.message}`);
+  }
+
+  revalidatePath('/admin/reviews');
+};

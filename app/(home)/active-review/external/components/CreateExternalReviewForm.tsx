@@ -8,14 +8,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 import { AppUser } from '@/types/supabase.types';
 import { PlusCircle } from 'lucide-react';
@@ -29,10 +29,14 @@ interface CreateExternalReviewFormProps {
   reviewees: Pick<AppUser, 'id' | 'full_name'>[];
 }
 
-export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewFormProps) {
+export function CreateExternalReviewForm({
+  reviewees
+}: CreateExternalReviewFormProps) {
   const [open, setOpen] = useState(false);
   const [selectedReviewee, setSelectedReviewee] = useState<string>('');
   const [reviewerName, setReviewerName] = useState<string>('');
+  const [companyName, setCompanyName] = useState<string>('');
+  const [language, setLanguage] = useState<'english' | 'spanish'>('english');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -46,12 +50,19 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
       return;
     }
 
+    if (!companyName.trim()) {
+      toast.error('Por favor ingrese el nombre de la empresa');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const input: CreateExternalReviewInput = {
+      const input = {
         revieweeId: selectedReviewee,
         reviewerName: reviewerName.trim(),
+        companyName: companyName.trim(),
+        language: language as 'english' | 'spanish'
       };
 
       const result = await createNewExternalReview(input);
@@ -61,6 +72,8 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
         setOpen(false);
         setSelectedReviewee('');
         setReviewerName('');
+        setCompanyName('');
+        setLanguage('english');
       } else {
         toast.error(result.error || 'Error al crear la evaluación externa');
       }
@@ -96,6 +109,29 @@ export function CreateExternalReviewForm({ reviewees }: CreateExternalReviewForm
               onChange={(e) => setReviewerName(e.target.value)}
               placeholder="Nombre completo del evaluador"
             />
+          </div>
+          <div className="space-y-2">
+            <Label>Empresa</Label>
+            <Input
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="Nombre de la empresa"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Idioma</Label>
+            <Select
+              value={language}
+              onValueChange={(val) => setLanguage(val as 'english' | 'spanish')}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Seleccionar idioma" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="english">Inglés</SelectItem>
+                <SelectItem value="spanish">Español</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label>Evaluado</Label>

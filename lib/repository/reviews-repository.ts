@@ -10,7 +10,8 @@ const getActiveReviewQuery = async () => {
              created_at,
              start_date,
              end_date,
-             is_active`
+             is_active,
+             is_deleted`
     )
     .eq('is_active', true)
     .maybeSingle();
@@ -26,7 +27,8 @@ const getAllReviewsQuery = async () => {
              created_at,
              start_date,
              end_date,
-             is_active`
+             is_active,
+             is_deleted`
     )
     .order('created_at', { ascending: false });
 };
@@ -83,7 +85,7 @@ const getById = async ({ id }: { id: string }): Promise<Review> => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, name, created_at, start_date, end_date, is_active')
+    .select('id, name, created_at, start_date, end_date, is_active, is_deleted')
     .eq('id', id)
     .single();
   if (error) throw new Error(error.message);
