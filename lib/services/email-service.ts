@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { sendEmail } from './amazon-ses-service';
 import UserRepository from '../repository/user-repository';
+import { addDays, format } from 'date-fns';
 
 const DEFAULT_FROM_EMAIL = 'Devlights ED <ed@devlights.com>';
 
@@ -177,6 +178,9 @@ const sendInitialReviewEmail = async ({
   userReviewId: string;
 }): Promise<{ reviewerSent: boolean; revieweeSent: boolean }> => {
   try {
+    const now = new Date();
+    const revieweeDeadline = format(addDays(now, 7), 'dd/MM/yyyy');
+    const reviewerDeadline = format(addDays(now, 14), 'dd/MM/yyyy');
     // Reviewee email
     const revieweeBody = `
       <div>
@@ -187,8 +191,10 @@ const sendInitialReviewEmail = async ({
       <p>
         <a href="${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}">${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}</a>
       </p>
+      <p><b>Fecha límite para completar tu autoevaluación: ${revieweeDeadline}</b></p>
       <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
       <p>Saludos cordiales</p>
+      <img style="width:100%;margin-top:16px" src="https://drive.usercontent.google.com/download?id=1MkTW1dVTEULP9hxOUUdWaNfzJILf-b-e&export=view&authuser=0" alt="Google Drive Image" />
       </div>
     `;
     const revieweeResult = await sendEmail({
@@ -208,8 +214,10 @@ const sendInitialReviewEmail = async ({
       <p>
         <a href="${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}">${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}</a>
       </p>
+      <p><b>Fecha límite para completar tu evaluación: ${reviewerDeadline}</b></p>
       <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
       <p>Saludos cordiales</p>
+      <img style="width:100%;margin-top:16px" src="https://drive.usercontent.google.com/download?id=1MkTW1dVTEULP9hxOUUdWaNfzJILf-b-e&export=view&authuser=0" alt="Google Drive Image" />
       </div>
     `;
     const reviewerResult = await sendEmail({
