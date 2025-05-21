@@ -134,11 +134,13 @@ const getCurrentReviewsByRevieweeIdQuery = async (revieweeId: string) => {
       start_date,
       end_date,
       is_active,
-      name
+      name,
+      is_deleted
     )
     `
     )
-    .eq('reviewee_id', revieweeId);
+    .eq('reviewee_id', revieweeId)
+    .eq('review.is_deleted', false);
 };
 
 const getCurrentReviewsByRevieweeId = async ({
