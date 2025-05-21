@@ -188,63 +188,74 @@ export const setPerformanceReviewCompleted = async (
   revalidatePath('/');
 };
 
-export const startActiveReview = async (reviewId: string) => {
+export const sendUserReviewsInitialEmail = async (reviewId: string) => {
   'use server';
 
   const supabase = await createClient();
   const currentUser = await supabase.auth.getUser();
 
   if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
-
   if (!reviewId) throw new Error('Esta evaluación no existe');
 
-  const { data, error: reviewerError } = await supabase
-    .from('reviewer_reviewee')
-    .select('reviewer_id, reviewee_id');
+  // Fetch all user_reviews for this review that have not been sent the initial email
+  const { data: userReviews, error: fetchError } = await supabase
+    .from('user_review')
+    .select('id, reviewer_id, reviewee_id, initial_email_sent')
+    .eq('review_id', reviewId)
+    .eq('initial_email_sent', false);
 
-  if (reviewerError) throw new Error(reviewerError.message);
-
-  for (const reviewReviewee of data) {
-    const { data, error: existError } = await supabase
-      .from('user_review')
-      .select('id')
-      .eq('reviewee_id', reviewReviewee.reviewee_id)
-      .eq('reviewer_id', reviewReviewee.reviewer_id)
-      .eq('review_id', reviewId)
+  if (fetchError) throw new Error(fetchError.message);
+  let sentCount = 0;
+  for (const userReview of userReviews || []) {
+    // Fetch reviewer info
+    const { data: reviewer, error: reviewerError } = await supabase
+      .from('app_users')
+      .select('full_name, username')
+      .eq('id', userReview.reviewer_id)
       .maybeSingle();
-
-    if (existError) throw new Error(existError.message);
-
-    if (data && data.id) continue; //user_review already exists for this reviewee and reviewer
-
-    const userReview = {
-      review_id: reviewId,
-      reviewer_id: reviewReviewee.reviewer_id,
-      reviewee_id: reviewReviewee.reviewee_id
-    };
-
-    const { error: insertError } = await supabase
-      .from('user_review')
-      .insert(userReview);
-
-    if (insertError) throw new Error(insertError.message);
+    if (reviewerError) continue;
+    // Fetch reviewee info
+    const { data: reviewee, error: revieweeError } = await supabase
+      .from('app_users')
+      .select('full_name, username')
+      .eq('id', userReview.reviewee_id)
+      .maybeSingle();
+    if (revieweeError) continue;
+    if (
+      !reviewer ||
+      !reviewee ||
+      !reviewer.full_name ||
+      !reviewer.username ||
+      !reviewee.full_name ||
+      !reviewee.username
+    )
+      continue;
+    try {
+      const result = await EmailService.sendInitialReviewEmail({
+        reviewer: {
+          full_name: reviewer.full_name,
+          username: reviewer.username
+        },
+        reviewee: {
+          full_name: reviewee.full_name,
+          username: reviewee.username
+        },
+        userReviewId: userReview.id
+      });
+      if (result.reviewerSent && result.revieweeSent) {
+        await supabase
+          .from('user_review')
+          .update({ initial_email_sent: true })
+          .eq('id', userReview.id);
+        sentCount++;
+      }
+    } catch (e) {
+      // Optionally log error, but continue
+    }
   }
 
-  const timestamp = new Date().toISOString();
-  const reviewUpdate = {
-    start_date: timestamp
-  };
-  const { error } = await supabase
-    .from('reviews')
-    .update(reviewUpdate)
-    .eq('id', reviewId);
-
-  if (error) throw new Error(error.message);
-
-  //send start email to all users
-  await EmailService.sendInitialReviewEmail();
-
-  revalidatePath('/');
+  revalidatePath('/home/active-review/current');
+  return { sentCount };
 };
 
 export const createNewReview = async (formData: FormData) => {

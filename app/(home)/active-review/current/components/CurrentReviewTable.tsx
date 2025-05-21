@@ -8,11 +8,11 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+  TableRow
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   Select,
@@ -20,8 +20,8 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue
+} from '@/components/ui/select';
 import { useRouter } from 'next/navigation';
 
 interface CurrentReviewTableProps {
@@ -30,15 +30,21 @@ interface CurrentReviewTableProps {
 
 type SortDirection = 'asc' | 'desc';
 type SortField = 'reviewer' | 'reviewee';
-type ReviewStatus = "all" | "pending" | "feedback" | "complete" | "reviewer" | "reviewee";
+type ReviewStatus =
+  | 'all'
+  | 'pending'
+  | 'feedback'
+  | 'complete'
+  | 'reviewer'
+  | 'reviewee';
 
 const statusOptions = [
-  { value: "all", label: "Todos los estados" },
-  { value: "feedback", label: "Feedback completado" },
-  { value: "complete", label: "Completada por ambos" },
-  { value: "reviewer", label: "Falta evaluado" },
-  { value: "reviewee", label: "Falta evaluador" },
-  { value: "pending", label: "Pendiente" },
+  { value: 'all', label: 'Todos los estados' },
+  { value: 'feedback', label: 'Feedback completado' },
+  { value: 'complete', label: 'Completada por ambos' },
+  { value: 'reviewer', label: 'Falta evaluado' },
+  { value: 'reviewee', label: 'Falta evaluador' },
+  { value: 'pending', label: 'Pendiente' }
 ] as const;
 
 const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
@@ -47,41 +53,41 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
   const [filterText, setFilterText] = useState('');
   const [sortField, setSortField] = useState<SortField>('reviewer');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
-  const [statusFilter, setStatusFilter] = useState<ReviewStatus>("all");
+  const [statusFilter, setStatusFilter] = useState<ReviewStatus>('all');
   const router = useRouter();
 
   const getStatusInfo = (
-    reviewerCompleted: string | null, 
+    reviewerCompleted: string | null,
     revieweeCompleted: string | null,
     feedbackCompleted: string | null
   ) => {
     if (feedbackCompleted) {
       return {
         label: 'Feedback completado',
-        variant: 'secondary' as const,
+        variant: 'secondary' as const
       };
     }
     if (reviewerCompleted && revieweeCompleted) {
       return {
         label: 'Completada por ambos',
-        variant: 'default' as const,
+        variant: 'default' as const
       };
     }
     if (revieweeCompleted) {
       return {
         label: 'Falta evaluador',
-        variant: 'outline' as const,
+        variant: 'outline' as const
       };
     }
     if (reviewerCompleted) {
       return {
         label: 'Falta evaluado',
-        variant: 'outline' as const,
+        variant: 'outline' as const
       };
     }
     return {
       label: 'Pendiente',
-      variant: 'destructive' as const,
+      variant: 'destructive' as const
     };
   };
 
@@ -98,7 +104,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
     const revieweeCompleted = review.reviewee_completed_timestamp;
     const reviewerCompleted = review.reviewer_completed_timestamp;
     const isComplete = revieweeCompleted && reviewerCompleted;
-    
+
     if (isComplete) {
       router.push(`/feedback/${review.id}?readonly=true`);
     }
@@ -106,55 +112,71 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
 
   const filteredAndSortedReviews = useMemo(() => {
     let result = [...currentReviews];
-    
+
     // Text filter
     if (filterText) {
       const lowerFilter = filterText.toLowerCase();
-      result = result.filter(review => 
-        (review.reviewer.full_name || '').toLowerCase().includes(lowerFilter) ||
-        (review.reviewee.full_name || '').toLowerCase().includes(lowerFilter)
+      result = result.filter(
+        (review) =>
+          (review.reviewer.full_name || '')
+            .toLowerCase()
+            .includes(lowerFilter) ||
+          (review.reviewee.full_name || '').toLowerCase().includes(lowerFilter)
       );
     }
-    
+
     // Status filter
-    if (statusFilter !== "all") {
-      result = result.filter(review => {
+    if (statusFilter !== 'all') {
+      result = result.filter((review) => {
         const revieweeCompleted = review.reviewee_completed_timestamp;
         const reviewerCompleted = review.reviewer_completed_timestamp;
         const feedbackCompleted = review.feedback_completed_timestamp;
 
         switch (statusFilter) {
-          case "feedback":
+          case 'feedback':
             return !!feedbackCompleted;
-          case "complete":
-            return !!revieweeCompleted && !!reviewerCompleted && !feedbackCompleted;
-          case "reviewer":
+          case 'complete':
+            return (
+              !!revieweeCompleted && !!reviewerCompleted && !feedbackCompleted
+            );
+          case 'reviewer':
             return !!reviewerCompleted && !revieweeCompleted;
-          case "reviewee":
+          case 'reviewee':
             return !!revieweeCompleted && !reviewerCompleted;
-          case "pending":
+          case 'pending':
             return !revieweeCompleted && !reviewerCompleted;
           default:
             return true;
         }
       });
     }
-    
+
     // Sort
     result.sort((a, b) => {
-      const aValue = sortField === 'reviewer' ? (a.reviewer.full_name || '') : (a.reviewee.full_name || '');
-      const bValue = sortField === 'reviewer' ? (b.reviewer.full_name || '') : (b.reviewee.full_name || '');
-      return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+      const aValue =
+        sortField === 'reviewer'
+          ? a.reviewer.full_name || ''
+          : a.reviewee.full_name || '';
+      const bValue =
+        sortField === 'reviewer'
+          ? b.reviewer.full_name || ''
+          : b.reviewee.full_name || '';
+      return sortDirection === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     });
-    
+
     return result;
   }, [currentReviews, filterText, sortField, sortDirection, statusFilter]);
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <ChevronUp className="h-4 w-4 opacity-0 group-hover:opacity-50" />;
-    return sortDirection === 'asc' 
-      ? <ChevronUp className="h-4 w-4" /> 
-      : <ChevronDown className="h-4 w-4" />;
+    if (sortField !== field)
+      return <ChevronUp className="h-4 w-4 opacity-0 group-hover:opacity-50" />;
+    return sortDirection === 'asc' ? (
+      <ChevronUp className="h-4 w-4" />
+    ) : (
+      <ChevronDown className="h-4 w-4" />
+    );
   };
 
   return (
@@ -175,7 +197,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {statusOptions.map(option => (
+              {statusOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
@@ -187,7 +209,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead 
+            <TableHead
               onClick={() => handleSort('reviewer')}
               className="cursor-pointer group hover:text-primary"
             >
@@ -196,7 +218,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
                 <SortIcon field="reviewer" />
               </div>
             </TableHead>
-            <TableHead 
+            <TableHead
               onClick={() => handleSort('reviewee')}
               className="cursor-pointer group hover:text-primary"
             >
@@ -206,6 +228,7 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
               </div>
             </TableHead>
             <TableHead>Estado</TableHead>
+            <TableHead>Email Inicial</TableHead>
             <TableHead className="text-right">Acción</TableHead>
           </TableRow>
         </TableHeader>
@@ -215,10 +238,14 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
             const reviewerCompleted = review.reviewer_completed_timestamp;
             const feedbackCompleted = review.feedback_completed_timestamp;
             const isComplete = revieweeCompleted && reviewerCompleted;
-            const status = getStatusInfo(reviewerCompleted, revieweeCompleted, feedbackCompleted);
+            const status = getStatusInfo(
+              reviewerCompleted,
+              revieweeCompleted,
+              feedbackCompleted
+            );
 
             return (
-              <TableRow 
+              <TableRow
                 key={review.id}
                 className="group cursor-pointer hover:bg-muted/50"
                 onClick={() => handleRowClick(review)}
@@ -228,13 +255,22 @@ const CurrentReviewTable: React.FC<CurrentReviewTableProps> = ({
                 </TableCell>
                 <TableCell>{review.reviewee.full_name}</TableCell>
                 <TableCell>
-                  <Badge variant={status.variant}>
-                    {status.label}
-                  </Badge>
+                  <Badge variant={status.variant}>{status.label}</Badge>
+                </TableCell>
+                <TableCell>
+                  {review.initial_email_sent ? (
+                    <Badge variant="default">Enviado</Badge>
+                  ) : (
+                    <Badge variant="destructive">No enviado</Badge>
+                  )}
                 </TableCell>
                 <TableCell className="text-right">
                   {isComplete && (
-                    <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       Ver feedback
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>

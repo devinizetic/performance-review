@@ -124,6 +124,7 @@ export type SimpleUserReview = {
   reviewer_completed_timestamp: string | null;
   reviewer_started_timestamp: string | null;
   feedback_completed_timestamp: string | null;
+  initial_email_sent: boolean;
   review: {
     start_date: string | null;
     end_date: string | null;

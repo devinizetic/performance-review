@@ -92,7 +92,8 @@ const getAllCurrentReviewsQuery = async (reviewId: string) => {
     reviewee_started_timestamp,
     reviewer_completed_timestamp,
     reviewer_started_timestamp,
-    feedback_completed_timestamp
+    feedback_completed_timestamp,
+    initial_email_sent
     `
     )
     .eq('review_id', reviewId);
