@@ -20,8 +20,7 @@ import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { CreateReviewDialog } from '@/app/components/performance/create-review-dialog';
-import Link from 'next/link';
-import { Pencil } from 'lucide-react';
+import { ReviewActionsDropdown } from '@/app/components/performance/review-actions-dropdown';
 
 export default async function ReviewsPage() {
   const supabase = await createClient();
@@ -107,11 +106,7 @@ export default async function ReviewsPage() {
                     {format(new Date(review.created_at), 'dd/MM/yyyy')}
                   </TableCell>
                   <TableCell>
-                    <Link href={`/admin/reviews/${review.id}/edit`}>
-                      <button className="inline-flex items-center gap-1 px-3 py-1 rounded bg-primary text-white hover:bg-primary/80 transition text-sm">
-                        <Pencil className="w-4 h-4" /> Editar
-                      </button>
-                    </Link>
+                    <ReviewActionsDropdown review={review} />
                   </TableCell>
                 </TableRow>
               ))}

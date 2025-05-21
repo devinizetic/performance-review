@@ -423,3 +423,34 @@ export const updateReview = async (formData: FormData) => {
 
   revalidatePath('/admin/reviews');
 };
+
+export const setActiveReviewAction = async (reviewId: string) => {
+  'use server';
+  const supabase = await createClient();
+  const currentUser = await supabase.auth.getUser();
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!reviewId) throw new Error('Review ID is required');
+
+  // First, set all other reviews to inactive
+  const { error: updateError } = await supabase
+    .from('reviews')
+    .update({ is_active: false })
+    .neq('id', reviewId);
+
+  if (updateError) {
+    throw new Error(`Error deactivating other reviews: ${updateError.message}`);
+  }
+
+  // Then, activate the selected review
+  const { error: activeError } = await supabase
+    .from('reviews')
+    .update({ is_active: true })
+    .eq('id', reviewId);
+
+  if (activeError) {
+    throw new Error(`Error activating review: ${activeError.message}`);
+  }
+
+  revalidatePath('/admin/reviews');
+};

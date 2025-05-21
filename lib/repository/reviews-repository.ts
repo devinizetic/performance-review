@@ -95,7 +95,31 @@ const ReviewsRepository = {
   getActive,
   getAll,
   createReview,
-  getById
+  getById,
+  async setActiveReview(reviewId: string): Promise<void> {
+    const supabase = await createClient();
+    // First, set all other reviews to inactive
+    const { error: updateError } = await supabase
+      .from('reviews')
+      .update({ is_active: false })
+      .neq('id', reviewId);
+
+    if (updateError) {
+      throw new Error(
+        `Error deactivating other reviews: ${updateError.message}`
+      );
+    }
+
+    // Then, activate the selected review
+    const { error: activeError } = await supabase
+      .from('reviews')
+      .update({ is_active: true })
+      .eq('id', reviewId);
+
+    if (activeError) {
+      throw new Error(`Error activating review: ${activeError.message}`);
+    }
+  }
 };
 
 export default ReviewsRepository;
