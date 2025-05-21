@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,27 +30,43 @@ function SortableItem({ id, question, index, handleRemove }: any) {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 p-2 border rounded bg-muted mb-1"
+      className="flex flex-col gap-1 mb-4 p-2 border-b border-blue-200 bg-blue-50"
     >
-      {/* Drag handle */}
-      <span
-        {...attributes}
-        {...listeners}
-        className="cursor-move mr-2"
-        tabIndex={0}
-        aria-label="Drag"
-      >
-        ☰
-      </span>
-      <span className="font-medium flex-1">{question.question_title}</span>
-      <Button
-        type="button"
-        size="sm"
-        variant="ghost"
-        onClick={() => handleRemove(id)}
-      >
-        Quitar
-      </Button>
+      <div className="flex items-start gap-3">
+        <span
+          {...attributes}
+          {...listeners}
+          className="cursor-move mt-1 text-gray-400 select-none"
+          tabIndex={0}
+          aria-label="Drag"
+        >
+          ☰
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-sm text-primary">
+            {question.question_title}
+          </div>
+          {question.question_description && (
+            <div className="text-base text-gray-800 mt-1 break-words">
+              {question.question_description}
+            </div>
+          )}
+          {question.question_text_reviewer && (
+            <div className="text-xs text-gray-500 mt-1 italic">
+              {question.question_text_reviewer}
+            </div>
+          )}
+        </div>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => handleRemove(id)}
+          className="self-center"
+        >
+          Quitar
+        </Button>
+      </div>
     </div>
   );
 }
@@ -68,6 +84,7 @@ export default function EditReviewPage() {
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const selectAllRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -105,6 +122,13 @@ export default function EditReviewPage() {
     }
     fetchData();
   }, [reviewId]);
+
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate =
+        selectedUsers.length > 0 && selectedUsers.length < users.length;
+    }
+  }, [selectedUsers, users]);
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
@@ -162,27 +186,29 @@ export default function EditReviewPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-muted flex flex-col">
-      <div className="flex-1 flex flex-col w-full">
-        <h1 className="text-4xl font-bold text-primary py-10 px-8">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col">
+      <div className="flex-1 flex flex-col w-full py-10 px-4 md:px-8">
+        <h1 className="text-4xl font-bold text-primary mb-10">
           Editar Período de Evaluación
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-16 w-full h-full px-8 pb-16"
+          className="flex flex-col gap-16 w-full h-full"
         >
-          {/* Info Section at the top */}
-          <section className="bg-white rounded-xl shadow-lg p-8 flex flex-col gap-6 min-h-[320px] mb-12 w-full max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-2 text-primary">
+          {/* Info Section */}
+          <section className="border-l-4 border-primary bg-white/80 px-8 py-8 mb-12 w-full">
+            <h2 className="text-2xl font-semibold mb-4 text-primary">
               Información Básica
             </h2>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 max-w-xl">
               <Label htmlFor="name">Nombre</Label>
               <Input
                 id="name"
                 name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setName(e.target.value)
+                }
                 required
               />
               <Label htmlFor="startDate">Fecha de inicio</Label>
@@ -191,7 +217,9 @@ export default function EditReviewPage() {
                 name="startDate"
                 type="date"
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setStartDate(e.target.value)
+                }
                 required
               />
               <Label htmlFor="endDate">Fecha de fin</Label>
@@ -200,32 +228,47 @@ export default function EditReviewPage() {
                 name="endDate"
                 type="date"
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEndDate(e.target.value)
+                }
                 required
               />
             </div>
           </section>
-          {/* Questions and Users side by side below */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
-            {/* Questions Section */}
-            <section className="bg-white rounded-xl shadow-lg p-8 flex flex-col gap-6 min-h-[320px]">
-              <h2 className="text-2xl font-semibold mb-2 text-primary">
-                Preguntas
-              </h2>
-              <Label className="mb-2">Selecciona y ordena las preguntas</Label>
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
-                  <div className="mb-2 font-medium">Disponibles</div>
-                  <div className="max-h-72 overflow-y-auto border rounded p-2 bg-muted">
-                    {questions
-                      .filter(
-                        (q) => !selectedQuestions.some((sq) => sq.id === q.id)
-                      )
-                      .map((question) => (
-                        <div
-                          key={question.id}
-                          className="flex items-center gap-2 mb-1"
-                        >
+
+          {/* Questions Section */}
+          <section className="border-l-4 border-blue-400 bg-blue-50/60 px-8 py-8 mb-12 w-full">
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">
+              Preguntas
+            </h2>
+            <Label className="mb-2">Selecciona y ordena las preguntas</Label>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <div className="mb-2 font-medium">Disponibles</div>
+                <div className="max-h-72 overflow-y-auto border rounded p-2 bg-blue-100">
+                  {questions
+                    .filter(
+                      (q) => !selectedQuestions.some((sq) => sq.id === q.id)
+                    )
+                    .map((question) => (
+                      <div
+                        key={question.id}
+                        className="flex flex-col gap-1 mb-4 p-2 border-b border-blue-200 bg-blue-50"
+                      >
+                        <div className="font-semibold text-sm text-primary">
+                          {question.question_title}
+                        </div>
+                        {question.question_description && (
+                          <div className="text-base text-gray-800 mt-1 break-words">
+                            {question.question_description}
+                          </div>
+                        )}
+                        {question.question_text_reviewer && (
+                          <div className="text-xs text-gray-500 mt-1 italic">
+                            {question.question_text_reviewer}
+                          </div>
+                        )}
+                        <div className="flex justify-end mt-2">
                           <Button
                             type="button"
                             size="sm"
@@ -234,64 +277,89 @@ export default function EditReviewPage() {
                           >
                             Agregar
                           </Button>
-                          <span>{question.question_title}</span>
                         </div>
-                      ))}
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="mb-2 font-medium">
-                    Seleccionadas (arrastra para ordenar)
-                  </div>
-                  <DndContext
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                  >
-                    <SortableContext
-                      items={selectedQuestions.map((q) => q.id)}
-                      strategy={verticalListSortingStrategy}
-                    >
-                      <div className="min-h-[40px] max-h-72 overflow-y-auto border rounded p-2 bg-muted">
-                        {selectedQuestions.map((question, idx) => (
-                          <SortableItem
-                            key={question.id}
-                            id={question.id}
-                            question={question}
-                            index={idx}
-                            handleRemove={handleQuestionRemove}
-                          />
-                        ))}
                       </div>
-                    </SortableContext>
-                  </DndContext>
+                    ))}
                 </div>
               </div>
-            </section>
-            {/* Users Section */}
-            <section className="bg-white rounded-xl shadow-lg p-8 flex flex-col gap-6 min-h-[320px]">
-              <h2 className="text-2xl font-semibold mb-2 text-primary">
-                Usuarios a Evaluar
-              </h2>
-              <Label className="mb-2">Selecciona los usuarios</Label>
-              <div className="max-h-72 overflow-y-auto border rounded p-2 bg-muted grid grid-cols-1 gap-3 md:grid-cols-1">
-                {users.map((user) => (
-                  <div key={user.id} className="flex items-center gap-4 py-1">
-                    <Checkbox
-                      id={`user-${user.id}`}
-                      checked={selectedUsers.includes(user.id)}
-                      onCheckedChange={(checked) => handleUserToggle(user.id)}
-                    />
-                    <Label
-                      htmlFor={`user-${user.id}`}
-                      className="break-words whitespace-normal text-base leading-6"
-                    >
-                      {user.full_name} ({user.username})
-                    </Label>
-                  </div>
-                ))}
+              <div className="flex-1">
+                <div className="mb-2 font-medium">
+                  Seleccionadas (arrastra para ordenar)
+                </div>
+                <DndContext
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={selectedQuestions.map((q) => q.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="min-h-[40px] max-h-72 overflow-y-auto border rounded p-2 bg-blue-100">
+                      {selectedQuestions.map((question, idx) => (
+                        <SortableItem
+                          key={question.id}
+                          id={question.id}
+                          question={question}
+                          index={idx}
+                          handleRemove={handleQuestionRemove}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
+
+          {/* Users Section */}
+          <section className="border-l-4 border-green-400 bg-green-50/60 px-8 py-8 mb-12 w-full">
+            <h2 className="text-2xl font-semibold mb-4 text-green-700">
+              Usuarios a Evaluar
+            </h2>
+            <Label className="mb-2">Selecciona los usuarios</Label>
+            <div className="flex items-center gap-4 mb-4">
+              <input
+                ref={selectAllRef}
+                id="select-all-users"
+                type="checkbox"
+                checked={
+                  selectedUsers.length === users.length && users.length > 0
+                }
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedUsers(users.map((u) => u.id));
+                  } else {
+                    setSelectedUsers([]);
+                  }
+                }}
+                className="accent-primary w-4 h-4"
+              />
+              <Label
+                htmlFor="select-all-users"
+                className="font-semibold text-base cursor-pointer"
+              >
+                Seleccionar todos
+              </Label>
+            </div>
+            <div className="max-h-72 overflow-y-auto border rounded p-2 bg-green-100 grid grid-cols-1 gap-3 md:grid-cols-1">
+              {users.map((user) => (
+                <div key={user.id} className="flex items-center gap-4 py-1">
+                  <Checkbox
+                    id={`user-${user.id}`}
+                    checked={selectedUsers.includes(user.id)}
+                    onCheckedChange={() => handleUserToggle(user.id)}
+                  />
+                  <Label
+                    htmlFor={`user-${user.id}`}
+                    className="break-words whitespace-normal text-base leading-6"
+                  >
+                    {user.full_name} ({user.username})
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {error && (
             <div className="text-sm text-red-500 text-center">{error}</div>
           )}
