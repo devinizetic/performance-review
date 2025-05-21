@@ -111,10 +111,23 @@ const InfoScreen: React.FC<InfoScreenProps> = ({
               Cuando ambos hayan completado la evaluación, coordinaremos una
               reunion de feedback para discutir los resultados.
             </p>
-            <div className="bg-primary bg-opacity-10 font-medium p-2 rounded-lg">
-              <p>
-                Importante: Una vez presiones <b>Enviar</b> no podrás modificar
-                tus respuestas
+            <div className="flex items-start gap-2 bg-yellow-50 border border-yellow-200 text-yellow-900 rounded-lg p-3">
+              <svg
+                className="w-5 h-5 mt-0.5 text-yellow-400"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                />
+              </svg>
+              <p className="text-sm font-medium">
+                <b>Importante:</b> Una vez presiones <b>Enviar</b> no podrás
+                modificar tus respuestas
               </p>
             </div>
           </div>
