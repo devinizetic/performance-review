@@ -488,3 +488,36 @@ export const setReviewDeletedAction = async (
 
   revalidatePath('/admin/reviews');
 };
+
+export const setFeedbackCompleted = async (userReviewId: string) => {
+  'use server';
+
+  const supabase = await createClient();
+  const currentUser = await supabase.auth.getUser();
+
+  if (!currentUser.data.user?.id) throw new Error('User is not authenticated');
+
+  if (!userReviewId) throw new Error('Esta evaluación no existe');
+
+  const timestamp = new Date().toISOString();
+  const feedbackUpdate = {
+    feedback_completed_timestamp: timestamp
+  };
+  const { error } = await supabase
+    .from('user_review')
+    .update(feedbackUpdate)
+    .eq('id', userReviewId.toString());
+
+  if (error) throw new Error(error.message);
+  const { data: userReviewData, error: userReviewError } = await supabase
+    .from('user_review')
+    .select('reviewee_id')
+    .eq('id', userReviewId.toString())
+    .single();
+
+  await EmailService.sendCompleteFeedbackRevieweeEmail({
+    revieweeId: userReviewData?.reviewee_id || ''
+  });
+
+  revalidatePath('/');
+};
