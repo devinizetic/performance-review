@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import CurrentReviewTable from './components/CurrentReviewTable';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import ReviewsRepository from '@/lib/repository/reviews-repository';
-import ClientButton from './components/ClientButton';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { FileDown } from 'lucide-react';
@@ -26,17 +25,6 @@ export default async function CurrentReview() {
         <CardContent className="pt-6">
           <div className="text-center text-muted-foreground">
             No hay evaluaciones activas
-          </div>
-        </CardContent>
-      </Card>
-    );
-
-  if (!activeReview.start_date)
-    return (
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex justify-center">
-            <ClientButton reviewId={activeReview.id} />
           </div>
         </CardContent>
       </Card>
