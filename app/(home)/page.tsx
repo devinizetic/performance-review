@@ -1,42 +1,78 @@
-import { REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
-import UserRepository from '@/lib/repository/user-repository';
-import UserReviewRepository from '@/lib/repository/user-review-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import UserReviewRepository from '@/lib/repository/user-review-repository';
+import RevieweesRepository from '@/lib/repository/reviewees-repository';
+import { DashboardCard } from '../components/dashboard/DashboardCard';
+import { ReviewList } from '../components/dashboard/ReviewList';
+import { RevieweesList } from '../components/dashboard/RevieweesList';
+import { AdminReviewCard } from '../components/dashboard/AdminReviewCard';
+import UserRepository from '@/lib/repository/user-repository';
+import { ADMIN_ROLE_ID, REVIEWEE_ROLE_ID, REVIEWER_ROLE_ID } from '@/constants';
+import ReviewsRepository from '@/lib/repository/reviews-repository';
+import { RevieweeStatusCard } from '../components/dashboard/RevieweeStatusCard';
 
 export default async function Home() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();
 
   if (!session) redirect('/login');
 
-  const userRoles = await UserRepository.getUserRoles({ id: session.user.id });
+  // Get user roles to check if admin
+  const userRoles = await UserRepository.getUserRoles({
+    id: session.user.id
+  });
+  const isAdmin = userRoles.some((role) => role.role_id === ADMIN_ROLE_ID);
   const isReviewer = userRoles.some(
-    (uRole) => uRole.role_id === REVIEWER_ROLE_ID
+    (role) => role.role_id === REVIEWER_ROLE_ID
   );
-
   const isReviewee = userRoles.some(
-    (uRole) => uRole.role_id === REVIEWEE_ROLE_ID
+    (role) => role.role_id === REVIEWEE_ROLE_ID
   );
 
-  if (isReviewer) redirect('/reviewees');
-  else if (isReviewee) {
-    const userReview =
-      await UserReviewRepository.getActiveUserReviewByRevieweeId({
-        revieweeId: session.user.id
-      });
-    redirect(`/my-review/${userReview.id}`);
-  }
+  // Get reviews where I am the reviewee
+  const myReviews = await UserReviewRepository.getCurrentReviewsByRevieweeId({
+    revieweeId: session.user.id
+  });
 
-  return session.user ? (
-    <div className="flex-1 w-full flex flex-col items-center">
-      Hello {session.user.email}!!!
-    </div>
-  ) : (
-    <div className="flex-1 w-full flex flex-col items-center">
-      You are logged in but this is wrong
+  // Get reviewees assigned to me
+  const myReviewees = isReviewer
+    ? await RevieweesRepository.getAllByReviewerId({
+        id: session.user.id
+      })
+    : [];
+
+  // Get all reviews for admin view
+  const activeReview = await ReviewsRepository.getActive();
+
+  const allReviews =
+    isAdmin && activeReview?.id
+      ? await UserReviewRepository.getAllCurrentReviews(activeReview.id)
+      : [];
+
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] mx-auto w-full">
+      <div className="grid gap-8 md:grid-cols-2">
+        {isAdmin && <AdminReviewCard reviews={allReviews} />}
+        {isReviewee && myReviews.length > 0 && (
+          <DashboardCard title="Estado de tu Evaluación">
+            <RevieweeStatusCard
+              review={myReviews.find((r) => r.review?.is_active)!}
+            />
+          </DashboardCard>
+        )}
+        {isReviewee && (
+          <DashboardCard title="Mis Evaluaciones">
+            <ReviewList reviews={myReviews} baseUrl="/my-review" />
+          </DashboardCard>
+        )}
+        {isReviewer && (
+          <DashboardCard title="Mis Evaluados">
+            <RevieweesList reviewees={myReviewees} />
+          </DashboardCard>
+        )}
+      </div>
     </div>
   );
 }

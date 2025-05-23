@@ -1,11 +1,12 @@
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { sendEmail } from './amazon-ses-service';
 import UserRepository from '../repository/user-repository';
+import { addDays, format } from 'date-fns';
 
 const DEFAULT_FROM_EMAIL = 'Devlights ED <ed@devlights.com>';
 
-const getUserInfoQuery = (userId: string) => {
-  const supabase = createServerClient();
+const getUserInfoQuery = async (userId: string) => {
+  const supabase = await createClient();
 
   return supabase
     .from('app_users')
@@ -166,20 +167,72 @@ const sendStartReviewEmail = async ({
   }
 };
 
-const sendInitialReviewEmail = async (): Promise<boolean> => {
+// Send tailored initial review emails to both reviewer and reviewee for a user_review
+const sendInitialReviewEmail = async ({
+  reviewer,
+  reviewee,
+  userReviewId
+}: {
+  reviewer: { full_name: string; username: string };
+  reviewee: { full_name: string; username: string };
+  userReviewId: string;
+}): Promise<{ reviewerSent: boolean; revieweeSent: boolean }> => {
   try {
-    const users = await UserRepository.getAllUsers();
+    const now = new Date();
+    const revieweeDeadline = format(addDays(now, 7), 'dd/MM/yyyy');
+    const reviewerDeadline = format(addDays(now, 14), 'dd/MM/yyyy');
+    // Reviewee email
+    const revieweeBody = `
+      <div>
+      <p>Hola <b>${reviewee.full_name}</b>,</p>
+      <p>
+        Te informamos que ha comenzado el proceso de Evaluación de Desempeño en Devlights. Por favor, ingresa a tu formulario de autoevaluación usando el siguiente enlace:
+      </p>
+      <p>
+        <a href="${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}">${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}</a>
+      </p>
+      <p><b>Fecha límite para completar tu autoevaluación: ${revieweeDeadline}</b></p>
+      <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+      <p>Saludos cordiales</p>
+      <img style="width:100%;margin-top:16px" src="https://drive.usercontent.google.com/download?id=1MkTW1dVTEULP9hxOUUdWaNfzJILf-b-e&export=view&authuser=0" alt="Google Drive Image" />
+      </div>
+    `;
+    const revieweeResult = await sendEmail({
+      to: reviewee.username,
+      from: DEFAULT_FROM_EMAIL,
+      subject: 'Comienza tu Autoevaluación de Desempeño',
+      body: revieweeBody
+    });
 
-    for (const user of users) {
-      await sendStartReviewEmail({
-        userFullName: user.full_name || '',
-        userEmail: user.username
-      });
-    }
+    // Reviewer email
+    const reviewerBody = `
+      <div>
+      <p>Hola <b>${reviewer.full_name}</b>,</p>
+      <p>
+        Te informamos que ha comenzado el proceso de Evaluación de Desempeño en Devlights. Por favor, ingresa a tu formulario de evaluación para <b>${reviewee.full_name}</b> usando el siguiente enlace:
+      </p>
+      <p>
+        <a href="${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}">${process.env.VERCEL_SITE_URL}/my-review/${userReviewId}</a>
+      </p>
+      <p><b>Fecha límite para completar tu evaluación: ${reviewerDeadline}</b></p>
+      <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+      <p>Saludos cordiales</p>
+      <img style="width:100%;margin-top:16px" src="https://drive.usercontent.google.com/download?id=1MkTW1dVTEULP9hxOUUdWaNfzJILf-b-e&export=view&authuser=0" alt="Google Drive Image" />
+      </div>
+    `;
+    const reviewerResult = await sendEmail({
+      to: reviewer.username,
+      from: DEFAULT_FROM_EMAIL,
+      subject: `Comienza tu Evaluación de Desempeño para ${reviewee.full_name}`,
+      body: reviewerBody
+    });
 
-    return true;
+    return {
+      reviewerSent: !!reviewerResult,
+      revieweeSent: !!revieweeResult
+    };
   } catch (_) {
-    return false;
+    return { reviewerSent: false, revieweeSent: false };
   }
 };
 

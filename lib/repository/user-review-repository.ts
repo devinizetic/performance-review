@@ -4,10 +4,10 @@ import {
   FullUserReview,
   SimpleUserReview
 } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const getActiveUserReviewByRevieweeIdQuery = (revieweeId: string) => {
-  const supabase = createServerClient();
+const getActiveUserReviewByRevieweeIdQuery = async (revieweeId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('user_review')
     .select('id, review:reviews!inner(is_active)')
@@ -32,8 +32,8 @@ const getActiveUserReviewByRevieweeId = async ({
   return { id: data?.id };
 };
 
-const fullReviewQuery = (reviewId: string) => {
-  const supabase = createServerClient();
+const fullReviewQuery = async (reviewId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('user_review')
     .select(
@@ -79,10 +79,12 @@ const getById = async ({ id }: { id: string }): Promise<FullUserReview> => {
   return data as unknown as FullUserReview;
 };
 
-const getAllCurrentReviewsQuery = () => {
-  const supabase = createServerClient();
-  return supabase.from('user_review').select(
-    `
+const getAllCurrentReviewsQuery = async (reviewId: string) => {
+  const supabase = await createClient();
+  return supabase
+    .from('user_review')
+    .select(
+      `
     id,
     reviewer:reviewer_id(*),
     reviewee:reviewee_id(*),
@@ -90,13 +92,17 @@ const getAllCurrentReviewsQuery = () => {
     reviewee_started_timestamp,
     reviewer_completed_timestamp,
     reviewer_started_timestamp,
-    feedback_completed_timestamp
+    feedback_completed_timestamp,
+    initial_email_sent
     `
-  );
+    )
+    .eq('review_id', reviewId);
 };
 
-const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
-  const { data, error } = await getAllCurrentReviewsQuery();
+const getAllCurrentReviews = async (
+  reviewId: string
+): Promise<SimpleUserReview[]> => {
+  const { data, error } = await getAllCurrentReviewsQuery(reviewId);
 
   if (error) {
     throw new Error(error.message);
@@ -110,8 +116,50 @@ const getAllCurrentReviews = async (): Promise<SimpleUserReview[]> => {
   return data as unknown as SimpleUserReview[];
 };
 
-const getFeedbackResultsQuery = () => {
-  const supabase = createServerClient();
+const getCurrentReviewsByRevieweeIdQuery = async (revieweeId: string) => {
+  const supabase = await createClient();
+  return supabase
+    .from('user_review')
+    .select(
+      `
+    id,
+    reviewer:reviewer_id(*),
+    reviewee:reviewee_id(*),
+    reviewee_completed_timestamp,
+    reviewee_started_timestamp,
+    reviewer_completed_timestamp,
+    reviewer_started_timestamp,
+    feedback_completed_timestamp,
+    review:reviews!inner(
+      start_date,
+      end_date,
+      is_active,
+      name,
+      is_deleted
+    )
+    `
+    )
+    .eq('reviewee_id', revieweeId)
+    .eq('review.is_deleted', false);
+};
+
+const getCurrentReviewsByRevieweeId = async ({
+  revieweeId
+}: {
+  revieweeId: string;
+}): Promise<SimpleUserReview[]> => {
+  const { data, error } = await getCurrentReviewsByRevieweeIdQuery(revieweeId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) return [];
+  return data as unknown as SimpleUserReview[];
+};
+
+const getFeedbackResultsQuery = async () => {
+  const supabase = await createClient();
   return supabase.from('feedback_scores').select(
     `
     id,
@@ -134,12 +182,35 @@ const getFeedbackResults = async (): Promise<FeedbackScore[]> => {
   return data as FeedbackScore[];
 };
 
+const getByReviewId = async ({ reviewId }: { reviewId: string }) => {
+  const supabase = await createClient();
+  // Get all user_review records for this review
+  const { data: userReviews, error: urError } = await supabase
+    .from('user_review')
+    .select('reviewee_id')
+    .eq('review_id', reviewId);
+  if (urError) throw new Error(urError.message);
+  // Get all review_question records for this review
+  const { data: reviewQuestions, error: rqError } = await supabase
+    .from('review_question')
+    .select('question_id, question_sequence')
+    .eq('review_id', reviewId)
+    .order('question_sequence', { ascending: true });
+  if (rqError) throw new Error(rqError.message);
+  return {
+    reviewees: userReviews || [],
+    questions: reviewQuestions || []
+  };
+};
+
 const UserReviewRepository = {
   getById,
   getFullReviewQuery,
   getActiveUserReviewByRevieweeId,
   getAllCurrentReviews,
-  getFeedbackResults
+  getCurrentReviewsByRevieweeId,
+  getFeedbackResults,
+  getByReviewId
 };
 
 export default UserReviewRepository;

@@ -1,19 +1,21 @@
 import AnswersRepository from '@/lib/repository/answers-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import Feedback from './components/Feedback';
 
 interface FeedbackPageProps {
-  params: { id: string };
-  searchParams: { readonly: boolean };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ readonly: boolean }>;
 }
 
 const FeedbackPage: React.FC<FeedbackPageProps> = async ({
-  params: { id },
-  searchParams: { readonly = false }
+  params,
+  searchParams
 }) => {
-  const supabase = createServerClient();
+  const { readonly } = await searchParams;
+  const { id } = await params;
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

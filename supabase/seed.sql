@@ -272,9 +272,9 @@ VALUES
 ('EAF78615-7CAE-48FC-A8A8-4355B965C6B6', '3A95D6F3-D9F8-4B45-8A13-3DC82FABE148')
   ;
 
-INSERT INTO public.reviews (id, start_date, end_date, is_active)
+INSERT INTO public.reviews (id, start_date, end_date, is_active, name)
 VALUES
-  ('F8A54867-D690-451F-989B-6337CEAA651C', null, null, true)
+  ('F8A54867-D690-451F-989B-6337CEAA651C', '2024-06-01 15:07:55.839513+00', '2024-12-31 15:07:55.839513+00', true, '2024 Q2 Review')
   ;
 
 INSERT INTO public.review_question (review_id, question_id, question_sequence)

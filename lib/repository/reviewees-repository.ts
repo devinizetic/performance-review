@@ -1,8 +1,8 @@
 import { ReviewerRevieweeView } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const revieweesQuery = (reviewerId: string) => {
-  const supabase = createServerClient();
+const revieweesQuery = async (reviewerId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('reviewerreviewee')
     .select(

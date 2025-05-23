@@ -1,5 +1,14 @@
 import { FeedbackScore } from '@/types/supabase.types';
 import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 interface FeedbackResultTableProps {
   feedbackScores: FeedbackScore[];
@@ -9,41 +18,48 @@ const FeedbackResultTable: React.FC<FeedbackResultTableProps> = ({
   feedbackScores
 }) => {
   return (
-    <table className="min-w-full text-left text-sm bg-white rounded-md shadow-md">
-      <thead className="border-b font-medium dark:border-neutral-500">
-        <tr>
-          <th scope="col" className="px-6 py-4">
-            Evaluador
-          </th>
-          <th scope="col" className="px-6 py-4">
-            Evaluado
-          </th>
-          <th scope="col" className="px-6 py-4">
-            Puntaje
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {feedbackScores.map((feedback) => {
-          return (
-            <tr
-              key={feedback.id}
-              className={`border-b last:border-b-0 dark:border-neutral-500`}
-            >
-              <td className="whitespace-nowrap px-6 py-4 items-center">
-                {feedback.reviewer_name}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4 items-center">
-                {feedback.reviewee_name}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4">
-                {feedback.score}/25
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="space-y-4">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Evaluador</TableHead>
+            <TableHead>Evaluado</TableHead>
+            <TableHead>Puntaje</TableHead>
+            <TableHead>Estado</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {feedbackScores.map((feedback) => {
+            // Calculate score percentage
+            const scorePercentage = ((feedback.score ?? 0) / 25) * 100;
+            let scoreVariant: "default" | "destructive" | "secondary" | "outline" = "default";
+            
+            if (scorePercentage >= 80) scoreVariant = "secondary";
+            else if (scorePercentage >= 60) scoreVariant = "default";
+            else if (scorePercentage >= 40) scoreVariant = "outline";
+            else scoreVariant = "destructive";
+
+            return (
+              <TableRow key={feedback.id}>
+                <TableCell className="font-medium">
+                  {feedback.reviewer_name}
+                </TableCell>
+                <TableCell>{feedback.reviewee_name}</TableCell>
+                <TableCell>{feedback.score}/25 ({Math.round(scorePercentage)}%)</TableCell>
+                <TableCell>
+                  <Badge variant={scoreVariant}>
+                    {scorePercentage >= 80 ? "Excelente" :
+                     scorePercentage >= 60 ? "Bueno" :
+                     scorePercentage >= 40 ? "Regular" :
+                     "Necesita mejorar"}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

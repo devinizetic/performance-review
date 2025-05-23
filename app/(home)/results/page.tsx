@@ -1,10 +1,10 @@
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import UserReviewRepository from '@/lib/repository/user-review-repository';
 import FeedbackResultTable from './components/FeedbackResultTable';
 
 export default async function FeedbackResults() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

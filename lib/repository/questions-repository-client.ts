@@ -34,9 +34,21 @@ const getById = async ({ id }: { id: string }): Promise<FullQuestion> => {
   return data as FullQuestion;
 };
 
+const getAllQuestions = async (): Promise<FullQuestion[]> => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('questions')
+    .select(
+      `id, question_answer_type, question_text_reviewer, question_text_reviewee, role_id, question_title, question_description, choices(id, choice_text_reviewer, choice_text_reviewee, choice_value), questionHints:question_hints(id, question_id, hint_text_reviewer, hint_text_reviewee, hint_sequence)`
+    );
+  if (error) throw new Error(error.message);
+  return (data || []) as FullQuestion[];
+};
+
 const QuestionsRepositoryClient = {
   getQuestionByIdQuery,
-  getById
+  getById,
+  getAllQuestions
 };
 
 export default QuestionsRepositoryClient;

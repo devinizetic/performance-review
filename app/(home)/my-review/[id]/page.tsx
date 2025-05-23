@@ -1,5 +1,5 @@
 import UserReviewRepository from '@/lib/repository/user-review-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import UserReview from './components/UserReview';
@@ -9,7 +9,7 @@ import AnswersRepository from '@/lib/repository/answers-repository';
 import { ProgressBar } from '@/app/components/common';
 
 interface MyReviewProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const processQuestions = (
@@ -35,8 +35,9 @@ const processQuestions = (
   }
 };
 
-const MyReview: React.FC<MyReviewProps> = async ({ params: { id } }) => {
-  const supabase = createServerClient();
+const MyReview: React.FC<MyReviewProps> = async ({ params }) => {
+  const { id } = await params;
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();
