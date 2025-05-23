@@ -38,9 +38,9 @@ export type ReviewerReviewee = Rows<'reviewer_reviewee'>;
 export type ReviewerRevieweeInsert = Inserts<'reviewer_reviewee'>;
 export type ReviewerRevieweeUpdate = Updates<'reviewer_reviewee'>;
 
-export type Review = Rows<'reviews'>;
-export type ReviewInsert = Inserts<'reviews'>;
-export type ReviewUpdate = Updates<'reviews'>;
+export type Review = Rows<'reviews'> & { is_deleted?: boolean };
+export type ReviewInsert = Inserts<'reviews'> & { is_deleted?: boolean };
+export type ReviewUpdate = Updates<'reviews'> & { is_deleted?: boolean };
 
 export type Role = Rows<'roles'>;
 export type RoleInsert = Inserts<'roles'>;
@@ -53,6 +53,48 @@ export type UserReviewUpdate = Updates<'user_review'>;
 export type UserRole = Rows<'user_role'>;
 export type UserRoleInsert = Inserts<'user_role'>;
 export type UserRoleUpdate = Updates<'user_role'>;
+
+export type ExternalReview = Rows<'external_reviews'>;
+export type ExternalReviewInsert = Inserts<'external_reviews'>;
+export type ExternalReviewUpdate = Updates<'external_reviews'>;
+
+export type ExternalReviewQuestion = Rows<'external_review_questions'>;
+export type ExternalReviewQuestionInsert = Inserts<'external_review_questions'>;
+export type ExternalReviewQuestionUpdate = Updates<'external_review_questions'>;
+
+export type ExternalReviewAnswer = Rows<'external_review_answers'>;
+export type ExternalReviewAnswerInsert = Inserts<'external_review_answers'>;
+export type ExternalReviewAnswerUpdate = Updates<'external_review_answers'>;
+
+// User with roles type for admin panel
+export type UserRoleWithName = {
+  role_id: string;
+  role_name: string;
+};
+
+export type UserWithRoles = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  is_active: boolean;
+  roles: UserRoleWithName[];
+};
+
+// Reviewer with reviewees type for relationships management
+export type RevieweeInfo = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  avatar_url?: string | null;
+};
+
+export type ReviewerWithReviewees = {
+  id: string;
+  username: string;
+  full_name: string | null;
+  avatar_url?: string | null;
+  reviewees: RevieweeInfo[];
+};
 
 //custom
 export type ActiveReview = { id: string | undefined };
@@ -82,6 +124,13 @@ export type SimpleUserReview = {
   reviewer_completed_timestamp: string | null;
   reviewer_started_timestamp: string | null;
   feedback_completed_timestamp: string | null;
+  initial_email_sent: boolean;
+  review: {
+    start_date: string | null;
+    end_date: string | null;
+    is_active: boolean;
+    name: string;
+  };
 };
 
 export type ReviewerRevieweeView = {

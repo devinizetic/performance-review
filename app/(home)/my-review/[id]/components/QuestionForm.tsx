@@ -41,6 +41,7 @@ const QuestionForm: FC<QuestionFormProps> = ({
       answerText: answerText ?? '',
       answerChoiceId: answerChoiceId ?? ''
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
 
   const handleChoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,19 +50,34 @@ const QuestionForm: FC<QuestionFormProps> = ({
 
   const hasChoices = question.choices && question.choices.length > 0;
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="shrink text-xl font-bold p-6 text-white bg-primary rounded-t-lg">
-        {question.question_title}
-      </h1>
-      <div className="shrink text-lg px-6 font-medium text-justify">
-        {question.question_description}
+    <div className="flex flex-col gap-6 bg-white/95 rounded-2xl shadow-lg border border-gray-100 p-0">
+      <div className="rounded-t-2xl px-6 pt-6 pb-3 border-b border-gray-100 bg-white">
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+          {question.question_title}
+        </h1>
+        <div className="text-base font-medium text-gray-600 opacity-90">
+          {question.question_description}
+        </div>
       </div>
       {question.questionHints && question.questionHints.length > 0 ? (
-        <div className="shrink px-6">
-          <div className="bg-primary bg-opacity-10 font-medium p-2 rounded-lg">
-            <ul>
+        <div className="px-6">
+          <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-3">
+            <svg
+              className="w-5 h-5 mt-0.5 text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+              />
+            </svg>
+            <ul className="space-y-1">
               {question.questionHints.map((hint, index) => (
-                <li key={hint.id} className="p-1">
+                <li key={hint.id} className="text-sm">
                   {isReviewee
                     ? hint.hint_text_reviewee
                     : hint.hint_text_reviewer}
@@ -71,62 +87,66 @@ const QuestionForm: FC<QuestionFormProps> = ({
           </div>
         </div>
       ) : null}
-
-      <div className="shrink text-lg font-bold px-6">
-        {isReviewee
-          ? question.question_text_reviewee
-          : question.question_text_reviewer}
-      </div>
-      {hasChoices ? (
-        <div className="shrink px-6">
-          {question.choices.map((choice) => (
-            <div key={choice.id} className="flex gap-1">
-              <input
-                type="radio"
-                id={choice.id}
-                name="answerChoiceId"
-                value={choice.id}
-                className="accent-primary cursor-pointer"
-                checked={formState.answerChoiceId === choice.id}
-                onChange={handleChoiceChange}
-                required
-              />
-              <input
-                type="hidden"
-                name="initialAnswerChoiceId"
-                value={formState.initialAnswerChoiceId}
-              />
-              <label className="cursor-pointer flex gap-1" htmlFor={choice.id}>
-                <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
-                <span>{`${
-                  isReviewee
+      <div className="px-6 pt-2">
+        <div className="text-lg font-semibold text-gray-800 mb-2">
+          {isReviewee
+            ? question.question_text_reviewee
+            : question.question_text_reviewer}
+        </div>
+        {hasChoices ? (
+          <div className="flex flex-col gap-2">
+            {question.choices.map((choice) => (
+              <label
+                key={choice.id}
+                className="flex items-center gap-3 p-2 rounded-lg border border-gray-200 hover:border-primary/60 transition cursor-pointer bg-gray-50"
+              >
+                <input
+                  type="radio"
+                  id={choice.id}
+                  name="answerChoiceId"
+                  value={choice.id}
+                  className="accent-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
+                  checked={formState.answerChoiceId === choice.id}
+                  onChange={handleChoiceChange}
+                  required
+                />
+                <input
+                  type="hidden"
+                  name="initialAnswerChoiceId"
+                  value={formState.initialAnswerChoiceId}
+                />
+                <span className="w-5 text-end font-bold text-primary/90">{`${choice.choice_value}:`}</span>
+                <span className="text-gray-700">
+                  {isReviewee
                     ? choice.choice_text_reviewee
-                    : choice.choice_text_reviewer
-                }`}</span>
+                    : choice.choice_text_reviewer}
+                </span>
               </label>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      {hasChoices ? (
-        <div className="shrink text-lg font-bold px-6">
-          Justificá tu respuesta
-        </div>
-      ) : null}
-      <input type="hidden" name="questionId" value={question.id || ''} />
-      <input type="hidden" name="answerId" value={answer?.id || ''} />
-      <input
-        type="hidden"
-        name="initialAnswerText"
-        value={formState.initialAnswerText}
-      />
-      <AutoSizeTextarea
-        className="px-6 pb-6"
-        value={formState.answerText}
-        onChange={(e) =>
-          setFormState({ ...formState, answerText: e.target.value })
-        }
-      />
+            ))}
+          </div>
+        ) : null}
+        {hasChoices ? (
+          <div className="text-base font-medium text-gray-700 mt-4 mb-1">
+            Justificá tu respuesta
+          </div>
+        ) : null}
+        <input type="hidden" name="questionId" value={question.id || ''} />
+        <input type="hidden" name="answerId" value={answer?.id || ''} />
+        <input
+          type="hidden"
+          name="initialAnswerText"
+          value={formState.initialAnswerText}
+        />
+      </div>
+      <div className="px-6 pb-6">
+        <AutoSizeTextarea
+          className="w-full min-h-[70px] rounded-lg border border-gray-200 bg-gray-50 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 px-3 py-2 text-gray-900 transition resize-none"
+          value={formState.answerText}
+          onChange={(e) =>
+            setFormState({ ...formState, answerText: e.target.value })
+          }
+        />
+      </div>
     </div>
   );
 };

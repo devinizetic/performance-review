@@ -1,10 +1,10 @@
 import RevieweesRepository from '@/lib/repository/reviewees-repository';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import RevieweesTable from './components/RevieweesTable';
 
 export default async function Home() {
-  const supabase = createServerClient();
+  const supabase = await createClient();
   const {
     data: { session }
   } = await supabase.auth.getSession();

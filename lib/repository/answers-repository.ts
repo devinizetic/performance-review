@@ -1,8 +1,8 @@
 import { Answer, AnswersSortedView } from '@/types/supabase.types';
-import { createServerClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 
-const questionAnswersQuery = (userReviewId: string) => {
-  const supabase = createServerClient();
+const questionAnswersQuery = async (userReviewId: string) => {
+  const supabase = await createClient();
 
   return supabase
     .from('answers_sorted')
@@ -14,8 +14,8 @@ const questionAnswersQuery = (userReviewId: string) => {
     .eq('user_review_id', userReviewId);
 };
 
-const answersByUserReviewIdQuery = (userReviewId: string) => {
-  const supabase = createServerClient();
+const answersByUserReviewIdQuery = async (userReviewId: string) => {
+  const supabase = await createClient();
   return supabase
     .from('answers')
     .select(
