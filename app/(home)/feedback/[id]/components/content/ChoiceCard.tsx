@@ -22,19 +22,20 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
   isReviewee
 }) => {
   const isReadOnly = !onChange || readonly;
-
   return (
-    <div className="shrink pb-5">
+    <div className="flex flex-col gap-2 pb-4">
       {question.choices.map((choice) => {
         return (
-          <div key={choice.id} className="flex gap-1">
+          <label
+            key={choice.id}
+            className="flex items-center gap-3 p-2 rounded-lg border border-gray-200 hover:border-primary/60 transition cursor-pointer bg-gray-50"
+          >
             <input
               type="radio"
               id={`${choice.id}${isReadOnly ? 'r' : 'w'}`}
               value={choice.id}
               name={name && name}
-              // name="answerChoiceId" WARN: when adding this, the radio buttons don't work
-              className="accent-primary cursor-pointer"
+              className="accent-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
               checked={answerChoiceId === choice.id}
               onChange={(e) => (isReadOnly ? () => {} : onChange(e))}
               readOnly={isReadOnly}
@@ -45,18 +46,13 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({
               name="initialanswerChoiceId"
               value={answerChoiceId ?? ''}
             />
-            <label
-              className="cursor-pointer flex gap-1"
-              htmlFor={`${choice.id}${isReadOnly ? 'r' : 'w'}`}
-            >
-              <span className="w-4 text-end">{`${choice.choice_value}:`}</span>
-              <span>{`${
-                isReviewee
-                  ? choice.choice_text_reviewee
-                  : choice.choice_text_reviewer
-              }`}</span>
-            </label>
-          </div>
+            <span className="w-5 text-end font-bold text-primary/90">{`${choice.choice_value}:`}</span>
+            <span className="text-gray-700">{`${
+              isReviewee
+                ? choice.choice_text_reviewee
+                : choice.choice_text_reviewer
+            }`}</span>
+          </label>
         );
       })}
     </div>

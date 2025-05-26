@@ -25,14 +25,18 @@ const AutoSizeTextarea: React.FC<Props> = ({
     }
   }, [value]);
 
+  const defaultClassName =
+    'w-full border-b border-black bg-transparent outline-none overflow-hidden focus:border-primary focus:border-b-2 resize-none';
+  const textareaClassName = className || defaultClassName;
+
   return (
-    <div className={`${className}`}>
+    <div>
       <textarea
         ref={textareaRef}
         name="answerText"
         value={value}
         onChange={onChange}
-        className="w-full border-b border-black bg-transparent outline-none overflow-hidden focus:border-primary focus:border-b-2 resize-none"
+        className={textareaClassName}
         rows={1}
         required={required}
         disabled={readonly}
