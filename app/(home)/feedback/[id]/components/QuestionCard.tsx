@@ -2,7 +2,6 @@
 import QuestionsRepositoryClient from '@/lib/repository/questions-repository-client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FullQuestion } from '@/types/supabase.types';
-import { CustomText } from '@/app/components/common';
 import AnswersCard from './content/AnswersCard';
 import FeedbackForm from './content/FeedbackForm';
 import Loading from '@/app/(home)/loading';
@@ -62,33 +61,50 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     );
 
   const hasChoices = question.choices && question.choices.length > 0;
-
   return (
-    <div className={`flex w-full flex-col bg-white rounded-lg`}>
-      <h1 className="shrink text-xl font-bold p-6 text-white bg-primary rounded-t-lg">
-        {question.question_title}
-      </h1>
-      <div className="flex flex-col gap-4 px-6 py-4">
-        <div className="shrink text-lg font-medium text-justify">
+    <div
+      className={`flex w-full flex-col bg-white/95 rounded-2xl shadow-lg border border-gray-100`}
+    >
+      <div className="rounded-t-2xl px-6 pt-6 pb-3 border-b border-gray-100 bg-white">
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+          {question.question_title}
+        </h1>
+        <div className="text-base font-medium text-gray-600 opacity-90">
           {question.question_description}
         </div>
-        {question.questionHints && question.questionHints.length > 0 ? (
-          <div className="shrink">
-            <div className="bg-primary bg-opacity-10 font-medium p-2 rounded-lg">
-              <ul>
-                {question.questionHints.map((hint, index) => (
-                  <li key={hint.id} className="p-1">
-                    {hint.hint_text_reviewer}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      </div>
+      {question.questionHints && question.questionHints.length > 0 ? (
+        <div className="px-6 pt-6">
+          <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-3">
+            <svg
+              className="w-5 h-5 mt-0.5 text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+              />
+            </svg>
+            <ul className="space-y-1">
+              {question.questionHints.map((hint, index) => (
+                <li key={hint.id} className="text-sm">
+                  {hint.hint_text_reviewer}
+                </li>
+              ))}
+            </ul>
           </div>
-        ) : null}
+        </div>
+      ) : null}
+      <div className="flex flex-col gap-4 px-6 py-4">
+        {' '}
         <div className="">
-          <CustomText size="medium" bold className="pt-2">
+          <div className="text-lg font-semibold text-gray-800 mb-4">
             {question.question_text_reviewer}
-          </CustomText>
+          </div>
           <div className="flex items-between justify-around gap-8">
             <AnswersCard
               title="Evaluado"
