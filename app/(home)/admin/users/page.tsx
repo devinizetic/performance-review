@@ -14,6 +14,7 @@ import UserRepository from '@/lib/repository/user-repository';
 import { ADMIN_ROLE_ID } from '@/constants';
 import { EditRolesDialog } from './components/edit-roles-dialog';
 import { UserStatusToggle } from './components/user-status-toggle';
+import { ExportUsersButton } from './components/export-users-button';
 
 export default async function UsersAdminPage() {
   const supabase = await createClient();
@@ -31,20 +32,28 @@ export default async function UsersAdminPage() {
     // If not an admin, redirect to home
     redirect('/');
   }
-
   // Get all users with their roles and all available roles
   const [users, allRoles] = await Promise.all([
     UserRepository.getAllUsersWithRoles(),
     UserRepository.getAllRoles()
   ]);
 
+  // Sort users by full_name alphabetically
+  const sortedUsers = users.sort((a, b) => {
+    const nameA = a.full_name?.toLowerCase() || '';
+    const nameB = b.full_name?.toLowerCase() || '';
+    return nameA.localeCompare(nameB);
+  });
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
         <CardTitle>Usuarios del Sistema</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {users && users.length > 0 ? (
+        {sortedUsers.length > 0 && (
+          <ExportUsersButton users={sortedUsers} />
+        )}
+      </CardHeader>      <CardContent>
+        {sortedUsers && sortedUsers.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -56,7 +65,7 @@ export default async function UsersAdminPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {sortedUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.full_name}</TableCell>
                   <TableCell>{user.username}</TableCell>
