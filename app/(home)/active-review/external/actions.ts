@@ -5,7 +5,8 @@ import {
   createDefaultExternalReviewQuestions,
   getExternalReviewsForActiveReview,
   getExternalReviewById,
-  updateExternalReview
+  updateExternalReview,
+  getUserById
 } from '@/lib/repository/external-reviews-repository';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
@@ -42,15 +43,19 @@ export async function createNewExternalReview(
       validatedInput.companyName,
       validatedInput.language
     );
-
     if (!externalReview) {
       return { success: false, error: 'Failed to create external review' };
     }
 
+    // Get reviewee information to personalize questions
+    const reviewee = await getUserById(validatedInput.revieweeId);
+    const revieweeName = reviewee?.full_name || undefined;
+
     // Create default questions for the review
     const questionsCreated = await createDefaultExternalReviewQuestions(
       externalReview.id,
-      validatedInput.language
+      validatedInput.language,
+      revieweeName
     );
 
     if (!questionsCreated) {

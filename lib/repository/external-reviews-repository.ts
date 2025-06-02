@@ -22,6 +22,33 @@ export type ExternalReviewListItem = ExternalReview & {
 };
 
 /**
+ * Gets user information by ID
+ * @param userId The ID of the user to fetch
+ * @returns User information or null if not found
+ */
+export async function getUserById(
+  userId: string
+): Promise<Pick<
+  AppUser,
+  'id' | 'full_name' | 'username' | 'avatar_url'
+> | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('app_users')
+    .select('id, full_name, username, avatar_url')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
+
+  return data;
+}
+
+/**
  * Fetches an external review by token with its questions and answers
  * @param token The unique token for the external review
  * @returns The external review, including questions and answers, or null if not found
@@ -376,52 +403,62 @@ export async function createExternalReview(
 /**
  * Creates default questions for a new external review
  * @param externalReviewId The ID of the external review to create questions for
+ * @param language The language for the questions
+ * @param revieweeName The name of the person being reviewed (optional, defaults to "esta persona"/"this person")
  * @returns Boolean indicating success or failure
  */
 export async function createDefaultExternalReviewQuestions(
   externalReviewId: string,
-  language: 'english' | 'spanish' = 'english'
+  language: 'english' | 'spanish' = 'english',
+  revieweeName?: string
 ): Promise<boolean> {
   const supabase = await createClient();
   // Create some default questions
   let defaultQuestions;
+
+  // Use reviewee name if provided, otherwise use generic terms
+  const personReference =
+    revieweeName || (language === 'spanish' ? 'esta persona' : 'this person');
+  const possessiveReference = revieweeName
+    ? `${revieweeName}`
+    : language === 'spanish'
+    ? 'esta persona'
+    : 'this person';
+
   if (language === 'spanish') {
     defaultQuestions = [
       {
         external_review_id: externalReviewId,
-        text: '¿Cómo evaluarías el rendimiento general de esta persona?',
-        type: 'rating',
-        options: JSON.stringify({
-          min: 1,
-          max: 5,
-          labels: ['Malo', 'Regular', 'Bueno', 'Muy Bueno', 'Excelente']
-        }),
+        text: `¿Qué habilidades, actitudes o fortalezas personales destacarías de ${personReference} durante este periodo?`,
+        type: 'text',
+        options: null,
         order: 1
       },
       {
         external_review_id: externalReviewId,
-        text: '¿Cuáles crees que son las fortalezas principales de esta persona?',
+
+        text: `¿Qué logros destacados y éxitos tuvo ${personReference} durante este periodo?`,
         type: 'text',
         options: null,
         order: 2
       },
       {
         external_review_id: externalReviewId,
-        text: '¿En qué áreas crees que esta persona podría mejorar?',
+        text: `¿En qué áreas tuvo más dificultades ${personReference} durante este periodo? ¿Qué cosas podrían haberse manejado mejor y qué sugerirías hacer distinto en el futuro?`,
         type: 'text',
         options: null,
         order: 3
       },
       {
         external_review_id: externalReviewId,
-        text: '¿Recomendarías trabajar con esta persona nuevamente?',
+        text: `¿Cómo evaluarías el desempeño general de ${personReference} durante este periodo?`,
         type: 'multiple_choice',
         options: JSON.stringify([
-          'Definitivamente sí',
-          'Probablemente sí',
-          'No estoy seguro',
-          'Probablemente no',
-          'Definitivamente no'
+          'Excelente',
+          'Muy bueno',
+          'Aceptable',
+          'Mejorable',
+          'Insatisfactorio'
         ]),
         order: 4
       }
@@ -430,39 +467,35 @@ export async function createDefaultExternalReviewQuestions(
     defaultQuestions = [
       {
         external_review_id: externalReviewId,
-        text: "How would you rate this person's overall performance?",
-        type: 'rating',
-        options: JSON.stringify({
-          min: 1,
-          max: 5,
-          labels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent']
-        }),
+        text: `What personal strengths, skills, or attitudes would you highlight in ${personReference} during this period?`,
+        type: 'text',
+        options: null,
         order: 1
       },
       {
         external_review_id: externalReviewId,
-        text: "What do you think are this person's main strengths?",
+        text: `What would you say were ${personReference} key achievements or highlights over this period?`,
         type: 'text',
         options: null,
         order: 2
       },
       {
         external_review_id: externalReviewId,
-        text: 'In what areas do you think this person could improve?',
+        text: `What were some of the areas where ${personReference} faced more challenges during this period? What could have gone better, and what would you suggest doing differently moving forward?`,
         type: 'text',
         options: null,
         order: 3
       },
       {
         external_review_id: externalReviewId,
-        text: 'Would you recommend working with this person again?',
+        text: `How would you rate ${personReference}’s overall performance during this period?`,
         type: 'multiple_choice',
         options: JSON.stringify([
-          'Definitely yes',
-          'Probably yes',
-          'Not sure',
-          'Probably not',
-          'Definitely not'
+          'Excellent',
+          'Very good',
+          'Satisfactory',
+          'Needs improvement',
+          'Unsatisfactory'
         ]),
         order: 4
       }
